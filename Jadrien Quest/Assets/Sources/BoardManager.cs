@@ -9,6 +9,7 @@ public class BoardManager : MonoBehaviour {
 	public int cols = 40;
 
 	public GameObject[] floorTiles;
+	public GameObject[] skyTiles;
 
 	private Transform boardHolder;
 	private List<Vector3> gridPositions = new List<Vector3>();
@@ -31,8 +32,14 @@ public class BoardManager : MonoBehaviour {
 		for (int x = 0; x < cols; x++) 
 		{
 			for (int y = 0; y < rows; y++) 
-			{
-				GameObject toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
+			{	
+				GameObject toInstantiate;
+				if (y <= 2)
+				{
+					toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
+				} else {
+					toInstantiate = skyTiles[Random.Range(0, skyTiles.Length)];
+				}
 				GameObject instance = Instantiate(toInstantiate, new Vector3(x,y,0f), Quaternion.identity) as GameObject;
 				instance.transform.SetParent (boardHolder);
 			}
