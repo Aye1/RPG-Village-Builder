@@ -12,6 +12,8 @@ public class BoardManager : MonoBehaviour {
 	private int minY = 5;
 	private int maxY = 10;
 
+	private Transform boardHolder;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -24,7 +26,9 @@ public class BoardManager : MonoBehaviour {
 
 	public Board CreateBoard() {
 		IntCouple boardsize = GenerateBoardSize();
-		return new Board(boardsize);
+		Board board = new Board(boardsize);
+		InstantiateBoard(board);
+		return board;
 	}
 
 	private IntCouple GenerateBoardSize() {
@@ -33,5 +37,17 @@ public class BoardManager : MonoBehaviour {
 
 		Board board = new Board(x,y);
 		return new IntCouple(x, y);
+	}
+
+	public void InstantiateBoard(Board board) {
+		boardHolder = new GameObject("Board").transform;
+		board.BoardHolder = boardHolder;
+		for (int x = 0; x < board.SizeX ; x++) {
+			for (int y = 0; y < board.SizeY ; y++) {
+				GameObject toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
+				GameObject instance = Instantiate(toInstantiate, new Vector3(x,y,0f), Quaternion.identity) as GameObject;
+				instance.transform.SetParent(boardHolder); 
+			}
+		}
 	}
 }

@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Board : MonoBehaviour {
+public class Board {
 
 	#region Private attributes
 	private const int defaultX = 10;
 	private const int defaultY = 10;
 	private int _sizeX;
 	private int _sizeY;
+	private Transform _boardHolder;
 	#endregion
 
 	#region Accessors
@@ -20,7 +21,7 @@ public class Board : MonoBehaviour {
 	{
 		get { return _sizeX; }
 		set { 
-			if (_sizeX >= 2)
+			if (value >= 2)
 				_sizeX = value;
 		}
 	}
@@ -33,9 +34,19 @@ public class Board : MonoBehaviour {
 	{
 		get { return _sizeY; }
 		set { 
-			if (_sizeY >= 2)
+			if (value >= 2)
 				_sizeY = value;
 		}
+	}
+
+	/// <summary>
+	/// Gets or sets the board holder.
+	/// </summary>
+	/// <value>The board holder.</value>
+	public Transform BoardHolder
+	{
+		get { return _boardHolder; }
+		set { _boardHolder = value; }
 	}
 	#endregion
 
