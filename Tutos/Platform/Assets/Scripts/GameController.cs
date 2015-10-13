@@ -7,12 +7,20 @@ public class GameController : MonoBehaviour {
 	public BoardManager boardManager;
 
 	private Board currentBoard = null;
+	private GameController instance = null;
 
-	// Use this for initialization
-	void Start () {
+	void Awake () {
+		
+		if (instance == null)
+			instance = this;
+		else if (instance != this)
+			Destroy(gameObject);
+		
+		DontDestroyOnLoad(gameObject);
+
 		currentBoard = boardManager.CreateBoard();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 	

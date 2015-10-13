@@ -39,7 +39,7 @@ public class BoardManager : MonoBehaviour {
 		return new IntCouple(x, y);
 	}
 
-	public void InstantiateBoard(Board board) {
+	private void InstantiateBoard(Board board) {
 		boardHolder = new GameObject("Board").transform;
 		board.BoardHolder = boardHolder;
 		for (int x = 0; x < board.SizeX ; x++) {
