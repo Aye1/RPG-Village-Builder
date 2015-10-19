@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 	if( Input.GetKey(MoveUp))
         {
-//            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, speed));
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, speed);
         }
         else if (Input.GetKey(MoveDown))
