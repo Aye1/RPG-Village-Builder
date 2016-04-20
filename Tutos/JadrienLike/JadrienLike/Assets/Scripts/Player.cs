@@ -17,8 +17,8 @@ public class Player : MonoBehaviour {
    void FixedUpdate()
     {
         movex = Input.GetAxis("Horizontal");
-        // movey = Input.GetAxis("Vertical"); //jetpack
-        movey = 0;
+        movey = Input.GetAxis("Vertical"); //jetpack
+        // movey = 0;
         GetComponent<Rigidbody2D>().velocity = new Vector2(movex * speed, movey * speed);
         if (movex > 0)
         {
