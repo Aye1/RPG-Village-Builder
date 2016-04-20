@@ -1,0 +1,44 @@
+﻿using UnityEngine;
+using System.Collections;
+using System;
+
+public class Player : MonoBehaviour {
+
+   private Animator animator;
+    private float movex;
+    private float movey;
+    public float speed;
+
+    void Start ()
+    {
+        animator = GetComponent<Animator>();
+    }
+        
+   void FixedUpdate()
+    {
+        movex = Input.GetAxis("Horizontal");
+        movey = Input.GetAxis("Vertical");
+        GetComponent<Rigidbody2D>().velocity = new Vector2(movex * speed, movey * speed);
+        if (movex > 0)
+        {
+            animator.SetTrigger("Walk");
+            animator.SetBool("backward", false);
+        }
+        else if (movex < 0)
+        {
+            animator.SetTrigger("Walk Backward");
+
+            animator.SetBool("backward", true);
+        }
+        else
+        {
+            if (animator.GetBool("backward"))
+            {
+
+                animator.SetTrigger("Rest Backward");
+            }
+            else
+                animator.SetTrigger("Rest");
+        }
+    }
+}
