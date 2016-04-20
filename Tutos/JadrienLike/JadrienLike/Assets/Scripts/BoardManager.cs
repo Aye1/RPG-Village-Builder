@@ -11,6 +11,7 @@ public class BoardManager : MonoBehaviour {
 	private int maxX = 30;
 	private int minY = 1;
 	private int maxY = 1;
+	private int offsetX = 50;
 	
 	private Transform boardHolder;
 	
@@ -42,10 +43,14 @@ public class BoardManager : MonoBehaviour {
 	private void InstantiateBoard(Board board) {
 		boardHolder = new GameObject("Board").transform;
 		board.BoardHolder = boardHolder;
+		int yglobal = 0;
+		int xOffset = 0;
 		for (int x = 0; x < board.SizeX ; x++) {
+			xOffset = x*offsetX;
 			for (int y = 0; y < board.SizeY ; y++) {
+				yglobal--;
 				GameObject toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
-				GameObject instance = Instantiate(toInstantiate, new Vector3(x,y,0f), Quaternion.identity) as GameObject;
+				GameObject instance = Instantiate(toInstantiate, new Vector3(xOffset,yglobal,0f), Quaternion.identity) as GameObject;
 				instance.transform.SetParent(boardHolder); 
 			}
 		}
