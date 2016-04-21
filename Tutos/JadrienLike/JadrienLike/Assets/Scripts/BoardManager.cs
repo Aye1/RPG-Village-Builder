@@ -6,12 +6,14 @@ public class BoardManager : MonoBehaviour {
 	
 	public GameObject[] floorTiles;
 	public GameObject[] platformTiles;
+	public GameObject[] undergroundTiles;
 	
 	private int minX = 10;
 	private int maxX = 30;
 	private int minY = 1;
 	private int maxY = 1;
 	private int offsetX = 4;
+	private int undergroundDepth = -10;
 	
 	private Transform boardHolder;
 	
@@ -43,16 +45,22 @@ public class BoardManager : MonoBehaviour {
 	private void InstantiateBoard(Board board) {
 		boardHolder = new GameObject("Board").transform;
 		board.BoardHolder = boardHolder;
-		int yglobal = 0;
 		int xOffset = 0;
-		for (int x = 0; x < board.SizeX ; x++) {
+
+		// On peut perdre une case de longueur, on s'en fout pour le moment
+		int boundX = board.SizeX / 2;
+		for (int x = -boundX; x < boundX ; x++) {
 			xOffset = x*offsetX;
             Debug.Log("xoffset " +xOffset);
             Debug.Log("offsetx " + offsetX);
 			for (int y = 0; y < board.SizeY ; y++) {
-				//yglobal--;
 				GameObject toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
-				GameObject instance = Instantiate(toInstantiate, new Vector3(xOffset,yglobal,0f), Quaternion.identity) as GameObject;
+				GameObject instance = Instantiate(toInstantiate, new Vector3(xOffset,y,0f), Quaternion.identity) as GameObject;
+				instance.transform.SetParent(boardHolder); 
+			}
+			for (int y = -2; y > undergroundDepth; y--) {
+				GameObject toInstantiate = undergroundTiles[Random.Range(0, undergroundTiles.Length)];
+				GameObject instance = Instantiate(toInstantiate, new Vector3(xOffset,y,0f), Quaternion.identity) as GameObject;
 				instance.transform.SetParent(boardHolder); 
 			}
 		}
