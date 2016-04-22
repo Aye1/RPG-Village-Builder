@@ -21,6 +21,7 @@ public class Player : MonoBehaviour {
     {
       animator.SetBool("grounded", grounded);
     }
+
     void FixedUpdate()
     {
         float h = Input.GetAxis("Horizontal");
@@ -48,9 +49,16 @@ public class Player : MonoBehaviour {
         }
 
 
-        if (Input.GetButton("Jump") && grounded)
+        if (Input.GetButton("Jump") && grounded) rb2d.AddForce(Vector2.up * jumpPower);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Food"))
         {
-            rb2d.AddForce(Vector2.up * jumpPower);
+            other.gameObject.SetActive(false);
         }
     }
+
+
 }
