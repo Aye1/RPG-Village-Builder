@@ -5,28 +5,34 @@ using System;
 public class Player : MonoBehaviour {
 
    private Animator animator;
-    private float movex;
-    private float movey;
-    public float speed;
-    public Vector2 acceleration;
+    public float speed = 50f;
+    public float maxSpeed = 3;
+    public float jumpPower = 150f;
+    public bool grounded = false;
+
+    private Rigidbody2D rb2d;
+
     void Start ()
     {
         animator = GetComponent<Animator>();
+        rb2d = gameObject.GetComponent<Rigidbody2D>();
     }
 
+    void Update()
+    {
+        animator.SetBool("grounded", grounded);
+    }
     void FixedUpdate()
     {
-        movex = Input.GetAxis("Horizontal");
-        //movey = Input.GetAxis("Vertical"); //jetpack
-        movey = 0;
-        GetComponent<Rigidbody2D>().velocity = new Vector2(movex * speed, movey * speed);
-
-        if (movex > 0)
+        float h = Input.GetAxis("Horizontal");
+        rb2d.AddForce((Vector2.right * speed) * h);
+        if (rb2d.velocity.x > maxSpeed) rb2d.velocity = new Vector2(maxSpeed, rb2d.velocity.y);
+        if (h > 0)
         {
             animator.SetTrigger("Walk");
             animator.SetBool("backward", false);
         }
-        else if (movex < 0)
+        else if (h < 0)
         {
             animator.SetTrigger("Walk Backward");
             animator.SetBool("backward", true);
@@ -36,11 +42,11 @@ public class Player : MonoBehaviour {
             if (animator.GetBool("backward")) animator.SetTrigger("Rest Backward");
             else  animator.SetTrigger("Rest");
         }
-       
 
-        if (Input.GetButton("Jump") )
+
+        if (Input.GetButton("Jump") && grounded)
         {
-            GetComponent<Rigidbody2D>().AddForce(acceleration, ForceMode2D.Impulse);
+            rb2d.AddForce(Vector2.up * jumpPower);
         }
-        }
+    }
 }
