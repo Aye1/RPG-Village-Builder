@@ -47,8 +47,7 @@ public class BoardManager : MonoBehaviour {
 		int xOffset = 0;
 		for (int x = 0; x < board.SizeX ; x++) {
 			xOffset = x*offsetX;
-            Debug.Log("xoffset " +xOffset);
-            Debug.Log("offsetx " + offsetX);
+           
 			for (int y = 0; y < board.SizeY ; y++) {
 				//yglobal--;
 				GameObject toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
