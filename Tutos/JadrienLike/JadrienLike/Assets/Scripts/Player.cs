@@ -6,9 +6,8 @@ public class Player : MonoBehaviour {
 
    private Animator animator;
     public float speed = 50f;
-    public float maxSpeed = 3;
     public float jumpPower = 150f;
-    public bool grounded = false;
+    public bool grounded = true;
 
     private Rigidbody2D rb2d;
 
@@ -20,20 +19,25 @@ public class Player : MonoBehaviour {
 
     void Update()
     {
-        animator.SetBool("grounded", grounded);
+      animator.SetBool("grounded", grounded);
     }
     void FixedUpdate()
     {
         float h = Input.GetAxis("Horizontal");
-        rb2d.AddForce((Vector2.right * speed) * h);
-        if (rb2d.velocity.x > maxSpeed) rb2d.velocity = new Vector2(maxSpeed, rb2d.velocity.y);
+        float gravity = rb2d.velocity.y;
+        if (h !=0)
+         rb2d.AddForce((Vector2.right * speed) * h);
+        else rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+
         if (h > 0)
         {
+            rb2d.velocity = new Vector2(speed, gravity);
             animator.SetTrigger("Walk");
             animator.SetBool("backward", false);
         }
         else if (h < 0)
         {
+            rb2d.velocity = new Vector2(-speed,gravity);
             animator.SetTrigger("Walk Backward");
             animator.SetBool("backward", true);
         }
