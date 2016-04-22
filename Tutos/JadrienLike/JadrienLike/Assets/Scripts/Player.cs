@@ -54,7 +54,7 @@ public class Player : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Food"))
+        if (other.gameObject.CompareTag("Coin"))
         {
             other.gameObject.SetActive(false);
         }
