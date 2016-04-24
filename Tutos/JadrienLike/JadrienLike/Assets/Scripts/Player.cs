@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
@@ -8,7 +9,8 @@ public class Player : MonoBehaviour {
     public float speed = 50f;
     public float jumpPower = 150f;
     public bool grounded = true;
-
+    public Text textCount;
+    private int count = 0;
     private Rigidbody2D rb2d;
 
     void Start ()
@@ -25,20 +27,19 @@ public class Player : MonoBehaviour {
     void FixedUpdate()
     {
         float h = Input.GetAxis("Horizontal");
-        float gravity = rb2d.velocity.y;
-        if (h !=0)
+        if (h >= 1 || h <= -1)
          rb2d.AddForce((Vector2.right * speed) * h);
-        else rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+        else    rb2d.velocity = new Vector2(0, rb2d.velocity.y);
 
         if (h > 0)
         {
-            rb2d.velocity = new Vector2(speed, gravity);
+            rb2d.velocity = new Vector2(speed, rb2d.velocity.y);
             animator.SetTrigger("Walk");
             animator.SetBool("backward", false);
         }
         else if (h < 0)
         {
-            rb2d.velocity = new Vector2(-speed,gravity);
+            rb2d.velocity = new Vector2(-speed,rb2d.velocity.y);
             animator.SetTrigger("Walk Backward");
             animator.SetBool("backward", true);
         }
@@ -57,7 +58,15 @@ public class Player : MonoBehaviour {
         if (other.gameObject.CompareTag("Coin"))
         {
             other.gameObject.SetActive(false);
+            count++;
+            setCount(count);
+
         }
+    }
+
+    void setCount(int count)
+    {
+        textCount.text = "Coins : "+count;
     }
 
 
