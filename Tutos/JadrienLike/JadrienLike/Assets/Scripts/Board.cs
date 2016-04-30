@@ -11,6 +11,7 @@ public class Board {
 	private int _sizeX;
 	private int _sizeY;
 	private Transform _boardHolder;
+	//private int[] _mapMatrix;
 	#endregion
 	
 	#region Accessors
@@ -68,6 +69,7 @@ public class Board {
 	public Board(int x, int y) {
 		SizeX = x;
 		SizeY = y;
+	//	_mapMatrix = new int[x*y];
 	}
 	
 	/// <summary>
