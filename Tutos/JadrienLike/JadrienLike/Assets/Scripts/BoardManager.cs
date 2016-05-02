@@ -25,10 +25,10 @@ public class BoardManager : MonoBehaviour {
 	private int maxX = 40;
 	private int minY = 20;
 	private int maxY = 40;
-	private int offsetX = 1;
+	//private int offsetX = 1;
 	private int undergroundDepth = -10;
 	
-	//private Transform boardHolder;
+	private Transform boardHolder;
 	
 	// Use this for initialization
 	void Start () {
@@ -58,12 +58,16 @@ public class BoardManager : MonoBehaviour {
 	private void InstantiateBoard(Board board) {
 		boardHolder = new GameObject("Board").transform;
 		board.BoardHolder = boardHolder;
-		int xOffset = 0;
+		//int xOffset = 0;
 
 		// On peut perdre une case de longueur, on s'en fout pour le moment
 		int boundX = board.SizeX / 2;
 		for (int x = -boundX; x < boundX ; x++) {
 			for (int y = 0; y < board.SizeY ; y++) {
+				GameObject bgToInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
+				GameObject bgInstance = Instantiate(bgToInstantiate, new Vector3(x,y,1.0f), Quaternion.identity) as GameObject;
+				bgInstance.transform.SetParent(boardHolder);
+
 				GameObject toInstantiate;
 				if (x == -boundX && y == 0)
 				{
@@ -90,10 +94,13 @@ public class BoardManager : MonoBehaviour {
 				{
 					toInstantiate = topTiles[Random.Range(0, topTiles.Length)];
 				} else {
-					toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
+					toInstantiate = null;
 				}
-				GameObject instance = Instantiate(toInstantiate, new Vector3(x,y,0f), Quaternion.identity) as GameObject;
-				instance.transform.SetParent(boardHolder); 
+				if (toInstantiate != null)
+				{
+					GameObject instance = Instantiate(toInstantiate, new Vector3(x,y,0f), Quaternion.identity) as GameObject;
+					instance.transform.SetParent(boardHolder); 
+				}
 			}
 		}
 	}

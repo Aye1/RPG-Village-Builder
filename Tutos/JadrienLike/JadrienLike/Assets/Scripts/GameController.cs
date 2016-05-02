@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour {
 		DontDestroyOnLoad(gameObject);
 
 		currentBoard = boardManager.CreateBoard();
+		MapLoader loader = new MapLoader("map_csv");
 	}
 
 	// Update is called once per frame
