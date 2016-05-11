@@ -6,11 +6,21 @@ using System;
 public class MapLoader {
 
 	private TextAsset _rawAsset;
-	private string[] _rawLayers;
+	private ArrayList _rawLayers;
+
+	public ArrayList Layers
+	{
+		get
+		{
+			return _rawLayers;
+		}
+		set {}
+	}
 
 	public MapLoader(string filepath) 
 	{
 		_rawAsset = Resources.Load(filepath) as TextAsset;
+		_rawLayers = new ArrayList();
 		if (_rawAsset != null) 
 		{
 			Debug.Log ("Asset loaded");
@@ -19,13 +29,10 @@ public class MapLoader {
 				XmlDocument xmlDoc = new XmlDocument();
 				xmlDoc.LoadXml(_rawAsset.text);
 				XmlNodeList layers = xmlDoc.SelectNodes("map/layer");
-				_rawLayers = new string[layers.Count];
-				int i = 0;
 				foreach (XmlNode layer in layers) 
 				{
-					_rawLayers[i] = layer.InnerText;
 					Debug.Log ("Loading layer..."); 
-					i++;
+					_rawLayers.Add(layer.InnerText);
 				}
 				Debug.Log ("Xml loading succeeded");
 			} 

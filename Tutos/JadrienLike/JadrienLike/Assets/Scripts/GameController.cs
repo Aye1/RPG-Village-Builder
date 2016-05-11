@@ -18,8 +18,29 @@ public class GameController : MonoBehaviour {
 		
 		DontDestroyOnLoad(gameObject);
 
-		currentBoard = boardManager.CreateBoard();
+		currentBoard = new Board();
 		MapLoader loader = new MapLoader("map_csv");
+		ArrayList layers = loader.Layers;
+		ArrayList parsedLayers = new ArrayList();
+		CSVParser parser = CSVParser.Instance;
+
+		foreach (string layer in layers) 
+		{
+			parsedLayers.Add(CSVParser.ParseCSV(layer));
+		}
+		if (parsedLayers.Count == 0)
+			Debug.Log("Error while loading the map.");
+		else 
+		{
+			ArrayList firstLayer = parsedLayers.ToArray()[0] as ArrayList;
+			currentBoard.Rows = firstLayer;
+			Debug.Log ("Layers added to the board");
+			currentBoard.SizeY = firstLayer.Count;
+			ArrayList firstRow = firstLayer.ToArray()[0] as ArrayList;
+			currentBoard.SizeX = firstRow.Count;
+			//firstLayer.Insert(0, firstRow);
+			boardManager.InstantiateBoard(currentBoard);
+		}
 	}
 
 	// Update is called once per frame

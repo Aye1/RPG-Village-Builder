@@ -39,7 +39,7 @@ public class BoardManager : MonoBehaviour {
 	void Update () {
 		
 	}
-	
+
 	public Board CreateBoard() {
 		IntCouple boardsize = GenerateBoardSize();
 		Board board = new Board(boardsize);
@@ -55,7 +55,7 @@ public class BoardManager : MonoBehaviour {
 		return new IntCouple(x, y);
 	}
 	
-	private void InstantiateBoard(Board board) {
+	public void InstantiateBoard(Board board) {
 		boardHolder = new GameObject("Board").transform;
 		board.BoardHolder = boardHolder;
 		//int xOffset = 0;
