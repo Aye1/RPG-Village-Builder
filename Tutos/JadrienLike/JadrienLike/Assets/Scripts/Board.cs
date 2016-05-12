@@ -11,8 +11,8 @@ public class Board {
 	private int _sizeX;
 	private int _sizeY;
 	private Transform _boardHolder;
-	private ArrayList _rows;
-	//private int[] _mapMatrix;
+	//private ArrayList _rows;
+	private ArrayList _layers;
 	#endregion
 	
 	#region Accessors
@@ -57,7 +57,7 @@ public class Board {
 	/// Gets or sets the rows of the map.
 	/// </summary>
 	/// <value>The rows of the map</value>
-	public ArrayList Rows 
+	/*public ArrayList Rows 
 	{
 		get { return _rows; }
 		set { 
@@ -65,9 +65,28 @@ public class Board {
 			{
 				_rows = value;
 				SizeY = _rows.Count;
-				ArrayList firstRow = _rows.RemoveAt(0);
+				ArrayList firstRow = _rows.ToArray()[0] as ArrayList;
 				SizeX = firstRow.Count;
 				_rows.Insert (0, firstRow);
+			}
+		}
+	}*/
+
+	/// <summary>
+	/// Gets or sets the different layers of the map
+	/// </summary>
+	/// <value>The layers of the map.</value>
+	public ArrayList Layers 
+	{
+		get { return _layers; }
+		set { 
+			if (value != null)
+			{
+				_layers = value;
+				ArrayList firstLayer = _layers.ToArray()[0] as ArrayList;
+				SizeY = firstLayer.Count;
+				ArrayList firstRow = firstLayer.ToArray()[0] as ArrayList;
+				SizeX = firstRow.Count;
 			}
 		}
 	}

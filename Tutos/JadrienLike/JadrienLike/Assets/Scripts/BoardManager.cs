@@ -11,6 +11,7 @@ public class BoardManager : MonoBehaviour {
 	public GameObject[] bottomTiles;
 	public GameObject[] leftTiles;
 	public GameObject[] rightTiles;
+	public GameObject[] fullTiles;
 	public GameObject[] cornerbgTiles;
 	public GameObject[] cornerbdTiles;
 	public GameObject[] cornerhgTiles;
@@ -55,7 +56,7 @@ public class BoardManager : MonoBehaviour {
 		return new IntCouple(x, y);
 	}
 	
-	public void InstantiateBoard(Board board) {
+	/*public void InstantiateBoard(Board board) {
 		boardHolder = new GameObject("Board").transform;
 		board.BoardHolder = boardHolder;
 		//int xOffset = 0;
@@ -100,6 +101,87 @@ public class BoardManager : MonoBehaviour {
 				{
 					GameObject instance = Instantiate(toInstantiate, new Vector3(x,y,0f), Quaternion.identity) as GameObject;
 					instance.transform.SetParent(boardHolder); 
+				}
+			}
+		}
+	}*/
+
+	public void InstantiateBoard(Board board) 
+	{
+		boardHolder = new GameObject("Board").transform;
+		board.BoardHolder = boardHolder;
+		int xOffset = -5;
+		int yOffset = -95;
+		GameObject toInstantiate = null;
+
+		foreach (ArrayList layer in board.Layers) 
+		{
+			for (int y = 0; y < board.SizeY; y++) 
+			{
+				ArrayList currentRow = layer.ToArray()[y] as ArrayList;
+				for (int x = 0; x < board.SizeX; x++)
+				{
+					toInstantiate = null;
+					string elem = currentRow.ToArray()[x] as string;
+					switch(elem) 
+					{
+					case "0":
+						break;
+					case "1":
+						toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
+						break;
+					case "2":
+						toInstantiate = cliffhgTiles[Random.Range(0, cliffhgTiles.Length)];
+						break;
+					case "3":
+						toInstantiate = cliffbgTiles[Random.Range(0, cliffbgTiles.Length)];
+						break;
+					case "4":
+						toInstantiate = fullTiles[Random.Range(0, fullTiles.Length)];
+						break;
+					case "5":
+						toInstantiate = cornerhgTiles[Random.Range(0, cornerhgTiles.Length)];
+						break;
+					case "6":
+						toInstantiate = topTiles[Random.Range(0, topTiles.Length)];
+						break;
+					case "7":
+						toInstantiate = cornerhdTiles[Random.Range(0, cornerhdTiles.Length)];
+						break;
+					case "8":
+						break;
+					case "9":
+						toInstantiate = leftTiles[Random.Range(0, leftTiles.Length)];
+						break;
+					case "10":
+						break;
+					case "11":
+						toInstantiate = rightTiles[Random.Range(0, rightTiles.Length)];
+						break;
+					case "12":
+						toInstantiate = cliffhdTiles[Random.Range(0, cliffhdTiles.Length)];
+						break;
+					case "13":
+						toInstantiate = cornerbgTiles[Random.Range(0, cornerbgTiles.Length)];
+						break;
+					case "14":
+						toInstantiate = bottomTiles[Random.Range(0, bottomTiles.Length)];
+						break;
+					case "15":
+						toInstantiate = cornerbdTiles[Random.Range(0, cornerbdTiles.Length)];
+						break;
+					case "16":
+						toInstantiate = cliffbdTiles[Random.Range(0, cliffbdTiles.Length)];
+						break;
+					default:
+						toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
+						break;
+					}
+					if (toInstantiate != null) 
+					{
+						GameObject instance = Instantiate(toInstantiate, new Vector3(x+xOffset,board.SizeY-y+yOffset,0f), Quaternion.identity) as GameObject;
+						instance.transform.SetParent(boardHolder); 
+					}
 				}
 			}
 		}

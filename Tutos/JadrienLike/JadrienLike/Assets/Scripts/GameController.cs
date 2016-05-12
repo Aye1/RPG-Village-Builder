@@ -32,12 +32,12 @@ public class GameController : MonoBehaviour {
 			Debug.Log("Error while loading the map.");
 		else 
 		{
-			ArrayList firstLayer = parsedLayers.ToArray()[0] as ArrayList;
-			currentBoard.Rows = firstLayer;
+			//ArrayList firstLayer = parsedLayers.ToArray()[0] as ArrayList;
+			currentBoard.Layers = parsedLayers;
 			Debug.Log ("Layers added to the board");
-			currentBoard.SizeY = firstLayer.Count;
-			ArrayList firstRow = firstLayer.ToArray()[0] as ArrayList;
-			currentBoard.SizeX = firstRow.Count;
+			//currentBoard.SizeY = firstLayer.Count;
+			//ArrayList firstRow = firstLayer.ToArray()[0] as ArrayList;
+			//currentBoard.SizeX = firstRow.Count;
 			//firstLayer.Insert(0, firstRow);
 			boardManager.InstantiateBoard(currentBoard);
 		}

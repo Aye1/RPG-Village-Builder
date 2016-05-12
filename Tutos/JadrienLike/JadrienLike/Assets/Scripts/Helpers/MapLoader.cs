@@ -32,7 +32,7 @@ public class MapLoader {
 				foreach (XmlNode layer in layers) 
 				{
 					Debug.Log ("Loading layer..."); 
-					_rawLayers.Add(layer.InnerText);
+					_rawLayers.Insert(0, layer.InnerText);
 				}
 				Debug.Log ("Xml loading succeeded");
 			} 
