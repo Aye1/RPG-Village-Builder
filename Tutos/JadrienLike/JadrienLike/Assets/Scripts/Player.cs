@@ -11,12 +11,19 @@ public class Player : MonoBehaviour {
     public bool grounded = true;
     public Text textCount;
     private int count = 0;
+
+    public Text textMental;
+    private int mental = 50;
+
+
     private Rigidbody2D rb2d;
 
     void Start ()
     {
         animator = GetComponent<Animator>();
         rb2d = gameObject.GetComponent<Rigidbody2D>();
+        setCount(count);
+        setMental(mental);
     }
 
     void Update()
@@ -60,7 +67,13 @@ public class Player : MonoBehaviour {
             other.gameObject.SetActive(false);
             count++;
             setCount(count);
-
+        }
+     else   if (other.gameObject.CompareTag("Mental"))
+        {
+            other.gameObject.SetActive(false);
+            Mental addMental = other.GetComponent<Mental>();
+            mental += addMental.value;
+            setMental(mental);
         }
     }
 
@@ -69,5 +82,21 @@ public class Player : MonoBehaviour {
         textCount.text = "Coins : "+count;
     }
 
+    void setMental(int mental)
+    {
+       
+        if (mental >= 100)
+        {
+            textMental.text = "Passage en mode Lucide";
+        }
+        else if (mental <=0)
+        {
+            textMental.text = "Passage en mode Cauchemar";
+        }
+        else
+        {
+            textMental.text = "Mental : " + mental + "/100";
+        }
+    }
 
 }

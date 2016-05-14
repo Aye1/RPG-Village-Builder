@@ -14,7 +14,6 @@ public class GroundCheck : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log("true " + col.GetComponent<Collider2D>().gameObject.GetComponentInChildren<BoxCollider2D>().gameObject.layer);
         if (col.GetComponent<Collider2D>().gameObject.GetComponentInChildren<BoxCollider2D>().gameObject.layer  == LayerMask.NameToLayer("Floor"))
         {
             player.grounded = true;
@@ -39,8 +38,6 @@ public class GroundCheck : MonoBehaviour
     }
     void OnTriggerExit2D(Collider2D col)
     {
-
-        Debug.Log("false "+col.GetComponent<Collider2D>().gameObject.layer);
         player.grounded = false;
     }
 }
