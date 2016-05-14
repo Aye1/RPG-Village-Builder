@@ -68,11 +68,18 @@ public class Player : MonoBehaviour {
             count++;
             setCount(count);
         }
-     else   if (other.gameObject.CompareTag("Mental"))
+     else   if (other.gameObject.CompareTag("MentalUp"))
         {
             other.gameObject.SetActive(false);
-            Mental addMental = other.GetComponent<Mental>();
-            mental += addMental.value;
+            MentalUp addMental = other.GetComponent<MentalUp>();
+            mental += addMental.Value;
+            setMental(mental);
+        }
+        else if (other.gameObject.CompareTag("MentalDown"))
+        {
+            other.gameObject.SetActive(false);
+            MentalDown addMental = other.GetComponent<MentalDown>();
+            mental += addMental.Value;
             setMental(mental);
         }
     }
