@@ -106,4 +106,10 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void Damage(int hit)
+    {
+        mental -= hit;
+        setMental(mental);
+    }
+
 }

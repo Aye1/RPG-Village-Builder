@@ -14,12 +14,13 @@ public class GroundCheck : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.GetComponent<Collider2D>().gameObject.GetComponentInChildren<BoxCollider2D>().gameObject.layer  == LayerMask.NameToLayer("Floor"))
+        //Debug.Log("collider " + col.GetComponent<Collider2D>().gameObject.layer);
+        if (col.GetComponent<Collider2D>().gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
             player.grounded = true;
         }
         else
-        {
+        { 
             player.grounded = false;
         };
     }
