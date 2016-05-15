@@ -8,13 +8,13 @@ public class Bullet_Collision : MonoBehaviour {
     {
         if (!col.gameObject.CompareTag("Enemy"))
         {
-           
             gameObject.SetActive(false);
             if (col.gameObject.CompareTag("Player"))
             {
                 col.GetComponent<Player>().Damage(damage);
-                Debug.Log("coucou");
             }
+            Destroy(gameObject);
         }
+       
     }
 }

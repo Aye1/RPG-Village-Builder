@@ -110,6 +110,8 @@ public class Player : MonoBehaviour {
     {
         mental -= hit;
         setMental(mental);
+        gameObject.GetComponent<Animation>().Play("Player_RedFlash");
+        Debug.Log("damage");
     }
 
 }
