@@ -84,6 +84,12 @@ public class Player : MonoBehaviour {
         }
     }
 
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        Debug.Log("cocu ");
+
+    }
+
     void setCount(int count)
     {
         textCount.text = "Coins : "+count;
@@ -111,7 +117,18 @@ public class Player : MonoBehaviour {
         mental -= hit;
         setMental(mental);
         gameObject.GetComponent<Animation>().Play("Player_RedFlash");
-        Debug.Log("damage");
+       
     }
-
+    public IEnumerator Knockback(float knockbackDur, float knockbackpwr, Vector3 knockbackDir)
+    {
+        float timer = 0;
+        while (knockbackDur > timer)
+        {
+            timer += Time.deltaTime;
+            rb2d.AddForce(new Vector3(knockbackDir.x * -200, knockbackDir.y * knockbackpwr, transform.position.z));
+            Debug.Log("damage");
+        }
+      
+        yield return 0;
+    }
 }

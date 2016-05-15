@@ -11,6 +11,7 @@ public class Clock : MonoBehaviour {
 
     private int health;
     public int maxHealth;
+    public int damage;
 
     private float distance;
     public float wakeRange;
