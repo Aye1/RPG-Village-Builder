@@ -56,8 +56,6 @@ public class Player : MonoBehaviour {
             if (animator.GetBool("backward")) animator.SetTrigger("Rest Backward");
             else  animator.SetTrigger("Rest");
         }
-
-
         if (Input.GetButton("Jump") && grounded) rb2d.AddForce(Vector2.up * jumpPower);
     }
 
@@ -72,15 +70,7 @@ public class Player : MonoBehaviour {
      else   if (other.gameObject.CompareTag("MentalUp"))
         {
             other.gameObject.SetActive(false);
-            MentalUp addMental = other.GetComponent<MentalUp>();
-            mental += addMental.Value;
-            setMental(mental);
-        }
-        else if (other.gameObject.CompareTag("MentalDown"))
-        {
-            other.gameObject.SetActive(false);
-            MentalDown addMental = other.GetComponent<MentalDown>();
-            mental += addMental.Value;
+            mental += Constantes.mentalDown;
             setMental(mental);
         }
     }
@@ -89,8 +79,8 @@ public class Player : MonoBehaviour {
     {
        if(col.gameObject.CompareTag("Enemy"))
         {
-          
-            Damage(col.gameObject.GetComponentInParent<Clock>().damage, col.gameObject.transform.position);
+            Clock clock = col.gameObject.GetComponentInParent<Clock>();
+            Damage(clock.damage, clock.transform.position);
         }
 
     }
