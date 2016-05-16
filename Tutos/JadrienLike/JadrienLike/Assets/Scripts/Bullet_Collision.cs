@@ -18,8 +18,8 @@ public class Bullet_Collision : MonoBehaviour {
         }
         else if (col.gameObject.CompareTag("Player"))
         {
-            col.GetComponent<Player>().Damage(damage);
-            StartCoroutine(player.Knockback(1f, 500, player.transform.position));
+            col.GetComponent<Player>().Damage(damage, transform.position);
+          
             Destroy(gameObject);
         }
 

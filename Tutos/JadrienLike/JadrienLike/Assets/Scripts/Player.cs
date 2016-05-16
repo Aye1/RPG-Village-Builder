@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
     public bool grounded = true;
     public Text textCount;
     private int count = 0;
+    public Vector2 knockback;
 
     public Text textMental;
     private int mental = 50;
@@ -86,7 +87,11 @@ public class Player : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        Debug.Log("cocu ");
+       if(col.gameObject.CompareTag("Enemy"))
+        {
+          
+            Damage(col.gameObject.GetComponentInParent<Clock>().damage, col.gameObject.transform.position);
+        }
 
     }
 
@@ -112,23 +117,31 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public void Damage(int hit)
+    public void Damage(int hit, Vector3 attacker)
     {
         mental -= hit;
         setMental(mental);
         gameObject.GetComponent<Animation>().Play("Player_RedFlash");
-       
+        Vector2 direction = new Vector2(attacker.x - transform.position.x, attacker.y - transform.position.y);
+        direction.Normalize();
+        rb2d.AddForce(new Vector2 (direction.x * -knockback.x, direction.y * knockback.y));
+
     }
-    public IEnumerator Knockback(float knockbackDur, float knockbackpwr, Vector3 knockbackDir)
-    {
-        float timer = 0;
-        while (knockbackDur > timer)
-        {
-            timer += Time.deltaTime;
-            rb2d.AddForce(new Vector3(knockbackDir.x * -200, knockbackDir.y * knockbackpwr, transform.position.z));
-            Debug.Log("damage");
-        }
-      
-        yield return 0;
-    }
+    /* public IEnumerator Knockback(float knockbackDur, float knockbackpwr, Vector3 knockbackDir)
+     {
+         float timer = 0;
+         while (knockbackDur > timer)
+         {
+             timer += Time.deltaTime;
+             Debug.Log("damage " + rb2d.velocity);
+             // rb2d.AddForce(new Vector3(knockbackDir.x * -100, knockbackDir.y * knockbackpwr, transform.position.z));
+             rb2d.velocity += new Vector2(knockbackDir.x * -10, knockbackDir.y * knockbackpwr);
+             Debug.Log("damage "+rb2d.velocity);
+         }
+
+         yield return 0;
+
+            //to launch
+            // StartCoroutine(Knockback(0.01f, 10, transform.position));
+     }*/
 }

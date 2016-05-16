@@ -13,7 +13,7 @@ public class Bullet_collision : MonoBehaviour {
         }
         else if (col.gameObject.CompareTag("Player"))
             {
-            col.GetComponent<Player>().Damage(dammage);
+            col.GetComponent<Player>().Damage(dammage, transform.position);
         }
     }
 
