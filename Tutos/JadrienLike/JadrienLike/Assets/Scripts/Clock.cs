@@ -22,7 +22,7 @@ public class Clock : Enemy {
         bulletTimer += Time.deltaTime;
         if (bulletTimer >= ShootInterval)
         {
-            Vector2 direction = target.transform.position - transform.position;
+            Vector2 direction = Target.transform.position - transform.position;
             direction.Normalize();
             Bullet bulletClone;
             bulletClone = Instantiate(bullet, shootPoint.transform.position, shootPoint.transform.rotation) as Bullet;

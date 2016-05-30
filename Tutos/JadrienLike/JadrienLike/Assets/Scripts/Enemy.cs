@@ -5,7 +5,7 @@ public abstract class Enemy :MonoBehaviour  {
 
     // Set by Unity
     protected Animator animator;
-    public Transform target;
+    protected Transform _target;
     public Bullet bullet;
     public Transform shootPoint;
 
@@ -15,8 +15,7 @@ public abstract class Enemy :MonoBehaviour  {
 
     private float distance;
     protected float _wakeRange;
-
-    // TODO: move to the Bullet object
+    
   
     protected float bulletTimer = 0;
     protected float _shootInterval;
@@ -97,11 +96,32 @@ public abstract class Enemy :MonoBehaviour  {
         }
     }
 
+
+    /// <summary>
+    /// Accessor for the transform of the target player
+    /// </summary>
+    public Transform Target
+    {
+        get
+        {
+            return _target;
+        }
+        set
+        {
+            if (value != null)
+            {
+                _target = value;
+            }
+        }
+    }
+
     #endregion
 
     void Awake()
     {
         animator = gameObject.GetComponent<Animator>();
+        Player player = FindObjectsOfType(typeof(Player))[0] as Player;
+        Target = player.transform;
     }
 
     void Start()
@@ -120,7 +140,7 @@ public abstract class Enemy :MonoBehaviour  {
 
     void RangeCheck()
     {
-        distance = Vector3.Distance(transform.position, target.transform.position);
+        distance = Vector3.Distance(transform.position, Target.transform.position);
         if (distance <= WakeRange)
         {
             awake = true;
