@@ -80,7 +80,7 @@ public class Player : MonoBehaviour {
        if(col.gameObject.CompareTag("Enemy"))
         {
             Clock clock = col.gameObject.GetComponentInParent<Clock>();
-            Damage(clock.damage, clock.transform.position);
+            Damage(clock.Damage, clock.transform.position);
         }
 
     }

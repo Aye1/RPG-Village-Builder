@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Bullet_Collision : MonoBehaviour {
+public class Bullet : MonoBehaviour {
 
     public int damage;
+    public float bulletSpeed;
     private Player player;
     void Start()
     {

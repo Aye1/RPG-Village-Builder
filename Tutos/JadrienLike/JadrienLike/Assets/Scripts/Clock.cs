@@ -1,67 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Clock : MonoBehaviour {
+public class Clock : Enemy {
 
-    private Animator animator;
-    public Transform target;
-    public GameObject bullet;
+    // Ony for Unity setting
+    public int initMaxHealth = 10;
+    public int initDamage = 3;
+    public int initWakeRange = 5;
+    public int initShootInterval = 1;
 
-    public Transform shootPoint;
-
-    private int health;
-    public int maxHealth;
-    public int damage;
-
-    private float distance;
-    public float wakeRange;
-    public float bulletSpeed;
-    private float bulletTimer =0;
-    public float shootInterval;
-
-    private bool awake = false;
-	
-
-    void Awake()
+    protected override void Init()
     {
-        animator = gameObject.GetComponent<Animator>();
+        MaxHealth = initMaxHealth;
+        Damage = initDamage;
+        WakeRange = initWakeRange;
+        ShootInterval = initShootInterval;
     }
-
-    void Start()
-    {
-        health = maxHealth;
-    }
-
-    void Update()
-    {
-        animator.SetBool("Awake", awake);
-        RangeCheck();
-    }
-
-    void RangeCheck()
-    {
-        distance = Vector3.Distance(transform.position, target.transform.position);
-        if (distance <= wakeRange)
-        {
-            awake = true;
-        }
-        else
-        {
-            awake = false;
-        }
-
-    }
-
-    public void Attack()
+  
+    public override void Attack()
     {
         bulletTimer += Time.deltaTime;
-        if (bulletTimer >= shootInterval)
+        if (bulletTimer >= ShootInterval)
         {
             Vector2 direction = target.transform.position - transform.position;
             direction.Normalize();
-            GameObject bulletClone;
-            bulletClone = Instantiate(bullet, shootPoint.transform.position, shootPoint.transform.rotation) as GameObject;
-            bulletClone.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
+            Bullet bulletClone;
+            bulletClone = Instantiate(bullet, shootPoint.transform.position, shootPoint.transform.rotation) as Bullet;
+            bulletClone.GetComponent<Rigidbody2D>().velocity = direction * bullet.bulletSpeed;
 
             bulletTimer = 0;
 
