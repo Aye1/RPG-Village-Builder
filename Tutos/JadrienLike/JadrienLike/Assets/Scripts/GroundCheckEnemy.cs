@@ -17,6 +17,9 @@ public class GroundCheckEnemy : MonoBehaviour {
         {
             enemy.groundAhead = true;
         }
+        else if (col.GetComponent<Collider2D>().gameObject.CompareTag("Player"))
+        {
+        }
         else
         {
             enemy.groundAhead = false;

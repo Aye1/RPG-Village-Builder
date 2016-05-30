@@ -8,6 +8,7 @@ public abstract class ShootingEnemy : Enemy {
     protected float _shootInterval;
     public int initShootInterval = 1;
     public Transform shootPoint;
+    public bool debugCanShoot = true;
 
     /// <summary>
     /// Accessor for the time between two shoots
@@ -29,6 +30,8 @@ public abstract class ShootingEnemy : Enemy {
 
     public override void Attack()
     {
+        if (!debugCanShoot)
+            return;
         bulletTimer += Time.deltaTime;
         if (bulletTimer >= ShootInterval)
         {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
+using System.Threading;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
@@ -12,6 +12,7 @@ public class Player : MonoBehaviour {
     public Text textCount;
     private int count = 0;
     public Vector2 knockback;
+    private bool untouchable = false;
 
     public Text textMental;
     private int mental = 50;
@@ -67,18 +68,24 @@ public class Player : MonoBehaviour {
             count++;
             setCoins(count);
         }
-     else   if (other.gameObject.CompareTag("MentalUp"))
+        else if (other.gameObject.CompareTag("MentalUp"))
         {
             other.gameObject.SetActive(false);
             mental += Constantes.mentalDown;
             setMental(mental);
         }
+        else if (other.gameObject.CompareTag("Enemy") && !untouchable)
+        {
+            Enemy enemy = other.gameObject.GetComponentInParent<Enemy>();
+            Damage(enemy.Damage, enemy.transform.position);
+        }
     }
 
-    //If the player touches the enemy
+    // If the player touches the enemy
+    // TODO: maybe remove
     void OnCollisionEnter2D(Collision2D col)
     {
-       if(col.gameObject.CompareTag("Enemy"))
+       if(col.gameObject.CompareTag("Enemy") && !untouchable)
         {
             Enemy enemy = col.gameObject.GetComponentInParent<Enemy>();
             Damage(enemy.Damage, enemy.transform.position);
@@ -110,6 +117,7 @@ public class Player : MonoBehaviour {
 
     public void Damage(int hit, Vector3 attacker)
     {
+        becomesUntouchable();
         mental -= hit;
         setMental(mental);
         gameObject.GetComponent<Animation>().Play("Player_RedFlash");
@@ -117,6 +125,23 @@ public class Player : MonoBehaviour {
         direction.Normalize();
         rb2d.AddForce(new Vector2 (direction.x * -knockback.x, direction.y * knockback.y));
 
+    }
+
+    private void becomesUntouchable()
+    {
+        // Time in ms
+        int untouchTime = 2000;
+        untouchable = true;
+        Timer t = new Timer(new TimerCallback(stopsBeingUntouchableCallback));
+        t.Change(untouchTime, 0);
+    }   
+
+    private void stopsBeingUntouchableCallback(object state)
+    {
+        untouchable = false;
+        Timer t = (Timer) state;
+        if (t != null)
+            t.Dispose();
     }
     /* public IEnumerator Knockback(float knockbackDur, float knockbackpwr, Vector3 knockbackDir)
      {
