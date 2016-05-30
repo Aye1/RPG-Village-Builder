@@ -1,38 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GroundCheck : MonoBehaviour
-{
-
-    private Player player;
+public class GroundCheckEnemy : MonoBehaviour {
+    private Enemy enemy;
 
     // Use this for initialization
     void Start()
     {
-        player = gameObject.GetComponentInParent<Player>();
+        enemy = gameObject.GetComponentInParent<Enemy>();
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
+        //TODO simplifier en utilisant uniquement les layers
         if (col.GetComponent<Collider2D>().gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
-            player.grounded = true;
+            enemy.groundAhead = true;
         }
         else
-        { 
-            player.grounded = false;
+        {
+            enemy.groundAhead = false;
         };
+
     }
 
-    void OnTriggerStay2D(Collider2D col)
+  /*  void OnTriggerStay2D(Collider2D col)
     {
+
         if (col.GetComponent<Collider2D>().gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
-            player.grounded = true;
+            enemy.groundAhead = true;
         }
+
     }
     void OnTriggerExit2D(Collider2D col)
     {
-        player.grounded = false;
-    }
+        enemy.groundAhead = false;
+    }*/
 }

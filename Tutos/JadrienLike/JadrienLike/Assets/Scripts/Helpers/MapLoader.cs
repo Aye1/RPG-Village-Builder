@@ -36,7 +36,7 @@ public class MapLoader {
 				}
 				Debug.Log ("Xml loading succeeded");
 			} 
-			catch (Exception e)
+			catch 
 			{
 				Debug.Log ("Xml loading failed");
 			}

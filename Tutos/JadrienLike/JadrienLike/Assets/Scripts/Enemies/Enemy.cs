@@ -6,8 +6,6 @@ public abstract class Enemy :MonoBehaviour  {
     // Set by Unity
     protected Animator animator;
     protected Transform _target;
-    public Bullet bullet;
-    public Transform shootPoint;
 
     protected int health;
     protected int _maxHealth;
@@ -15,12 +13,17 @@ public abstract class Enemy :MonoBehaviour  {
 
     private float distance;
     protected float _wakeRange;
-    
-  
-    protected float bulletTimer = 0;
-    protected float _shootInterval;
 
     protected bool awake = false;
+
+    public bool groundAhead = false;
+
+
+    // Ony for Unity setting
+    public int initMaxHealth = 10;
+    public int initDamage = 3;
+    public int initWakeRange = 5;
+
 
     #region Accessor
 
@@ -79,25 +82,6 @@ public abstract class Enemy :MonoBehaviour  {
     }
 
     /// <summary>
-    /// Accessor for the time between two shoots
-    /// </summary>
-    public float ShootInterval
-    {
-        get
-        {
-            return _shootInterval;
-        }
-        set
-        {
-            if (value >= 0)
-            {
-                _shootInterval = value;
-            }
-        }
-    }
-
-
-    /// <summary>
     /// Accessor for the transform of the target player
     /// </summary>
     public Transform Target
@@ -127,15 +111,20 @@ public abstract class Enemy :MonoBehaviour  {
     void Start()
     {
         health = MaxHealth;
+        MaxHealth = initMaxHealth;
+        Damage = initDamage;
+        WakeRange = initWakeRange;
         Init();
     }
-
-    protected abstract void Init();
 
     void Update()
     {
         RangeCheck();
-        animator.SetBool("Awake", awake);
+        if (animator != null)
+        {
+            animator.SetBool("Awake", awake);
+        }
+        Move();
     }
 
     void RangeCheck()
@@ -151,5 +140,12 @@ public abstract class Enemy :MonoBehaviour  {
         }
     }
 
+    #region Abstract methods
+    // Init variables specific to the enemy
+    protected abstract void Init();
+    // Launch the enemy attack
     public abstract void Attack();
+    // Move the enemy
+    public abstract void Move();
+    #endregion
 }

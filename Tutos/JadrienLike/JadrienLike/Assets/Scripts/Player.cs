@@ -23,7 +23,7 @@ public class Player : MonoBehaviour {
     {
         animator = GetComponent<Animator>();
         rb2d = gameObject.GetComponent<Rigidbody2D>();
-        setCount(count);
+        setCoins(count);
         setMental(mental);
     }
 
@@ -65,7 +65,7 @@ public class Player : MonoBehaviour {
         {
             other.gameObject.SetActive(false);
             count++;
-            setCount(count);
+            setCoins(count);
         }
      else   if (other.gameObject.CompareTag("MentalUp"))
         {
@@ -75,17 +75,18 @@ public class Player : MonoBehaviour {
         }
     }
 
+    //If the player touches the enemy
     void OnCollisionEnter2D(Collision2D col)
     {
        if(col.gameObject.CompareTag("Enemy"))
         {
-            Clock clock = col.gameObject.GetComponentInParent<Clock>();
-            Damage(clock.Damage, clock.transform.position);
+            Enemy enemy = col.gameObject.GetComponentInParent<Enemy>();
+            Damage(enemy.Damage, enemy.transform.position);
         }
 
     }
 
-    void setCount(int count)
+    void setCoins(int count)
     {
         textCount.text = "Coins : "+count;
     }
