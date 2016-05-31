@@ -2,7 +2,6 @@
 using System.Collections;
 using System;
 
-[Serializable]
 public class Board {
 	
 	#region Private attributes
@@ -11,7 +10,6 @@ public class Board {
 	private int _sizeX;
 	private int _sizeY;
 	private Transform _boardHolder;
-	//private ArrayList _rows;
 	private ArrayList _layers;
 	#endregion
 	

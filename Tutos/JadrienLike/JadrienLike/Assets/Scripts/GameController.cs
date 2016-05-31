@@ -41,6 +41,7 @@ public class GameController : MonoBehaviour {
 			//firstLayer.Insert(0, firstRow);
 			boardManager.InstantiateBoard(currentBoard);
 		}
+        player.transform.position = boardManager.InitPlayerPosition;
 	}
 
 	// Update is called once per frame

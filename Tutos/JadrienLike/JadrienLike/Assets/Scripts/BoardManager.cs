@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Random = UnityEngine.Random;
+using System;
 
 public class BoardManager : MonoBehaviour {
-	
-	//public GameObject[] floorTiles;
-	//public GameObject[] undergroundTiles;
 
-	public GameObject[] topTiles;
+    #region Tiles
+    public GameObject[] topTiles;
 	public GameObject[] bottomTiles;
 	public GameObject[] leftTiles;
 	public GameObject[] rightTiles;
@@ -21,18 +20,39 @@ public class BoardManager : MonoBehaviour {
 	public GameObject[] cliffhgTiles;
 	public GameObject[] cliffhdTiles;
 	public GameObject[] backgroundTiles;
-	
-	private int minX = 20;
+    public GameObject[] exitTiles;
+    #endregion
+
+    #region Private variables
+    private Vector3 _initPlayerPosition;
+
+    private int minX = 20;
 	private int maxX = 40;
 	private int minY = 20;
 	private int maxY = 40;
-	//private int offsetX = 1;
-	private int undergroundDepth = -10;
-	
-	private Transform boardHolder;
-	
-	// Use this for initialization
-	void Start () {
+    #endregion
+
+    private Transform boardHolder;
+
+    #region Accessors
+    public Vector3 InitPlayerPosition
+    {
+        get
+        {
+            return _initPlayerPosition;
+        }
+        set
+        {
+            if (value != null)
+            {
+                _initPlayerPosition = value;
+            }
+        }
+    }
+    #endregion
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -42,12 +62,14 @@ public class BoardManager : MonoBehaviour {
 	}
 
 	public Board CreateBoard() {
+        // First line may be removed
 		IntCouple boardsize = GenerateBoardSize();
 		Board board = new Board(boardsize);
 		InstantiateBoard(board);
 		return board;
 	}
 	
+    [Obsolete("Old map generation, may be removed")]
 	private IntCouple GenerateBoardSize() {
 		int x = (int) Random.Range(minX, maxX);
 		int y = (int) Random.Range(minY, maxY);
@@ -110,8 +132,10 @@ public class BoardManager : MonoBehaviour {
 	{
 		boardHolder = new GameObject("Board").transform;
 		board.BoardHolder = boardHolder;
-		int xOffset = -5;
-		int yOffset = -95;
+
+        // TODO: remove offsets when all enemies position are taken from xml
+        int xOffset = -5;
+        int yOffset = -95;
 		GameObject toInstantiate = null;
 
 		foreach (ArrayList layer in board.Layers) 
@@ -149,11 +173,13 @@ public class BoardManager : MonoBehaviour {
 						toInstantiate = cornerhdTiles[Random.Range(0, cornerhdTiles.Length)];
 						break;
 					case "8":
+                        Debug.Log("Case 8 found!");
 						break;
 					case "9":
 						toInstantiate = leftTiles[Random.Range(0, leftTiles.Length)];
 						break;
 					case "10":
+                        _initPlayerPosition = new Vector3(x + xOffset, board.SizeY - y + yOffset, 0f);
 						break;
 					case "11":
 						toInstantiate = rightTiles[Random.Range(0, rightTiles.Length)];
