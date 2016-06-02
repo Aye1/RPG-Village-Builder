@@ -5,7 +5,11 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
-   private Animator animator;
+    #region private Unity objects
+    private Animator animator;
+    private Rigidbody2D rb2d;
+    #endregion
+
     public float speed = 50f;
     public float jumpPower = 150f;
     public bool grounded = true;
@@ -15,11 +19,8 @@ public class Player : MonoBehaviour {
     private bool untouchable = false;
 
     public Text textMental;
+
     private int _mental = 50;
-
-
-    private Rigidbody2D rb2d;
-
 
     #region Accessors
     public int Mental

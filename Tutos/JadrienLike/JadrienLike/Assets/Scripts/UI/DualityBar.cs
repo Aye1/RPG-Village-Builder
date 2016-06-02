@@ -105,7 +105,16 @@ public class DualityBar : MonoBehaviour {
         // It seems that the picture goes from -50 to 50
         int offsetX = -50;
         // The first element is the bar itself, counted as its own child
-        Image cursor = gameObject.GetComponentsInChildren<Image>()[1];
+        Image[] children = gameObject.GetComponentsInChildren<Image>();
+        Image cursor = null;
+        foreach (Image child in children)
+        {
+            if(cursor == null && child.CompareTag("MentalBar_Cursor"))
+            {
+                cursor = child;
+            }
+        }
+
         float ratio = usedValue / (float)(_maxValue - _minValue);
         float localX = (100 - 2 * usedMargin) * ratio + offsetX + usedMargin;
         cursor.transform.localPosition = new Vector3(localX, 0.0f, 0.0f);
