@@ -15,17 +15,28 @@ public class Player : MonoBehaviour {
     private bool untouchable = false;
 
     public Text textMental;
-    private int mental = 50;
+    private int _mental = 50;
 
 
     private Rigidbody2D rb2d;
+
+
+    #region Accessors
+    public int Mental
+    {
+        get
+        {
+            return _mental;
+        }
+    }
+    #endregion
 
     void Start ()
     {
         animator = GetComponent<Animator>();
         rb2d = gameObject.GetComponent<Rigidbody2D>();
         setCoins(count);
-        setMental(mental);
+        setMental(_mental);
     }
 
     void Update()
@@ -71,8 +82,14 @@ public class Player : MonoBehaviour {
         else if (other.gameObject.CompareTag("MentalUp"))
         {
             other.gameObject.SetActive(false);
-            mental += Constantes.mentalDown;
-            setMental(mental);
+            _mental += Constantes.mentalUp;
+            setMental(_mental);
+        }
+        else if (other.gameObject.CompareTag("MentalDown"))
+        {
+            other.gameObject.SetActive(false);
+            _mental += Constantes.mentalDown;
+            setMental(_mental);
         }
         else if (other.gameObject.CompareTag("Enemy") && !untouchable)
         {
@@ -120,8 +137,8 @@ public class Player : MonoBehaviour {
         if (!untouchable)
         {
             becomesUntouchable();
-            mental -= hit;
-            setMental(mental);
+            _mental -= hit;
+            setMental(_mental);
             gameObject.GetComponent<Animation>().Play("Player_RedFlash");
             Vector2 direction = new Vector2(attacker.x - transform.position.x, attacker.y - transform.position.y);
             direction.Normalize();
