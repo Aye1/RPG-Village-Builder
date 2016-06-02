@@ -145,8 +145,8 @@ public class BoardManager : MonoBehaviour {
 		board.BoardHolder = boardHolder;
 
         // TODO: remove offsets when all enemies position are taken from xml
-        int xOffset = -5;
-        int yOffset = -95;
+        int xOffset = 0; //-5;
+        int yOffset = 0; //-95;
         float currentZ = 0;
 		GameObject toInstantiate = null;
 
@@ -216,6 +216,7 @@ public class BoardManager : MonoBehaviour {
                             break;
                         case "18":
                             toInstantiate = dumbEnemies[Random.Range(0, dumbEnemies.Length)];
+                            toInstantiate.transform.Rotate(new Vector3(0, 0, 90));
                             break;
                         case "19":
                             toInstantiate = redPotions[Random.Range(0, redPotions.Length)];

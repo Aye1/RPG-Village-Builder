@@ -117,14 +117,16 @@ public class Player : MonoBehaviour {
 
     public void Damage(int hit, Vector3 attacker)
     {
-        becomesUntouchable();
-        mental -= hit;
-        setMental(mental);
-        gameObject.GetComponent<Animation>().Play("Player_RedFlash");
-        Vector2 direction = new Vector2(attacker.x - transform.position.x, attacker.y - transform.position.y);
-        direction.Normalize();
-        rb2d.AddForce(new Vector2 (direction.x * -knockback.x, direction.y * knockback.y));
-
+        if (!untouchable)
+        {
+            becomesUntouchable();
+            mental -= hit;
+            setMental(mental);
+            gameObject.GetComponent<Animation>().Play("Player_RedFlash");
+            Vector2 direction = new Vector2(attacker.x - transform.position.x, attacker.y - transform.position.y);
+            direction.Normalize();
+            rb2d.AddForce(new Vector2(direction.x * -knockback.x, direction.y * knockback.y));
+        }
     }
 
     private void becomesUntouchable()
