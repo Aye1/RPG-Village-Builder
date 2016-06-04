@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public abstract class Enemy :MonoBehaviour  {
+public abstract class Enemy : MonoBehaviour  {
 
     // Set by Unity
     protected Animator animator;
@@ -10,8 +9,11 @@ public abstract class Enemy :MonoBehaviour  {
     protected int health;
     protected int _maxHealth;
     protected int _damage;
+    protected float _moveSpeed;
+    protected bool _isChasingPlayer = false;
+    protected float _aggroRange;
 
-    private float distance;
+    protected float _internalTimer = 0;
     protected float _wakeRange;
 
     protected bool awake = false;
@@ -23,6 +25,8 @@ public abstract class Enemy :MonoBehaviour  {
     public int initMaxHealth = 10;
     public int initDamage = 3;
     public int initWakeRange = 5;
+    public float initMoveSpeed = 1.0f;
+    public float initAggroRange = 3;
 
 
     #region Accessor
@@ -99,6 +103,48 @@ public abstract class Enemy :MonoBehaviour  {
         }
     }
 
+    /// <summary>
+    /// Accessor for the move speed.
+    /// </summary>
+    public float MoveSpeed
+    {
+        get
+        {
+            return _moveSpeed;
+        }
+
+        set
+        {
+            if (value >=0)
+            {
+                _moveSpeed = value;
+            }
+        }
+    }
+
+    public bool IsChasingPlayer
+    {
+        get
+        {
+            return _isChasingPlayer;
+        }
+    }
+
+    public float AggroRange
+    {
+        get
+        {
+            return _aggroRange;
+        }
+        set
+        {
+            if (value > 0)
+            {
+                _aggroRange = value;
+            }
+        }
+    }
+
     #endregion
 
     void Awake()
@@ -114,6 +160,8 @@ public abstract class Enemy :MonoBehaviour  {
         MaxHealth = initMaxHealth;
         Damage = initDamage;
         WakeRange = initWakeRange;
+        MoveSpeed = initMoveSpeed;
+        AggroRange = initAggroRange;
         Init();
     }
 
@@ -129,7 +177,7 @@ public abstract class Enemy :MonoBehaviour  {
 
     void RangeCheck()
     {
-        distance = Vector3.Distance(transform.position, Target.transform.position);
+        float distance = Vector3.Distance(transform.position, Target.transform.position);
         if (distance <= WakeRange)
         {
             awake = true;

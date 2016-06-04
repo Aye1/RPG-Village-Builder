@@ -26,6 +26,7 @@ public class BoardManager : MonoBehaviour {
     #region Enemies
     public GameObject[] clockEnemies;
     public GameObject[] dumbEnemies;
+    public GameObject[] cardEnemies;
     #endregion
 
     #region Collectibles
@@ -227,7 +228,10 @@ public class BoardManager : MonoBehaviour {
                         case "21":
                             toInstantiate = coins[Random.Range(0, coins.Length)];
                             break;
-					default:
+                        case "22":
+                            toInstantiate = cardEnemies[Random.Range(0, cardEnemies.Length)];
+                            break;
+                        default:
 						toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
 						break;
 					}

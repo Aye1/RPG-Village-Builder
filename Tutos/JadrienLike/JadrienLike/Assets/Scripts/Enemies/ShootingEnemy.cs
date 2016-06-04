@@ -4,7 +4,6 @@ using UnityEngine;
 public abstract class ShootingEnemy : Enemy {
 
     public Bullet bullet;
-    protected float bulletTimer = 0;
     protected float _shootInterval;
     public int initShootInterval = 1;
     public Transform shootPoint;
@@ -32,8 +31,8 @@ public abstract class ShootingEnemy : Enemy {
     {
         if (!debugCanShoot)
             return;
-        bulletTimer += Time.deltaTime;
-        if (bulletTimer >= ShootInterval)
+        _internalTimer += Time.deltaTime;
+        if (_internalTimer >= ShootInterval)
         {
             Vector2 direction = Target.transform.position - transform.position;
             direction.Normalize();
@@ -41,7 +40,7 @@ public abstract class ShootingEnemy : Enemy {
             bulletClone = Instantiate(bullet, shootPoint.transform.position, shootPoint.transform.rotation) as Bullet;
             bulletClone.GetComponent<Rigidbody2D>().velocity = direction * bullet.bulletSpeed;
 
-            bulletTimer = 0;
+            _internalTimer = 0;
 
         }
     }
