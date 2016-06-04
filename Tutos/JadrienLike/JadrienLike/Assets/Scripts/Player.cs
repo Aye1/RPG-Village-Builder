@@ -106,6 +106,7 @@ public class Player : MonoBehaviour {
        if(col.gameObject.CompareTag("Enemy") && !untouchable)
         {
             Enemy enemy = col.gameObject.GetComponentInParent<Enemy>();
+            enemy.OnHit();
             Damage(enemy.Damage, enemy.transform.position);
         }
 

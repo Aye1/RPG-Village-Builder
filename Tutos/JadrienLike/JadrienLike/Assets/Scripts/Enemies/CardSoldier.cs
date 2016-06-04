@@ -3,8 +3,6 @@ using System;
 
 public class CardSoldier : MeleeEnemy {
 
-    private float moveDirection = 1.0f;
-
     public override void Attack()
     {
     }
@@ -14,7 +12,8 @@ public class CardSoldier : MeleeEnemy {
         Vector2 direction = Target.transform.position - transform.position;
         float distanceToPlayer = Vector3.Distance(Target.transform.position, transform.position);
         direction.Normalize();
-        if(direction.x * moveDirection > 0 && distanceToPlayer <= AggroRange)
+        if((IsPlayerAhead() || _isChasingPlayer)
+            && distanceToPlayer <= AggroRange)
         {
             _isChasingPlayer = true;
         } 
@@ -28,6 +27,8 @@ public class CardSoldier : MeleeEnemy {
 
         if (IsChasingPlayer)
         {
+            //to change : wrong animation
+            gameObject.GetComponent<Animation>().Play("Player_RedFlash");
             moveDirection = direction.x >= 0 ? 1.0f : -1.0f;
             currentMoveSpeed = MoveSpeed * 5.0f;
         }
@@ -36,14 +37,20 @@ public class CardSoldier : MeleeEnemy {
             if (!groundAhead)
             {
                 moveDirection *= -1;
-                Vector3 enemyScale = transform.localScale;
-                enemyScale.x *= -1;
-                transform.localScale = enemyScale;
+                Flip();
             }
             currentMoveSpeed = MoveSpeed;
         }
         moveAmount.x = moveDirection * currentMoveSpeed * Time.deltaTime;
         transform.Translate(moveAmount);
+    }
+    public override void OnHit()
+    {
+        _isChasingPlayer = true;
+        if (!IsPlayerAhead())
+        {
+            Flip();
+        }
     }
 
     protected override void Init()

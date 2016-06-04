@@ -3,7 +3,6 @@
 public class Deadline : DumbEnemy {
 
     private Vector2 moveAmount = new Vector2(1, 0);
-    public float moveDirection = 1.0f;
 
     public override void Move()
     {

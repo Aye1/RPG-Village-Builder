@@ -16,6 +16,8 @@ public abstract class Enemy : MonoBehaviour  {
     protected float _internalTimer = 0;
     protected float _wakeRange;
 
+    protected float moveDirection = 1.0f;
+
     protected bool awake = false;
 
     public bool groundAhead = false;
@@ -188,6 +190,19 @@ public abstract class Enemy : MonoBehaviour  {
         }
     }
 
+    public void Flip()
+    {
+        Vector3 enemyScale = transform.localScale;
+        enemyScale.x *= -1;
+        transform.localScale = enemyScale;
+    }
+
+    public bool IsPlayerAhead()
+    {
+        Vector2 direction = Target.transform.position - transform.position;
+        return direction.x * moveDirection > 0;
+    }
+
     #region Abstract methods
     // Init variables specific to the enemy
     protected abstract void Init();
@@ -195,5 +210,7 @@ public abstract class Enemy : MonoBehaviour  {
     public abstract void Attack();
     // Move the enemy
     public abstract void Move();
+    // When the Enemy is hit
+    public abstract void OnHit();
     #endregion
 }

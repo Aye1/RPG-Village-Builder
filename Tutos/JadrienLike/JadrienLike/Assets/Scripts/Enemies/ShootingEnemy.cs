@@ -49,8 +49,6 @@ public abstract class ShootingEnemy : Enemy {
     {
         ShootInterval = initShootInterval;
     }
-    public override void Move()
-    {
-        
-    }
+    public override void Move() {}
+    public override void OnHit() {} 
 }
