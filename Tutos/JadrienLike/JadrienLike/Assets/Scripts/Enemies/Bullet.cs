@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D col)
     {
     
-        if (col.gameObject.CompareTag("Physical_Background"))
+        if (col.gameObject.CompareTag("Physical_Background") || col.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
             Destroy(gameObject);
         }
