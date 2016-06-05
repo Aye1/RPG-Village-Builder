@@ -165,7 +165,7 @@ public class BoardManager : MonoBehaviour {
 					    case "0":
 						    break;
 					    case "1":
-						    toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
+						   // toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
 						    break;
 					    case "2":
 						    toInstantiate = cliffhgTiles[Random.Range(0, cliffhgTiles.Length)];

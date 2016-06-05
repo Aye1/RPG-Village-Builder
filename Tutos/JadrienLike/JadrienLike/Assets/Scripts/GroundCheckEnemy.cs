@@ -27,7 +27,6 @@ public class GroundCheckEnemy : MonoBehaviour {
         {
             enemy.groundAhead = false;
         }
-        Debug.Log("ground " + enemy.groundAhead + " tag : " + col.GetComponent<Collider2D>().gameObject.layer + " col "+col.gameObject.GetType().ToString());
     }
 
   /*  void OnTriggerStay2D(Collider2D col)
