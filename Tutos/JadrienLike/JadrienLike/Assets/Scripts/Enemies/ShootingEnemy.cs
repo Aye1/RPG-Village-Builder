@@ -50,5 +50,8 @@ public abstract class ShootingEnemy : Enemy {
         ShootInterval = initShootInterval;
     }
     public override void Move() {}
-    public override void OnHit() {} 
+    public override void OnHit()
+    {
+        gameObject.GetComponent<Animation>().Play("RedFlash");
+    } 
 }

@@ -158,8 +158,8 @@ public abstract class Enemy : MonoBehaviour  {
 
     void Start()
     {
-        health = MaxHealth;
         MaxHealth = initMaxHealth;
+        health = MaxHealth;
         Damage = initDamage;
         WakeRange = initWakeRange;
         MoveSpeed = initMoveSpeed;
@@ -203,6 +203,19 @@ public abstract class Enemy : MonoBehaviour  {
         return direction.x * moveDirection > 0;
     }
 
+    public void OnHurt(int hit)
+    {
+        health -= hit;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        gameObject.SetActive(false);
+    }
     #region Abstract methods
     // Init variables specific to the enemy
     protected abstract void Init();

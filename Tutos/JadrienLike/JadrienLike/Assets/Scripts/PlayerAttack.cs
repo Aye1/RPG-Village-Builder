@@ -38,4 +38,13 @@ public class PlayerAttack : MonoBehaviour {
         }
         animator.SetBool("Attacking", attacking);
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            Player player = other.GetComponent<Player>();
+            player.Attack(other.GetComponent<Enemy>(), player.weaponDamage);
+        }
+    }
 }

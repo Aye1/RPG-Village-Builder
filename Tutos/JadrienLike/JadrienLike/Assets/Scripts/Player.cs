@@ -17,9 +17,10 @@ public class Player : MonoBehaviour {
     private int count = 0;
     public Vector2 knockback;
     private bool untouchable = false;
-
+    public int FootHit = 20;
+    public int weaponDamage = 40;
     public Text textMental;
-
+    private bool backward = false;
     private int _mental = 50;
 
     #region Accessors
@@ -57,17 +58,23 @@ public class Player : MonoBehaviour {
             rb2d.velocity = new Vector2(speed, rb2d.velocity.y);
             animator.SetTrigger("Walk");
             animator.SetBool("backward", false);
+            if (backward)
+            {
+                Flip();
+            }
         }
         else if (h < 0)
         {
-            rb2d.velocity = new Vector2(-speed,rb2d.velocity.y);
-            animator.SetTrigger("Walk Backward");
+            rb2d.velocity = new Vector2(-speed, rb2d.velocity.y);
             animator.SetBool("backward", true);
+            if (!backward)
+            {
+                Flip();
+            }
         }
         else
         {
-            if (animator.GetBool("backward")) animator.SetTrigger("Rest Backward");
-            else  animator.SetTrigger("Rest");
+            animator.SetTrigger("Rest");
         }
         if (Input.GetButton("Jump") && grounded) rb2d.AddForce(Vector2.up * jumpPower);
     }
@@ -98,7 +105,13 @@ public class Player : MonoBehaviour {
             Damage(enemy.Damage, enemy.transform.position);
         }
     }
-
+    public void Flip()
+    {
+        Vector3 playerScale = transform.localScale;
+        playerScale.x *= -1;
+        transform.localScale = playerScale;
+        backward = !backward;
+    }
     // If the player touches the enemy
     // TODO: maybe remove
     void OnCollisionEnter2D(Collision2D col)
@@ -141,7 +154,7 @@ public class Player : MonoBehaviour {
             becomesUntouchable();
             _mental -= hit;
             setMental(_mental);
-            gameObject.GetComponent<Animation>().Play("Player_RedFlash");
+            gameObject.GetComponent<Animation>().Play("RedFlash");
             Vector2 direction = new Vector2(attacker.x - transform.position.x, attacker.y - transform.position.y);
             direction.Normalize();
             rb2d.AddForce(new Vector2(direction.x * -knockback.x, direction.y * knockback.y));
@@ -164,6 +177,14 @@ public class Player : MonoBehaviour {
         if (t != null)
             t.Dispose();
     }
+
+    public void Attack(Enemy enemy, int hit)
+    {
+        enemy.OnHit();
+        enemy.OnHurt(hit);
+    }
+
+
     /* public IEnumerator Knockback(float knockbackDur, float knockbackpwr, Vector3 knockbackDir)
      {
          float timer = 0;

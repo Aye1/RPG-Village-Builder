@@ -28,7 +28,7 @@ public class CardSoldier : MeleeEnemy {
         if (IsChasingPlayer)
         {
             //to change : wrong animation
-            gameObject.GetComponent<Animation>().Play("Player_RedFlash");
+            gameObject.GetComponent<Animation>().Play("BlueFlash");
             moveDirection = direction.x >= 0 ? 1.0f : -1.0f;
             currentMoveSpeed = MoveSpeed * 5.0f;
         }
@@ -46,6 +46,7 @@ public class CardSoldier : MeleeEnemy {
     }
     public override void OnHit()
     {
+        gameObject.GetComponent<Animation>().Play("RedFlash");
         _isChasingPlayer = true;
         if (!IsPlayerAhead())
         {
