@@ -2,8 +2,14 @@
 using System.Collections;
 using Random = UnityEngine.Random;
 using System;
+using UnityEngine.UI;
 
 public class BoardManager : MonoBehaviour {
+
+    #region Unity debug variables
+    public bool debugMode = false;
+    public int debugZoneId = 0;
+    #endregion
 
     #region Tiles
     public GameObject[] topTiles;
@@ -42,6 +48,9 @@ public class BoardManager : MonoBehaviour {
 	private int maxX = 40;
 	private int minY = 20;
 	private int maxY = 40;
+
+    private int _zoneId = 0;
+    private Zone[] _zones;
     #endregion
 
     private Transform boardHolder;
@@ -61,17 +70,135 @@ public class BoardManager : MonoBehaviour {
             }
         }
     }
+
+    public int ZoneId
+    {
+        get
+        {
+            return _zoneId;
+        }
+        set
+        {
+            if (value != _zoneId && value < _zones.Length)
+            {
+                ChangeZoneLayout();
+                _zoneId = value;
+            }
+        }
+    }
     #endregion
 
     // Use this for initialization
     void Start () {
-		
-	}
-	
+        // Warning: may not be called (don't know why)
+    }
+    
 	// Update is called once per frame
 	void Update () {
-		
+
+        // Warning: may not be called (don't know why)
 	}
+
+    private void ChangeZoneLayout()
+    {
+        Debug.Log("Switching to zone layout " + ZoneId);
+        SpriteRenderer[] children = boardHolder.GetComponentsInChildren<SpriteRenderer>(); 
+        Zone zone = _zones[ZoneId];
+        if (children == null)
+        {
+            Debug.Log ("No child found");
+        }
+        else
+        {
+            Debug.Log("Children count: " + children.Length);
+        }
+        
+        foreach (SpriteRenderer child in children)
+        {
+            Sprite sprite = child.sprite;
+            if (sprite.name.StartsWith("background"))
+            {
+                child.sprite = zone.GetBackgroundSprite();
+            } 
+            else if (sprite.name.StartsWith("bottom"))
+            {
+                child.sprite = zone.GetBottomSprite();
+            }
+            else if (sprite.name.StartsWith("cliff_bl"))
+            {
+                child.sprite = zone.GetCliffBLSprite();
+            }
+            else if (sprite.name.StartsWith("cliff_br"))
+            {
+                child.sprite = zone.GetCliffBRSprite();
+            }
+            else if (sprite.name.StartsWith("cliff_tl"))
+            {
+                child.sprite = zone.GetCliffTLSprite();
+            }
+            else if (sprite.name.StartsWith("cliff_tr"))
+            {
+                child.sprite = zone.GetCliffTRSprite();
+            }
+            else if (sprite.name.StartsWith("corner_bl"))
+            {
+                child.sprite = zone.GetCornerBLSprite();
+            }
+            else if (sprite.name.StartsWith("corner_br"))
+            {
+                child.sprite = zone.GetCornerBRSprite();
+            }
+            else if (sprite.name.StartsWith("corner_tl"))
+            {
+                child.sprite = zone.GetCornerTLSprite();
+            }
+            else if (sprite.name.StartsWith("corner_tr"))
+            {
+                child.sprite = zone.GetCornerTRSprite();
+            }
+            else if (sprite.name.StartsWith("exit"))
+            {
+                child.sprite = zone.GetExitSprite();
+            }
+            else if (sprite.name.StartsWith("full"))
+            {
+                child.sprite = zone.GetFullSprite();
+            }
+            else if (sprite.name.StartsWith("left"))
+            {
+                child.sprite = zone.GetLeftSprite();
+            }
+            else if (sprite.name.StartsWith("right"))
+            {
+                child.sprite = zone.GetRightSprite();
+            }
+            else if (sprite.name.StartsWith("top"))
+            {
+                child.sprite = zone.GetTopSprite();
+            } 
+            else
+            {
+                // Do nothing, we don't know you, tile!
+            }
+        }
+        
+    }
+    
+    private void CreateZones() 
+    {
+        if (_zones == null) 
+        {
+            Zone basicZone = new Zone(0, "Tiles/spritesheet-basic");
+            Zone reverseZone = new Zone(1, "Tiles/spritesheet-reverse");
+            _zones = new Zone[2];
+            _zones[0] = basicZone;
+            _zones[1] = reverseZone;
+            if (ZoneId >= _zones.Length)
+            {
+                ZoneId = 0;
+            }
+        }
+    }
 
 	public Board CreateBoard() {
         // First line may be removed
@@ -142,12 +269,12 @@ public class BoardManager : MonoBehaviour {
 
 	public void InstantiateBoard(Board board) 
 	{
+        CreateZones();
 		boardHolder = new GameObject("Board").transform;
 		board.BoardHolder = boardHolder;
 
-        // TODO: remove offsets when all enemies position are taken from xml
-        int xOffset = 0; //-5;
-        int yOffset = 0; //-95;
+        int xOffset = 0;
+        int yOffset = 0;
         float currentZ = 0;
 		GameObject toInstantiate = null;
 
