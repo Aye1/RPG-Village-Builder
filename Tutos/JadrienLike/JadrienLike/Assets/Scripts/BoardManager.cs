@@ -190,11 +190,9 @@ public class BoardManager : MonoBehaviour {
         {
             Zone basicZone = new Zone(0, "Tiles/spritesheet-basic");
             Zone reverseZone = new Zone(1, "Tiles/spritesheet-reverse");
-            Zone offsetZone = new Zone(2, "Tiles/spritesheet-basic-2pxoffset");
-            _zones = new Zone[3];
+            _zones = new Zone[2];
             _zones[0] = basicZone;
             _zones[1] = reverseZone;
-            _zones[2] = offsetZone;
             if (ZoneId >= _zones.Length)
             {
                 ZoneId = 0;
@@ -366,7 +364,7 @@ public class BoardManager : MonoBehaviour {
 					}
 					if (toInstantiate != null) 
 					{
-						GameObject instance = Instantiate(toInstantiate, new Vector3(x+xOffset,board.SizeY-y+yOffset,currentZ), Quaternion.identity) as GameObject;
+						GameObject instance = Instantiate(toInstantiate, new Vector3(x+xOffset,board.SizeY-y+yOffset,0.0f), Quaternion.identity) as GameObject;
 						instance.transform.SetParent(boardHolder); 
 					}
 				}
