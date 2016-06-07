@@ -81,8 +81,8 @@ public class BoardManager : MonoBehaviour {
         {
             if (value != _zoneId && value < _zones.Length)
             {
-                ChangeZoneLayout();
                 _zoneId = value;
+                ChangeZoneLayout();
             }
         }
     }
@@ -190,9 +190,11 @@ public class BoardManager : MonoBehaviour {
         {
             Zone basicZone = new Zone(0, "Tiles/spritesheet-basic");
             Zone reverseZone = new Zone(1, "Tiles/spritesheet-reverse");
-            _zones = new Zone[2];
+            Zone offsetZone = new Zone(2, "Tiles/spritesheet-basic-2pxoffset");
+            _zones = new Zone[3];
             _zones[0] = basicZone;
             _zones[1] = reverseZone;
+            _zones[2] = offsetZone;
             if (ZoneId >= _zones.Length)
             {
                 ZoneId = 0;

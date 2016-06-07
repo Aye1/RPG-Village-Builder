@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: ed2caa095f5c7d84991e9ee081bc810a
-timeCreated: 1465315333
+guid: 44965a16ea0ea284db6f07bece08000c
+timeCreated: 1465317230
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -68,8 +68,8 @@ TextureImporter:
     - name: background
       rect:
         serializedVersion: 2
-        x: 0
-        y: 300
+        x: 2
+        y: 398
         width: 100
         height: 100
       alignment: 0
@@ -78,8 +78,8 @@ TextureImporter:
     - name: cliff_bl
       rect:
         serializedVersion: 2
-        x: 100
-        y: 300
+        x: 106
+        y: 398
         width: 100
         height: 100
       alignment: 0
@@ -88,8 +88,8 @@ TextureImporter:
     - name: cliff_tl
       rect:
         serializedVersion: 2
-        x: 200
-        y: 300
+        x: 210
+        y: 398
         width: 100
         height: 100
       alignment: 0
@@ -98,8 +98,8 @@ TextureImporter:
     - name: full
       rect:
         serializedVersion: 2
-        x: 300
-        y: 300
+        x: 314
+        y: 398
         width: 100
         height: 100
       alignment: 0
@@ -108,8 +108,8 @@ TextureImporter:
     - name: corner_tl
       rect:
         serializedVersion: 2
-        x: 0
-        y: 200
+        x: 2
+        y: 294
         width: 100
         height: 100
       alignment: 0
@@ -118,8 +118,8 @@ TextureImporter:
     - name: top
       rect:
         serializedVersion: 2
-        x: 100
-        y: 200
+        x: 106
+        y: 294
         width: 100
         height: 100
       alignment: 0
@@ -128,8 +128,8 @@ TextureImporter:
     - name: corner_tr
       rect:
         serializedVersion: 2
-        x: 200
-        y: 200
+        x: 210
+        y: 294
         width: 100
         height: 100
       alignment: 0
@@ -138,8 +138,8 @@ TextureImporter:
     - name: exit
       rect:
         serializedVersion: 2
-        x: 300
-        y: 200
+        x: 314
+        y: 294
         width: 100
         height: 100
       alignment: 0
@@ -148,8 +148,8 @@ TextureImporter:
     - name: left
       rect:
         serializedVersion: 2
-        x: 0
-        y: 100
+        x: 2
+        y: 190
         width: 100
         height: 100
       alignment: 0
@@ -158,8 +158,8 @@ TextureImporter:
     - name: player_start
       rect:
         serializedVersion: 2
-        x: 100
-        y: 100
+        x: 106
+        y: 190
         width: 100
         height: 100
       alignment: 0
@@ -168,8 +168,8 @@ TextureImporter:
     - name: right
       rect:
         serializedVersion: 2
-        x: 200
-        y: 100
+        x: 210
+        y: 190
         width: 100
         height: 100
       alignment: 0
@@ -178,8 +178,8 @@ TextureImporter:
     - name: cliff_br
       rect:
         serializedVersion: 2
-        x: 300
-        y: 100
+        x: 314
+        y: 190
         width: 100
         height: 100
       alignment: 0
@@ -188,8 +188,8 @@ TextureImporter:
     - name: corner_bl
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 2
+        y: 86
         width: 100
         height: 100
       alignment: 0
@@ -198,8 +198,8 @@ TextureImporter:
     - name: bottom
       rect:
         serializedVersion: 2
-        x: 100
-        y: 0
+        x: 106
+        y: 86
         width: 100
         height: 100
       alignment: 0
@@ -208,8 +208,8 @@ TextureImporter:
     - name: corner_br
       rect:
         serializedVersion: 2
-        x: 200
-        y: 0
+        x: 210
+        y: 86
         width: 100
         height: 100
       alignment: 0
@@ -218,8 +218,8 @@ TextureImporter:
     - name: cliff_tr
       rect:
         serializedVersion: 2
-        x: 300
-        y: 0
+        x: 314
+        y: 86
         width: 100
         height: 100
       alignment: 0
