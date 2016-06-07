@@ -18,7 +18,7 @@ public class GroundCheck : MonoBehaviour
         {
             player.grounded = true;
         }
-       else if (col.GetComponent<Collider2D>().CompareTag("Enemy"))
+       else if (col.GetComponent<Collider2D>().CompareTag("Enemy_top"))
         {
             player.Attack(col.GetComponent<Enemy>(), player.FootHit);
         }

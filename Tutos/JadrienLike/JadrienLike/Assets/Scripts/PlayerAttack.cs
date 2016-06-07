@@ -43,7 +43,7 @@ public class PlayerAttack : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Player player = other.GetComponent<Player>();
+           Player player = this.GetComponentInParent<Player>();
             player.Attack(other.GetComponent<Enemy>(), player.weaponDamage);
         }
     }
