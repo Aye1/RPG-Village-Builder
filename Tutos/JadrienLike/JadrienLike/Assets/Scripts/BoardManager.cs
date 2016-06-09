@@ -190,9 +190,11 @@ public class BoardManager : MonoBehaviour {
         {
             Zone basicZone = new Zone(0, "Tiles/spritesheet-basic");
             Zone reverseZone = new Zone(1, "Tiles/spritesheet-reverse");
-            _zones = new Zone[2];
+            Zone darkwoodZone = new Zone(2, "Tiles/darkwood");
+            _zones = new Zone[3];
             _zones[0] = basicZone;
             _zones[1] = reverseZone;
+            _zones[2] = darkwoodZone;
             if (ZoneId >= _zones.Length)
             {
                 ZoneId = 0;
