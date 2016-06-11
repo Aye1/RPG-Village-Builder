@@ -67,7 +67,7 @@ public class Player : MonoBehaviour {
     {
         //rb2d.AddForce((Vector2.up * speed));
         float currentY = transform.position.y;
-        transform.position = new Vector3(transform.position.x, currentY+0.05f, transform.position.z);
+        transform.position = new Vector3(transform.position.x, currentY+0.01f, transform.position.z);
     }
 
     public void MoveDown()
