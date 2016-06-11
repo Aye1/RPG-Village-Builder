@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour {
 		DontDestroyOnLoad(gameObject);
 
 		currentBoard = new Board();
-		MapLoader loader = new MapLoader("map_csv");
+		MapLoader loader = new MapLoader("tuto_map");
 		ArrayList layers = loader.Layers;
 		ArrayList parsedLayers = new ArrayList();
 		CSVParser parser = CSVParser.Instance;
