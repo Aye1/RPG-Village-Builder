@@ -131,6 +131,8 @@ public class BoardManager : MonoBehaviour {
         
         foreach (SpriteRenderer child in children)
         {
+            GameObject obj = child.GetComponentInParent<GameObject>();
+            //SpriteRenderer copySpriteRenderer = Instantiate(child);
             Sprite sprite = child.sprite;
             if (sprite.name.StartsWith("background"))
             {
