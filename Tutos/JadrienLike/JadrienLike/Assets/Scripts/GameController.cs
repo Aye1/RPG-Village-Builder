@@ -42,8 +42,6 @@ public class GameController : MonoBehaviour {
 			boardManager.InstantiateBoard(currentBoard);
 		}
         player.transform.position = boardManager.InitPlayerPosition;
-        Zone basicZone = new Zone(0, "Tiles/spritesheet-basic");
-        Zone reverseZone = new Zone(1, "Tiles/spritesheet-reverse");
 	}
 
 	// Update is called once per frame

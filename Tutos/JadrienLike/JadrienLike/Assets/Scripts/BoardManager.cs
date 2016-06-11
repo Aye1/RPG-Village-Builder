@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using Random = UnityEngine.Random;
 using System;
 using UnityEngine.UI;
@@ -50,7 +52,8 @@ public class BoardManager : MonoBehaviour {
 	private int maxY = 40;
 
     private int _zoneId = 0;
-    private Zone[] _zones;
+    //private Zone[] _zones;
+    private Dictionary<int, Zone> _zonesDico;
     #endregion
 
     private Transform boardHolder;
@@ -79,7 +82,7 @@ public class BoardManager : MonoBehaviour {
         }
         set
         {
-            if (value != _zoneId && value < _zones.Length)
+            if (value != _zoneId && value < _zonesDico.Count)
             {
                 _zoneId = value;
                 ChangeZoneLayout();
@@ -103,7 +106,19 @@ public class BoardManager : MonoBehaviour {
     {
         Debug.Log("Switching to zone layout " + ZoneId);
         SpriteRenderer[] children = boardHolder.GetComponentsInChildren<SpriteRenderer>(); 
-        Zone zone = _zones[ZoneId];
+        Zone zone = null;
+        if (!_zonesDico.ContainsKey(ZoneId))
+        {
+            Debug.Log("Invalid id");
+            return;
+        }
+        _zonesDico.TryGetValue(ZoneId, out zone);
+
+        if (zone == null)
+        {
+            Debug.Log("Could not load zone");
+            return;
+        }
         if (children == null)
         {
             Debug.Log ("No child found");
@@ -186,16 +201,33 @@ public class BoardManager : MonoBehaviour {
     
     private void CreateZones() 
     {
-        if (_zones == null) 
+        if (_zonesDico == null) 
         {
-            Zone basicZone = new Zone(0, "Tiles/spritesheet-basic");
+            _zonesDico = new Dictionary<int, Zone>();
+            Zone currentZone;
+            int i = 0;
+            foreach (string file in System.IO.Directory.GetFiles("Assets/Resources/Tiles"))
+            { 
+                Debug.Log ("Zone at path " + file);
+                if (file.EndsWith(".png"))
+                {
+                    string[] parts = file.Split(new char[]{'/', '\\'});
+                    string filename = parts[parts.Length-1];
+                    filename = filename.Replace(".png", "");
+                    currentZone = new Zone(i, "Tiles/"+filename);
+                    _zonesDico.Add(i, currentZone);
+                    i++;
+                }
+            }
+
+            /*Zone basicZone = new Zone(0, "Tiles/spritesheet-basic");
             Zone reverseZone = new Zone(1, "Tiles/spritesheet-reverse");
             Zone darkwoodZone = new Zone(2, "Tiles/darkwood");
             _zones = new Zone[3];
             _zones[0] = basicZone;
             _zones[1] = reverseZone;
-            _zones[2] = darkwoodZone;
-            if (ZoneId >= _zones.Length)
+            _zones[2] = darkwoodZone;*/
+            if (ZoneId >= _zonesDico.Count)
             {
                 ZoneId = 0;
             }
@@ -294,7 +326,7 @@ public class BoardManager : MonoBehaviour {
 					    case "0":
 						    break;
 					    case "1":
-						   // toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
+						    // toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
 						    break;
 					    case "2":
 						    toInstantiate = cliffhgTiles[Random.Range(0, cliffhgTiles.Length)];
@@ -373,5 +405,6 @@ public class BoardManager : MonoBehaviour {
 			}
             currentZ += 0.1f;
 		}
+        ChangeZoneLayout();
 	}
 }
