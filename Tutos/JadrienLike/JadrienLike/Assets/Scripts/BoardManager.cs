@@ -29,6 +29,7 @@ public class BoardManager : MonoBehaviour {
 	public GameObject[] cliffhdTiles;
 	public GameObject[] backgroundTiles;
     public GameObject[] exitTiles;
+    public GameObject   ladderTile;
     #endregion
 
     #region Enemies
@@ -391,6 +392,9 @@ public class BoardManager : MonoBehaviour {
                             break;
                         case "22":
                             toInstantiate = cardEnemies[Random.Range(0, cardEnemies.Length)];
+                            break;
+                        case "23":
+                            toInstantiate = ladderTile;
                             break;
                         default:
 						toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];

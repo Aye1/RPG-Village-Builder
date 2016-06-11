@@ -17,9 +17,7 @@ public class Ladder : MonoBehaviour {
     {
         if(other.CompareTag("Player"))
         {
-            Debug.Log ("Player on ladder");
-            Rigidbody2D body = GetPlayerBodyFromCollider(other);
-            body.isKinematic = true;
+            GetPlayerFromCollider(other).OnEnterLadder();
         }
     }
 
@@ -27,8 +25,7 @@ public class Ladder : MonoBehaviour {
     {
         if(other.CompareTag("Player"))
         {
-            Rigidbody2D body = GetPlayerBodyFromCollider(other);
-            body.isKinematic = false;
+            GetPlayerFromCollider(other).OnExitLadder();
         }
     }
 
@@ -45,17 +42,12 @@ public class Ladder : MonoBehaviour {
             {
                 player.MoveDown();
             }
+            player.OnStayLadder();
         }
     }
 
     private Player GetPlayerFromCollider(Collider2D other)
     {
         return other.GetComponentInParent<Player>();
-    }
-
-    private Rigidbody2D GetPlayerBodyFromCollider(Collider2D other)
-    {
-        Player player = GetPlayerFromCollider(other);
-        return player.GetComponentInChildren<Rigidbody2D>();
     }
 }

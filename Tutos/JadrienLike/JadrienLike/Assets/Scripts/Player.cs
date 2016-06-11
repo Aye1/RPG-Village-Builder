@@ -46,18 +46,35 @@ public class Player : MonoBehaviour {
       animator.SetBool("grounded", grounded);
     }
 
+    public void OnEnterLadder()
+    {
+        rb2d.isKinematic = true;
+        grounded = true;
+    }
+
+    public void OnStayLadder()
+    {
+        grounded = true;
+    }
+
+    public void OnExitLadder()
+    {
+        rb2d.isKinematic = false;
+        grounded = false;
+    }
+
     public void MoveUp()
     {
         //rb2d.AddForce((Vector2.up * speed));
         float currentY = transform.position.y;
-        transform.position = new Vector3(transform.position.x, currentY+0.1f, transform.position.z);
+        transform.position = new Vector3(transform.position.x, currentY+0.05f, transform.position.z);
     }
 
     public void MoveDown()
     {
         //rb2d.AddForce((Vector2.down * speed));
         float currentY = transform.position.y;
-        transform.position = new Vector3(transform.position.x, currentY-0.1f, transform.position.z);
+        transform.position = new Vector3(transform.position.x, currentY-0.05f, transform.position.z);
     }
 
     void FixedUpdate()
@@ -90,7 +107,17 @@ public class Player : MonoBehaviour {
         {
             animator.SetTrigger("Rest");
         }
-        if (Input.GetButton("Jump") && grounded) rb2d.AddForce(Vector2.up * jumpPower);
+        if (Input.GetButton("Jump") && grounded) 
+        {
+            // We can jump while being on a Ladder, thus we need to get back to non kinematic
+            bool isOnLadder = rb2d.isKinematic;
+            if(isOnLadder)
+            {
+                rb2d.isKinematic = false;
+            }
+            rb2d.AddForce(Vector2.up * jumpPower);
+
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
