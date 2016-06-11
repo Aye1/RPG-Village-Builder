@@ -46,6 +46,20 @@ public class Player : MonoBehaviour {
       animator.SetBool("grounded", grounded);
     }
 
+    public void MoveUp()
+    {
+        //rb2d.AddForce((Vector2.up * speed));
+        float currentY = transform.position.y;
+        transform.position = new Vector3(transform.position.x, currentY+0.1f, transform.position.z);
+    }
+
+    public void MoveDown()
+    {
+        //rb2d.AddForce((Vector2.down * speed));
+        float currentY = transform.position.y;
+        transform.position = new Vector3(transform.position.x, currentY-0.1f, transform.position.z);
+    }
+
     void FixedUpdate()
     {
         float h = Input.GetAxis("Horizontal");
