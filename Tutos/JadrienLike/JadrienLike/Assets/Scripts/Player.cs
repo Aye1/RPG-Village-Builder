@@ -25,6 +25,8 @@ public class Player : MonoBehaviour {
 
     private bool _isOnLadder = false;
 
+    public Vector3 initPosition;
+
     #region Accessors
     public int Mental
     {
@@ -86,7 +88,8 @@ public class Player : MonoBehaviour {
 
     public void Teleport(Vector3 destination)
     {
-        transform.position = destination;
+        //transform.position = destination;
+        transform.position = initPosition;
     }
 
     void FixedUpdate()

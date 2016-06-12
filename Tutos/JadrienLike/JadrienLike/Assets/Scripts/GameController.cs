@@ -3,11 +3,13 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 
-	public GameObject player;
+	public Player player;
 	public BoardManager boardManager;
 
 	private Board currentBoard = null;
 	private GameController instance = null;
+
+    public bool pause;
 
 	void Awake () {
 		
@@ -42,6 +44,7 @@ public class GameController : MonoBehaviour {
 			boardManager.InstantiateBoard(currentBoard);
 		}
         player.transform.position = boardManager.InitPlayerPosition;
+        player.initPosition = boardManager.InitPlayerPosition;
 	}
 
 	// Update is called once per frame
@@ -49,6 +52,10 @@ public class GameController : MonoBehaviour {
         if (boardManager.debugMode)
         {
             boardManager.ZoneId = boardManager.debugZoneId;
+        }
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            pause = !pause;
         }
 	}
 }
