@@ -57,5 +57,37 @@ public class GameController : MonoBehaviour {
         {
             pause = !pause;
         }
+        if(pause)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
 	}
+
+    /// <summary>
+    /// Resumes the game when it's in pause.
+    /// </summary>
+    public void ResumeGame()
+    {
+        pause = false;
+    }
+
+    /// <summary>
+    /// Exits the game.
+    /// </summary>
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
+    /// <summary>
+    /// Resets the player position to its initial position.
+    /// </summary>
+    public void ResetPlayerPos()
+    {
+        player.transform.position = boardManager.InitPlayerPosition;
+    }
 }
