@@ -23,6 +23,8 @@ public class Player : MonoBehaviour {
     private bool backward = false;
     private int _mental = 50;
 
+    private bool _isOnLadder = false;
+
     #region Accessors
     public int Mental
     {
@@ -46,19 +48,24 @@ public class Player : MonoBehaviour {
       animator.SetBool("grounded", grounded);
     }
 
-    public void OnEnterLadder()
+    public void OnEnterLadder(Ladder ladder)
     {
+        _isOnLadder = true;
         rb2d.isKinematic = true;
         grounded = true;
+        float ladderMiddleX = ladder.transform.position.x;
+        transform.position = new Vector3(ladderMiddleX, transform.position.y, transform.position.z);
     }
 
     public void OnStayLadder()
     {
+        _isOnLadder = true;
         grounded = true;
     }
 
     public void OnExitLadder()
     {
+        _isOnLadder = false;
         rb2d.isKinematic = false;
         grounded = false;
     }
@@ -77,12 +84,25 @@ public class Player : MonoBehaviour {
         transform.position = new Vector3(transform.position.x, currentY-0.05f, transform.position.z);
     }
 
+    public void Teleport(Vector3 destination)
+    {
+        transform.position = destination;
+    }
+
     void FixedUpdate()
     {
         float h = Input.GetAxis("Horizontal");
-        if (h >= 1 || h <= -1)
-         rb2d.AddForce((Vector2.right * speed) * h);
-        else    rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+        if (!_isOnLadder)
+        {
+            if (h >= 1 || h <= -1)
+            {
+                rb2d.AddForce((Vector2.right * speed) * h);
+            }
+            else    
+            {
+                rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+            }
+        
 
         if (h > 0)
         {
@@ -106,6 +126,7 @@ public class Player : MonoBehaviour {
         else
         {
             animator.SetTrigger("Rest");
+        }
         }
         if (Input.GetButton("Jump") && grounded) 
         {
