@@ -5,6 +5,8 @@ public class UIManager : MonoBehaviour {
 
     public DualityBar mentalBar;
     public Player player;
+    public GameController gameController;
+    public Canvas pauseMenu;
 
 	// Use this for initialization
 	void Start () {
@@ -17,5 +19,6 @@ public class UIManager : MonoBehaviour {
         {
             mentalBar.CurrentValue = player.Mental;
         }
+        pauseMenu.enabled = gameController.pause;
 	}
 }

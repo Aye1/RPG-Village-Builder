@@ -350,7 +350,7 @@ public class BoardManager : MonoBehaviour {
 						    toInstantiate = cornerhdTiles[Random.Range(0, cornerhdTiles.Length)];
 						    break;
 					    case "8":
-                            Debug.Log("Case 8 found!");
+                            toInstantiate = exitTiles[Random.Range(0, exitTiles.Length)];
 						    break;
 					    case "9":
 						    toInstantiate = leftTiles[Random.Range(0, leftTiles.Length)];

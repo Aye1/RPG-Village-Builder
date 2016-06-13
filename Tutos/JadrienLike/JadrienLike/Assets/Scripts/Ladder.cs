@@ -17,7 +17,7 @@ public class Ladder : MonoBehaviour {
     {
         if(other.CompareTag("Player"))
         {
-            GetPlayerFromCollider(other).OnEnterLadder();
+            GetPlayerFromCollider(other).OnEnterLadder(this);
         }
     }
 
