@@ -90,4 +90,9 @@ public class GameController : MonoBehaviour {
     {
         player.transform.position = boardManager.InitPlayerPosition;
     }
+
+    public void BackToMainMenu()
+    {
+        Application.LoadLevel(0);
+    }
 }
