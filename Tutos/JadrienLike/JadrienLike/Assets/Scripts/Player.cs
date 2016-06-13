@@ -54,9 +54,11 @@ public class Player : MonoBehaviour {
     {
         _isOnLadder = true;
         rb2d.isKinematic = true;
-        grounded = true;
+
         float ladderMiddleX = ladder.transform.position.x;
         transform.position = new Vector3(ladderMiddleX, transform.position.y, transform.position.z);
+
+        grounded = true;
     }
 
     public void OnStayLadder()
@@ -95,7 +97,7 @@ public class Player : MonoBehaviour {
     void FixedUpdate()
     {
         float h = Input.GetAxis("Horizontal");
-        if (!_isOnLadder)
+        if (!_isOnLadder || !grounded)
         {
             if (h >= 1 || h <= -1)
             {
