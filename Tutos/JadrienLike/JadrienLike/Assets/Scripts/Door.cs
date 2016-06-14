@@ -35,7 +35,7 @@ public class Door : MonoBehaviour {
     {
         if(other.CompareTag("Player"))
         {
-            if (Input.GetKeyDown(KeyCode.UpArrow))
+            if (Input.GetKey(KeyCode.UpArrow))
             {
                 other.GetComponentInParent<Player>().Teleport(Destination);
             }
