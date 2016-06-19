@@ -5,11 +5,7 @@ public class Bullet : MonoBehaviour {
 
     public int damage;
     public float bulletSpeed;
-    private Player player;
-    void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-    }
+
     void OnTriggerEnter2D(Collider2D col)
     {
     
