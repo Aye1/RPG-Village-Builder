@@ -28,12 +28,25 @@ public class Player : MonoBehaviour
 
     public Vector3 initPosition;
 
+    private Enemy _onTop = null;
     #region Accessors
     public int Mental
     {
         get
         {
             return _mental;
+        }
+    }
+
+    public Enemy OnTop
+    {
+        get
+        {
+            return _onTop;
+        }
+        set
+        {
+            _onTop = value;
         }
     }
     #endregion
@@ -177,8 +190,11 @@ public class Player : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Enemy") && !untouchable)
         {
-            Enemy enemy = other.gameObject.GetComponentInParent<Enemy>();
-            Damage(enemy.Damage, enemy.transform.position);
+            if (this.OnTop != other.gameObject)
+            {
+                Enemy enemy = other.gameObject.GetComponentInParent<Enemy>();
+                Damage(enemy.Damage, enemy.transform.position);
+            }
         }
     }
     public void Flip()

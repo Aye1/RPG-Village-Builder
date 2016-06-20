@@ -41,7 +41,7 @@ public class PlayerAttack : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy") && attacktrigger.enabled)
         {
            Player player = this.GetComponentInParent<Player>();
             player.Attack(other.GetComponent<Enemy>(), player.weaponDamage);

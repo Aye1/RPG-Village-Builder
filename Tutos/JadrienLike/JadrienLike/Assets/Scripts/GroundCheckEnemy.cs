@@ -14,18 +14,19 @@ public class GroundCheckEnemy : MonoBehaviour {
     {
         GameObject colliderObject = col.GetComponent<Collider2D>().gameObject;
         //TODO simplifier en utilisant uniquement les layers
-        if (colliderObject.layer == LayerMask.NameToLayer("Floor"))
-        {
-            enemy.groundAhead = true;
-        }
-        else if (colliderObject.CompareTag("Player"))
-        {
-        }
-        else if (colliderObject.CompareTag("Corner") 
+        if (colliderObject.CompareTag("Corner")
             || colliderObject.layer == LayerMask.NameToLayer("Wall")
             || colliderObject.CompareTag("Enemy"))
         {
             enemy.groundAhead = false;
+        }
+      
+        else if (colliderObject.CompareTag("Player"))
+        {
+        }
+        else if (colliderObject.layer == LayerMask.NameToLayer("Floor"))
+        {
+            enemy.groundAhead = true;
         }
     }
 

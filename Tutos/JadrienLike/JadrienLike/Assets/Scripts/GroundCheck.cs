@@ -20,7 +20,9 @@ public class GroundCheck : MonoBehaviour
         }
        else if (col.GetComponent<Collider2D>().CompareTag("Enemy_top"))
         {
-            player.Attack(col.GetComponent<Enemy>(), player.FootHit);
+            player.OnTop = col.GetComponentInParent<Enemy>();
+            player.Attack(col.GetComponentInParent<Enemy>(), player.FootHit);
+            player.grounded = true;
         }
         else
         { 
@@ -38,5 +40,6 @@ public class GroundCheck : MonoBehaviour
     void OnTriggerExit2D(Collider2D col)
     {
         player.grounded = false;
+        player.OnTop = null;
     }
 }
