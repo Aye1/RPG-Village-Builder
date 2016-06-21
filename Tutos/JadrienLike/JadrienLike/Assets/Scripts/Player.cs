@@ -89,12 +89,13 @@ public class Player : MonoBehaviour
     public void OnExitLadder()
     {
         _isOnLadder = false;
-        animator.SetBool("On_Ladder", _isOnLadder);
         rb2d.isKinematic = false;
         grounded = false;
 
+        animator.SetBool("On_Ladder", _isOnLadder);
         Hat _hat = this.GetComponentInChildren<Hat>();
         _hat.GetComponent<Renderer>().enabled = backward ? false : true;
+
     }
 
     public void MoveUp()
