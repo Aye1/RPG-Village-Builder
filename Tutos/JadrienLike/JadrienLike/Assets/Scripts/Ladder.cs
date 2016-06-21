@@ -42,6 +42,10 @@ public class Ladder : MonoBehaviour {
             {
                 player.MoveDown();
             }
+            else
+            {
+                player.GetComponent<Animator>().SetBool("Ladder_Climb", false);
+            }
             player.OnStayLadder();
         }
     }
