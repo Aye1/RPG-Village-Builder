@@ -1,15 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Threading;
 
 public class GameController : MonoBehaviour {
 
 	public Player player;
 	public BoardManager boardManager;
+    public UIManager uiManager;
 
 	private Board currentBoard = null;
 	private GameController instance = null;
 
     public bool pause;
+
+    // Used for thread issues
+    private bool _canSwitchToNightmare;
 
 	void Awake () {
 		
@@ -45,22 +50,51 @@ public class GameController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        if(uiManager == null)
+        {
+            uiManager = GetComponent<UIManager>();
+        }
         if (boardManager.debugMode)
         {
             boardManager.ZoneId = boardManager.debugZoneId;
         }
         ManagePause();
         CheckPlayerMental();
-	}
-
-    private void CheckPlayerMental()
-    {
-        if (player.Mental == 0)
+        if(_canSwitchToNightmare)
         {
-            // TODO: nightmareId computed dynamically
+            _canSwitchToNightmare = false;
             int nightmareId = 1;
             boardManager.ZoneId = nightmareId;
         }
+	}
+
+    /// <summary>
+    /// Checks the player mental and launches the nightmare
+    /// animation and zone change if needed
+    /// </summary>
+    private void CheckPlayerMental()
+    {
+        // TODO: nightmareId computed dynamically
+        int nightmareId = 1;
+        if (player.Mental == 0 && boardManager.ZoneId != nightmareId)
+        {
+            // Block the game during the change
+            Time.timeScale = 0;
+            uiManager.LaunchBlackScreenTransition();
+            Timer t = new Timer(CheckPlayerMentalCallback);
+            t.Change (3900, 0);
+        }
+    }
+
+    /// <summary>
+    /// Callback called after a delay when the player enters in nightmare mode
+    /// It allows the screen to turn black before changing the layout
+    /// </summary>
+    /// <param name="state">State.</param>
+    private void CheckPlayerMentalCallback(object state)
+    {
+        // Tell the controller that he can change the zone layout at the next update
+        _canSwitchToNightmare = true;
     }
 
     private void ManagePause()

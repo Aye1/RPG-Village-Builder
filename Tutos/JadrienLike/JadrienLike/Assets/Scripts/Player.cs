@@ -7,6 +7,10 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
 
+    #region Unity debug only
+    public bool easyKill;
+    #endregion
+
     #region private Unity objects
     private Animator animator;
     private Rigidbody2D rb2d;
@@ -269,11 +273,15 @@ public class Player : MonoBehaviour
 
     public void Damage(int hit, Vector3 attacker)
     {
-        if (!untouchable)
+        if (easyKill)
+        {
+            hit = 1000;
+        }
+        if (!untouchable || easyKill)
         {
             becomesUntouchable();
-            _mental -= hit;
-            setMental(_mental);
+            Mental = Mental - hit;
+            //setMental(_mental);
             gameObject.GetComponent<Animation>().Play("RedFlash");
             Vector2 direction = new Vector2(attacker.x - transform.position.x, attacker.y - transform.position.y);
             direction.Normalize();
