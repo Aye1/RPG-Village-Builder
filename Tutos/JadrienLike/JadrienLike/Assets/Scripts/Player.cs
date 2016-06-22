@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
     {
         animator.SetBool("grounded", grounded);
     }
-
+    #region Ladder
     public void OnEnterLadder(Ladder ladder)
     {
         _isOnLadder = true;
@@ -113,6 +113,7 @@ public class Player : MonoBehaviour
         float currentY = transform.position.y;
         transform.position = new Vector3(transform.position.x, currentY - 0.05f, transform.position.z);
     }
+    #endregion Ladder
 
     public void Teleport(Vector3 destination)
     {
