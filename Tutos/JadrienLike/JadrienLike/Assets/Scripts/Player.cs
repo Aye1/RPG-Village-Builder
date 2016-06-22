@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Threading;
 using UnityEngine.UI;
@@ -36,6 +37,21 @@ public class Player : MonoBehaviour
         {
             return _mental;
         }
+        set
+        {
+            if(value >= 0 && value <= 100)
+            {
+                _mental = value;
+            } 
+            else if (value < 0)
+            {
+                _mental = 0;
+            }
+            else if (value > 100)
+            {
+                _mental = 100;
+            }
+        }
     }
 
     public Enemy OnTop
@@ -55,8 +71,8 @@ public class Player : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb2d = gameObject.GetComponent<Rigidbody2D>();
-        setCoins(count);
-        setMental(_mental);
+        //setCoins(count);
+        //setMental(_mental);
     }
 
     void Update()
@@ -227,12 +243,13 @@ public class Player : MonoBehaviour
         }
 
     }
-
+    [Obsolete("Will be removed soon")]
     void setCoins(int count)
     {
         textCount.text = "Coins : " + count;
     }
 
+    [Obsolete("Will be removed soon")]
     void setMental(int mental)
     {
 

@@ -34,14 +34,10 @@ public class GameController : MonoBehaviour {
 			Debug.Log("Error while loading the map.");
 		else 
 		{
-			//ArrayList firstLayer = parsedLayers.ToArray()[0] as ArrayList;
 			currentBoard.Layers = parsedLayers;
 			Debug.Log ("Layers added to the board");
-			//currentBoard.SizeY = firstLayer.Count;
-			//ArrayList firstRow = firstLayer.ToArray()[0] as ArrayList;
-			//currentBoard.SizeX = firstRow.Count;
-			//firstLayer.Insert(0, firstRow);
 			boardManager.InstantiateBoard(currentBoard);
+            boardManager.ZoneId = 0;
 		}
         player.transform.position = boardManager.InitPlayerPosition;
         player.initPosition = boardManager.InitPlayerPosition;
@@ -53,6 +49,22 @@ public class GameController : MonoBehaviour {
         {
             boardManager.ZoneId = boardManager.debugZoneId;
         }
+        ManagePause();
+        CheckPlayerMental();
+	}
+
+    private void CheckPlayerMental()
+    {
+        if (player.Mental == 0)
+        {
+            // TODO: nightmareId computed dynamically
+            int nightmareId = 1;
+            boardManager.ZoneId = nightmareId;
+        }
+    }
+
+    private void ManagePause()
+    {
         if(Input.GetKeyDown(KeyCode.P))
         {
             pause = !pause;
@@ -65,7 +77,7 @@ public class GameController : MonoBehaviour {
         {
             Time.timeScale = 1;
         }
-	}
+    }
 
     /// <summary>
     /// Resumes the game when it's in pause.
