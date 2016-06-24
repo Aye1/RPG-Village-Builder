@@ -5,6 +5,12 @@ public class HomeMenu : MonoBehaviour {
 
     public GameObject loadingScreen;
 
+    void Start()
+    {
+        AudioSource intro = GetComponentInChildren<AudioSource>();
+        intro.Play();
+    }
+
     public void LoadScene(int id)
     {
         loadingScreen.SetActive(true);
