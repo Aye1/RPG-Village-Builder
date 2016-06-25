@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 {
 
     #region Unity debug only
-    public bool easyKill;
+    public bool easyKill = true;
     #endregion
 
     #region private Unity objects

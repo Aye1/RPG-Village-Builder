@@ -1,0 +1,172 @@
+fileFormatVersion: 2
+guid: 252151a6f760c514f8f7a6e913e61161
+timeCreated: 1466602502
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: "alice_attack_v3_corrig\xE9_part2_0"
+    21300002: "alice_attack_v3_corrig\xE9_part2_1"
+    21300004: "alice_attack_v3_corrig\xE9_part2_2"
+    21300006: "alice_attack_v3_corrig\xE9_part2_3"
+    21300008: "alice_attack_v3_corrig\xE9_part2_4"
+    21300010: "alice_attack_v3_corrig\xE9_part2_5"
+    21300012: "alice_attack_v3_corrig\xE9_part2_6"
+    21300014: "alice_attack_v3_corrig\xE9_part2_7"
+    21300016: "alice_attack_v3_corrig\xE9_part2_8"
+    21300018: "alice_attack_v3_corrig\xE9_part2_9"
+    21300020: "alice_attack_v3_corrig\xE9_part2_10"
+    21300022: "alice_attack_v3_corrig\xE9_part2_11"
+    21300024: "alice_attack_v3_corrig\xE9_part2_12"
+    21300026: "alice_attack_v3_corrig\xE9_part2_13"
+    21300028: "alice_attack_v3_corrig\xE9_part2_14"
+    21300030: "alice_attack_v3_corrig\xE9_part2_15"
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: "alice_attack_v3_corrig\xE9_part2_0"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 12013.2002
+        width: 1286
+        height: 1334.80005
+      alignment: 4
+      pivot: {x: 0, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: "alice_attack_v3_corrig\xE9_part2_1"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 10679.2002
+        width: 1286
+        height: 1334.80005
+      alignment: 4
+      pivot: {x: 0, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: "alice_attack_v3_corrig\xE9_part2_2"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 9345.2002
+        width: 1286
+        height: 1334.80005
+      alignment: 4
+      pivot: {x: 0, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: "alice_attack_v3_corrig\xE9_part2_3"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 8011.2002
+        width: 1286
+        height: 1334.80005
+      alignment: 4
+      pivot: {x: 0, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: "alice_attack_v3_corrig\xE9_part2_4"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 6677.2002
+        width: 1286
+        height: 1334.80005
+      alignment: 4
+      pivot: {x: 0, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: "alice_attack_v3_corrig\xE9_part2_5"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 5343.2002
+        width: 1286
+        height: 1334.80005
+      alignment: 4
+      pivot: {x: 0, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: "alice_attack_v3_corrig\xE9_part2_6"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4009.19995
+        width: 1286
+        height: 1334.80005
+      alignment: 4
+      pivot: {x: 0, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: "alice_attack_v3_corrig\xE9_part2_7"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2675.19995
+        width: 1286
+        height: 1334.80005
+      alignment: 4
+      pivot: {x: 0, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: "alice_attack_v3_corrig\xE9_part2_8"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1341.19995
+        width: 1286
+        height: 1334.80005
+      alignment: 4
+      pivot: {x: 0, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: "alice_attack_v3_corrig\xE9_part2_9"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 7.19995117
+        width: 1286
+        height: 1334.80005
+      alignment: 4
+      pivot: {x: 0, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
