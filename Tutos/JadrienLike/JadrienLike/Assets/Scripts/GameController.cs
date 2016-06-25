@@ -9,7 +9,7 @@ public class GameController : MonoBehaviour {
     public UIManager uiManager;
 
 	private Board currentBoard = null;
-	private GameController instance = null;
+	private static GameController instance = null;
 
     public bool pause;
 
@@ -23,7 +23,14 @@ public class GameController : MonoBehaviour {
 		else if (instance != this)
 			Destroy(gameObject);
 		
+        if (player == null)
+        {
+            player = GetComponent<Player>();
+        }
+
 		DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(player);
+        //DontDestroyOnLoad(uiManager);
 
 		currentBoard = new Board();
 		MapLoader loader = new MapLoader("tuto_map");
