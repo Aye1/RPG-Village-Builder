@@ -7,6 +7,7 @@ using System;
 public class UIManager : MonoBehaviour {
 
     public DualityBar mentalBar;
+    public DualityBar healthBar;
     public Player player;
     public GameController gameController;
     public Canvas pauseMenu;
@@ -24,6 +25,10 @@ public class UIManager : MonoBehaviour {
 	    if(mentalBar != null && player != null)
         {
             mentalBar.CurrentValue = player.Mental;
+        }
+        if(healthBar != null && healthBar != null)
+        {
+            healthBar.CurrentValue = player.Health;
         }
         pauseMenu.enabled = gameController.pause;
 

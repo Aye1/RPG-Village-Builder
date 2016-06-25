@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     public Text textMental;
     private bool backward = false;
     private int _mental = 50;
+    private int _health = 100;
 
     private bool _isOnLadder = false;
 
@@ -54,6 +55,29 @@ public class Player : MonoBehaviour
             else if (value > 100)
             {
                 _mental = 100;
+            }
+        }
+    }
+
+    public int Health
+    {
+        get
+        {
+            return _health;
+        }
+        set
+        {
+            if(value >= 0 && value <= 100)
+            {
+                _health = value;
+            } 
+            else if (value < 0)
+            {
+                _health = 0;
+            }
+            else if (value > 100)
+            {
+                _health = 100;
             }
         }
     }
@@ -207,14 +231,12 @@ public class Player : MonoBehaviour
         else if (other.gameObject.CompareTag("MentalUp"))
         {
             other.gameObject.SetActive(false);
-            _mental += Constantes.mentalUp;
-            setMental(_mental);
+            Mental = Mental + Constantes.mentalUp;
         }
         else if (other.gameObject.CompareTag("MentalDown"))
         {
             other.gameObject.SetActive(false);
-            _mental += Constantes.mentalDown;
-            setMental(_mental);
+            Mental = Mental + Constantes.mentalDown;
         }
         else if (other.gameObject.CompareTag("Enemy") && !untouchable)
         {
@@ -251,24 +273,6 @@ public class Player : MonoBehaviour
     void setCoins(int count)
     {
         textCount.text = "Coins : " + count;
-    }
-
-    [Obsolete("Will be removed soon")]
-    void setMental(int mental)
-    {
-
-        if (mental >= 100)
-        {
-            textMental.text = "Passage en mode Lucide";
-        }
-        else if (mental <= 0)
-        {
-            textMental.text = "Passage en mode Cauchemar";
-        }
-        else
-        {
-            textMental.text = "Mental : " + mental + "/100";
-        }
     }
 
     public void Damage(int hit, Vector3 attacker)
