@@ -169,6 +169,7 @@ public abstract class Enemy : MonoBehaviour  {
 
     void Update()
     {
+        SpecialUpdate();
         RangeCheck();
         if (animator != null)
         {
@@ -225,5 +226,7 @@ public abstract class Enemy : MonoBehaviour  {
     public abstract void Move();
     // When the Enemy is hit
     public abstract void OnHit();
+    // The enemy has specific updates to do
+    protected abstract void SpecialUpdate();
     #endregion
 }

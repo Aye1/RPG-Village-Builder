@@ -53,11 +53,9 @@ public class BoardManager : MonoBehaviour {
 	private int maxY = 40;
 
     private int _zoneId = 0;
-    //private Zone[] _zones;
     private Dictionary<int, Zone> _zonesDico;
-    #endregion
-
     private Transform boardHolder;
+    #endregion
 
     #region Accessors
     public Vector3 InitPlayerPosition

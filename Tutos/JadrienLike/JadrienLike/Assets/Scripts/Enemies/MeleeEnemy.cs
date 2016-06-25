@@ -22,4 +22,6 @@ public abstract class MeleeEnemy : Enemy {
         }
     }
     #endregion
+
+    protected override void SpecialUpdate() {}
 }

@@ -54,4 +54,5 @@ public abstract class ShootingEnemy : Enemy {
     {
         gameObject.GetComponent<Animation>().Play("RedFlash");
     } 
+    protected override void SpecialUpdate() {}
 }
