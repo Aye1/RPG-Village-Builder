@@ -36,12 +36,14 @@ public class BoardManager : MonoBehaviour {
     public GameObject[] clockEnemies;
     public GameObject[] dumbEnemies;
     public GameObject[] cardEnemies;
+    public GameObject timeBoss;
     #endregion
 
     #region Collectibles
     public GameObject[] coins;
     public GameObject[] redPotions;
     public GameObject[] bluePotions;
+    public GameObject[] drinkMePotions;
     #endregion
 
     #region Private variables
@@ -220,14 +222,7 @@ public class BoardManager : MonoBehaviour {
                     i++;
                 }
             }
-
-            /*Zone basicZone = new Zone(0, "Tiles/spritesheet-basic");
-            Zone reverseZone = new Zone(1, "Tiles/spritesheet-reverse");
-            Zone darkwoodZone = new Zone(2, "Tiles/darkwood");
-            _zones = new Zone[3];
-            _zones[0] = basicZone;
-            _zones[1] = reverseZone;
-            _zones[2] = darkwoodZone;*/
+           
             if (ZoneId >= _zonesDico.Count)
             {
                 ZoneId = 0;
@@ -324,81 +319,87 @@ public class BoardManager : MonoBehaviour {
 					string elem = currentRow.ToArray()[x] as string;
 					switch(elem) 
 					{
-					    case "0":
-						    break;
-					    case "1":
-						    // toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
-						    break;
-					    case "2":
-						    toInstantiate = cliffhgTiles[Random.Range(0, cliffhgTiles.Length)];
-						    break;
-					    case "3":
-						    toInstantiate = cliffbgTiles[Random.Range(0, cliffbgTiles.Length)];
-						    break;
-					    case "4":
-						    toInstantiate = fullTiles[Random.Range(0, fullTiles.Length)];
-						    break;
-					    case "5":
-						    toInstantiate = cornerhgTiles[Random.Range(0, cornerhgTiles.Length)];
-						    break;
-					    case "6":
-						    toInstantiate = topTiles[Random.Range(0, topTiles.Length)];
-						    break;
-					    case "7":
-						    toInstantiate = cornerhdTiles[Random.Range(0, cornerhdTiles.Length)];
-						    break;
-					    case "8":
-                            toInstantiate = exitTiles[Random.Range(0, exitTiles.Length)];
-						    break;
-					    case "9":
-						    toInstantiate = leftTiles[Random.Range(0, leftTiles.Length)];
-						    break;
-					    case "10":
-                            _initPlayerPosition = new Vector3(x + xOffset, board.SizeY - y + yOffset, 0f);
-						    break;
-					    case "11":
-						    toInstantiate = rightTiles[Random.Range(0, rightTiles.Length)];
-						    break;
-					    case "12":
-						    toInstantiate = cliffhdTiles[Random.Range(0, cliffhdTiles.Length)];
-						    break;
-					    case "13":
-						    toInstantiate = cornerbgTiles[Random.Range(0, cornerbgTiles.Length)];
-						    break;
-					    case "14":
-						    toInstantiate = bottomTiles[Random.Range(0, bottomTiles.Length)];
-						    break;
-					    case "15":
-						    toInstantiate = cornerbdTiles[Random.Range(0, cornerbdTiles.Length)];
-						    break;
-					    case "16":
-						    toInstantiate = cliffbdTiles[Random.Range(0, cliffbdTiles.Length)];
-						    break;
-                        case "17":
-                            toInstantiate = clockEnemies[Random.Range(0, clockEnemies.Length)];
-                            break;
-                        case "18":
-                            toInstantiate = dumbEnemies[Random.Range(0, dumbEnemies.Length)];
-                            toInstantiate.transform.Rotate(new Vector3(0, 0, 90));
-                            break;
-                        case "19":
-                            toInstantiate = redPotions[Random.Range(0, redPotions.Length)];
-                            break;
-                        case "20":
-                            toInstantiate = bluePotions[Random.Range(0, bluePotions.Length)];
-                            break;
-                        case "21":
-                            toInstantiate = coins[Random.Range(0, coins.Length)];
-                            break;
-                        case "22":
-                            toInstantiate = cardEnemies[Random.Range(0, cardEnemies.Length)];
-                            break;
-                        case "23":
-                            toInstantiate = ladderTile;
-                            break;
-                        default:
-						toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
-						break;
+				    case "0":
+					    break;
+				    case "1":
+					    // toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
+					    break;
+				    case "2":
+					    toInstantiate = cliffhgTiles[Random.Range(0, cliffhgTiles.Length)];
+					    break;
+				    case "3":
+					    toInstantiate = cliffbgTiles[Random.Range(0, cliffbgTiles.Length)];
+					    break;
+				    case "4":
+					    toInstantiate = fullTiles[Random.Range(0, fullTiles.Length)];
+					    break;
+				    case "5":
+					    toInstantiate = cornerhgTiles[Random.Range(0, cornerhgTiles.Length)];
+					    break;
+				    case "6":
+					    toInstantiate = topTiles[Random.Range(0, topTiles.Length)];
+					    break;
+				    case "7":
+					    toInstantiate = cornerhdTiles[Random.Range(0, cornerhdTiles.Length)];
+					    break;
+				    case "8":
+                        toInstantiate = exitTiles[Random.Range(0, exitTiles.Length)];
+					    break;
+				    case "9":
+					    toInstantiate = leftTiles[Random.Range(0, leftTiles.Length)];
+					    break;
+				    case "10":
+                        _initPlayerPosition = new Vector3(x + xOffset, board.SizeY - y + yOffset, 0f);
+					    break;
+				    case "11":
+					    toInstantiate = rightTiles[Random.Range(0, rightTiles.Length)];
+					    break;
+				    case "12":
+					    toInstantiate = cliffhdTiles[Random.Range(0, cliffhdTiles.Length)];
+					    break;
+				    case "13":
+					    toInstantiate = cornerbgTiles[Random.Range(0, cornerbgTiles.Length)];
+					    break;
+				    case "14":
+					    toInstantiate = bottomTiles[Random.Range(0, bottomTiles.Length)];
+					    break;
+				    case "15":
+					    toInstantiate = cornerbdTiles[Random.Range(0, cornerbdTiles.Length)];
+					    break;
+				    case "16":
+					    toInstantiate = cliffbdTiles[Random.Range(0, cliffbdTiles.Length)];
+					    break;
+                    case "17":
+                        toInstantiate = clockEnemies[Random.Range(0, clockEnemies.Length)];
+                        break;
+                    case "18":
+                        toInstantiate = dumbEnemies[Random.Range(0, dumbEnemies.Length)];
+                        toInstantiate.transform.Rotate(new Vector3(0, 0, 90));
+                        break;
+                    case "19":
+                        toInstantiate = redPotions[Random.Range(0, redPotions.Length)];
+                        break;
+                    case "20":
+                        toInstantiate = bluePotions[Random.Range(0, bluePotions.Length)];
+                        break;
+                    case "21":
+                        toInstantiate = coins[Random.Range(0, coins.Length)];
+                        break;
+                    case "22":
+                        toInstantiate = cardEnemies[Random.Range(0, cardEnemies.Length)];
+                        break;
+                    case "23":
+                        toInstantiate = ladderTile;
+                        break;
+                    case "24":
+                        toInstantiate = drinkMePotions[Random.Range (0, drinkMePotions.Length)];
+                        break;
+                    case "25":
+                        toInstantiate = timeBoss;
+                        break;
+                    default:
+					    toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
+					break;
 					}
 					if (toInstantiate != null) 
 					{

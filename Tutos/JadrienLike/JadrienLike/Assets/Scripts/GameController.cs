@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour {
         //DontDestroyOnLoad(uiManager);
 
 		currentBoard = new Board();
-		MapLoader loader = new MapLoader("tuto_map");
+		MapLoader loader = new MapLoader("bossmap");
 		ArrayList layers = loader.Layers;
 		ArrayList parsedLayers = new ArrayList();
 		CSVParser parser = CSVParser.Instance;
