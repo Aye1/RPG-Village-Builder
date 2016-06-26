@@ -37,6 +37,7 @@ public class BoardManager : MonoBehaviour {
     public GameObject[] dumbEnemies;
     public GameObject[] cardEnemies;
     public GameObject timeBoss;
+    public GameObject timeBossClock;
     #endregion
 
     #region Collectibles
@@ -397,13 +398,16 @@ public class BoardManager : MonoBehaviour {
                     case "25":
                         toInstantiate = timeBoss;
                         break;
+                    case "26":
+                        toInstantiate = timeBossClock;
+                        break;
                     default:
 					    toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
 					break;
 					}
 					if (toInstantiate != null) 
 					{
-						GameObject instance = Instantiate(toInstantiate, new Vector3(x+xOffset,board.SizeY-y+yOffset,0.0f), Quaternion.identity) as GameObject;
+						GameObject instance = Instantiate(toInstantiate, new Vector3(x+xOffset,board.SizeY-y+yOffset, toInstantiate.transform.position.z), Quaternion.identity) as GameObject;
 						instance.transform.SetParent(boardHolder); 
 					}
 				}
