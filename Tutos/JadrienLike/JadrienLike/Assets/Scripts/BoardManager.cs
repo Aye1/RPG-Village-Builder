@@ -30,6 +30,7 @@ public class BoardManager : MonoBehaviour {
 	public GameObject[] backgroundTiles;
     public GameObject[] exitTiles;
     public GameObject   ladderTile;
+    public GameObject   leftChair;
     #endregion
 
     #region Enemies
@@ -400,6 +401,9 @@ public class BoardManager : MonoBehaviour {
                         break;
                     case "26":
                         toInstantiate = timeBossClock;
+                        break;
+                    case "27":
+                        toInstantiate = leftChair;
                         break;
                     default:
 					    toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];

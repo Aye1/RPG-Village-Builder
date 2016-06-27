@@ -267,7 +267,6 @@ public class Player : MonoBehaviour
             enemy.OnHit();
             Damage(enemy.Damage, enemy.transform.position);
         }
-
     }
     [Obsolete("Will be removed soon")]
     void setCoins(int count)

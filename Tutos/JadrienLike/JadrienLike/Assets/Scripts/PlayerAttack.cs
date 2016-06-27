@@ -46,5 +46,10 @@ public class PlayerAttack : MonoBehaviour {
            Player player = this.GetComponentInParent<Player>();
             player.Attack(other.GetComponent<Enemy>(), player.weaponDamage);
         }
+        if (other.gameObject.CompareTag("Destructible"))
+        {
+            Destructible destObj = (Destructible) other.GetComponent<Destructible>();
+            destObj.OnHit();
+        }
     }
 }
