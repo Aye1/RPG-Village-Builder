@@ -31,6 +31,7 @@ public class BoardManager : MonoBehaviour {
     public GameObject[] exitTiles;
     public GameObject   ladderTile;
     public GameObject   leftChair;
+    public GameObject[] oneWayPlatformTiles;
     #endregion
 
     #region Enemies
@@ -404,6 +405,9 @@ public class BoardManager : MonoBehaviour {
                         break;
                     case "27":
                         toInstantiate = leftChair;
+                        break;
+                    case "28":
+                        toInstantiate = oneWayPlatformTiles[Random.Range(0, oneWayPlatformTiles.Length)];
                         break;
                     default:
 					    toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
