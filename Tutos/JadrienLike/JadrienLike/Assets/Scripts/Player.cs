@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     #region private Unity objects
     private Animator animator;
     private Rigidbody2D rb2d;
+    private AudioSource jumpSound;
     #endregion
 
     public float speed = 50f;
@@ -29,6 +30,7 @@ public class Player : MonoBehaviour
     private bool backward = false;
     private int _mental = 50;
     private int _health = 100;
+
 
     private bool _isOnLadder = false;
 
@@ -99,8 +101,7 @@ public class Player : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb2d = gameObject.GetComponent<Rigidbody2D>();
-        //setCoins(count);
-        //setMental(_mental);
+        jumpSound = GetComponentInChildren<AudioSource>();
     }
 
     void Update()
@@ -207,17 +208,23 @@ public class Player : MonoBehaviour
         }
         if (Input.GetButton("Jump") && grounded)
         {
-            animator.SetBool("On_Ladder", false);
-            animator.SetTrigger("Jump");
-            // We can jump while being on a Ladder, thus we need to get back to non kinematic
-            bool isOnLadder = rb2d.isKinematic;
-            if (isOnLadder)
-            {
-                rb2d.isKinematic = false;
-            }
-            rb2d.AddForce(Vector2.up * jumpPower);
-
+            Jump ();
         }
+    }
+
+    private void Jump()
+    {
+        //jumpSound.Play();
+
+        animator.SetBool("On_Ladder", false);
+        animator.SetTrigger("Jump");
+        // We can jump while being on a Ladder, thus we need to get back to non kinematic
+        bool isOnLadder = rb2d.isKinematic;
+        if (isOnLadder)
+        {
+            rb2d.isKinematic = false;
+        }
+        rb2d.AddForce(Vector2.up * jumpPower);
     }
 
     void OnTriggerEnter2D(Collider2D other)
