@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     #endregion
 
     public float speed = 50f;
-    public float jumpPower = 150f;
+    public float jumpPower = 800f;
     public bool grounded = true;
     public Text textCount;
     private int count = 0;
@@ -206,7 +206,7 @@ public class Player : MonoBehaviour
                 animator.SetTrigger("Rest");
             }
         }
-        if (Input.GetButton("Jump") && grounded)
+        if (Input.GetButtonDown("Jump") && grounded)
         {
             Jump ();
         }
