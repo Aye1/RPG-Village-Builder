@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Threading;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class Player : MonoBehaviour
     #region private Unity objects
     private Animator animator;
     private Rigidbody2D rb2d;
-    private AudioSource jumpSound;
+    public AudioSource audioSource;
+    public AudioClip[] jumpClips;
     #endregion
 
     public float speed = 50f;
@@ -30,7 +32,6 @@ public class Player : MonoBehaviour
     private bool backward = false;
     private int _mental = 50;
     private int _health = 100;
-
 
     private bool _isOnLadder = false;
 
@@ -101,7 +102,7 @@ public class Player : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb2d = gameObject.GetComponent<Rigidbody2D>();
-        jumpSound = GetComponentInChildren<AudioSource>();
+        audioSource = gameObject.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -214,7 +215,9 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        //jumpSound.Play();
+        AudioClip currentClip = jumpClips[Random.Range(0, jumpClips.Length)];
+        audioSource.clip = currentClip;
+        audioSource.Play();
 
         animator.SetBool("On_Ladder", false);
         animator.SetTrigger("Jump");
