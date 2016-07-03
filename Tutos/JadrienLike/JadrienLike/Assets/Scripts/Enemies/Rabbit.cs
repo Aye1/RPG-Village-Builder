@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Deadline : DumbEnemy {
+public class Rabbit : DumbEnemy {
 
     private Vector2 moveAmount = new Vector2(1, 0);
 

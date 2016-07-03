@@ -15,7 +15,7 @@ public class Ladder : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Ladder_Detection"))
         {
             GetPlayerFromCollider(other).OnEnterLadder(this);
         }
@@ -23,7 +23,7 @@ public class Ladder : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D other) 
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Ladder_Detection"))
         {
             GetPlayerFromCollider(other).OnExitLadder();
         }
@@ -31,7 +31,7 @@ public class Ladder : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Ladder_Detection"))
         {
             Player player = this.GetPlayerFromCollider(other);
             if(Input.GetKey(KeyCode.UpArrow))
