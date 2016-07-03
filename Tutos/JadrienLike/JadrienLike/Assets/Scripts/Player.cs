@@ -141,6 +141,10 @@ public class Player : MonoBehaviour
     public void OnExitLadder()
     {
         _countLadder--;
+        if (_countLadder < 0)
+        {
+            _countLadder = 0;
+        }
 
         Debug.Log("_countladder " + _countLadder);
         _isOnLadder = _countLadder > 0;
@@ -181,19 +185,10 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        _isOnLadder = _countLadder > 0;
         float h = Input.GetAxis("Horizontal");
-        if (!_isOnLadder || !grounded)
+        if (!_isOnLadder || (_isOnLadder && !grounded ))
         {
-            if (h >= 1 || h <= -1)
-            {
-                rb2d.AddForce((Vector2.right * speed) * h);
-            }
-            else
-            {
-                rb2d.velocity = new Vector2(0, rb2d.velocity.y);
-            }
-
-
             if (h > 0)
             {
                 rb2d.velocity = new Vector2(speed, rb2d.velocity.y);
@@ -216,9 +211,11 @@ public class Player : MonoBehaviour
             }
             else
             {
+                rb2d.velocity = new Vector2(0, rb2d.velocity.y);
                 animator.SetTrigger("Rest");
             }
         }
+      
         if (Input.GetButtonDown("Jump") && grounded)
         {
             Jump();
