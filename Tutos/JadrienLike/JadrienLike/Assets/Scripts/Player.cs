@@ -232,8 +232,15 @@ public class Player : MonoBehaviour
         audioSource.clip = currentClip;
         audioSource.Play();
 
-        animator.SetBool("On_Ladder", false);
-        animator.SetTrigger("Jump");
+        if (_countLadder <= 0)
+        {
+            animator.SetBool("On_Ladder", false);
+            animator.SetTrigger("Jump");
+        }
+        else
+        {
+            animator.SetBool("On_Ladder", true);
+        }
         // We can jump while being on a Ladder, thus we need to get back to non kinematic
         bool isOnLadder = rb2d.isKinematic;
         if (isOnLadder)
