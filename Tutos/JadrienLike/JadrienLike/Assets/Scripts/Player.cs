@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     private int _health = 100;
 
     private bool _isOnLadder = false;
-
+    private int _countLadder = 0;
     public Vector3 initPosition;
 
     private Enemy _onTop = null;
@@ -47,10 +47,10 @@ public class Player : MonoBehaviour
         }
         set
         {
-            if(value >= 0 && value <= 100)
+            if (value >= 0 && value <= 100)
             {
                 _mental = value;
-            } 
+            }
             else if (value < 0)
             {
                 _mental = 0;
@@ -70,10 +70,10 @@ public class Player : MonoBehaviour
         }
         set
         {
-            if(value >= 0 && value <= 100)
+            if (value >= 0 && value <= 100)
             {
                 _health = value;
-            } 
+            }
             else if (value < 0)
             {
                 _health = 0;
@@ -112,36 +112,48 @@ public class Player : MonoBehaviour
     #region Ladder
     public void OnEnterLadder(Ladder ladder)
     {
-        _isOnLadder = true;
-        animator.SetBool("On_Ladder", _isOnLadder);
-        rb2d.isKinematic = true;
+        _countLadder++;
 
-        float ladderMiddleX = ladder.transform.position.x;
-        transform.position = new Vector3(ladderMiddleX, transform.position.y, transform.position.z);
+        Debug.Log("_countladder " + _countLadder);
+        _isOnLadder = _countLadder > 0;
+         if (_isOnLadder)
+         {
+             //_isOnLadder = true;
+             animator.SetBool("On_Ladder", _isOnLadder);
+             rb2d.isKinematic = true;
 
-        grounded = true;
+             float ladderMiddleX = ladder.transform.position.x;
+             transform.position = new Vector3(ladderMiddleX, transform.position.y, transform.position.z);
 
-        Hat _hat = this.GetComponentInChildren<Hat>();
-        _hat.GetComponent<Renderer>().enabled = false;
+             grounded = true;
+
+             Hat _hat = this.GetComponentInChildren<Hat>();
+             _hat.GetComponent<Renderer>().enabled = false;
+         }
     }
 
     public void OnStayLadder()
     {
-        _isOnLadder = true;
-        animator.SetBool("On_Ladder", _isOnLadder);
+        animator.SetBool("On_Ladder", true);
         grounded = true;
     }
 
     public void OnExitLadder()
     {
-        _isOnLadder = false;
-        rb2d.isKinematic = false;
-        grounded = false;
+        _countLadder--;
 
-        animator.SetBool("On_Ladder", _isOnLadder);
-        Hat _hat = this.GetComponentInChildren<Hat>();
-        _hat.GetComponent<Renderer>().enabled = backward ? false : true;
+        Debug.Log("_countladder " + _countLadder);
+        _isOnLadder = _countLadder > 0;
 
+        if (!_isOnLadder)
+        {
+            rb2d.isKinematic = false;
+            grounded = false;
+
+            animator.SetBool("On_Ladder", _isOnLadder);
+            Hat _hat = this.GetComponentInChildren<Hat>();
+            _hat.GetComponent<Renderer>().enabled = backward ? false : true;
+        }
     }
 
     public void MoveUp()
@@ -149,7 +161,7 @@ public class Player : MonoBehaviour
         animator.SetBool("Ladder_Climb", true);
         //rb2d.AddForce((Vector2.up * speed));
         float currentY = transform.position.y;
-        transform.position = new Vector3(transform.position.x, currentY + 0.01f, transform.position.z);
+        transform.position = new Vector3(transform.position.x, currentY + 0.05f, transform.position.z);
     }
 
     public void MoveDown()
@@ -209,8 +221,9 @@ public class Player : MonoBehaviour
         }
         if (Input.GetButtonDown("Jump") && grounded)
         {
-            Jump ();
+            Jump();
         }
+
     }
 
     private void Jump()
@@ -251,7 +264,7 @@ public class Player : MonoBehaviour
         else if (other.gameObject.CompareTag("Enemy") && !untouchable)
         {
             Debug.Log("ontop " + this.OnTop + " other " + other.GetComponent<Enemy>());
-            if (other.enabled &&  !this.OnTop.Equals(other.GetComponent<Enemy>()))
+            if (other.enabled && !this.OnTop.Equals(other.GetComponent<Enemy>()))
             {
                 Enemy enemy = other.gameObject.GetComponentInParent<Enemy>();
                 Damage(enemy.Damage, enemy.transform.position);
@@ -265,7 +278,7 @@ public class Player : MonoBehaviour
         transform.localScale = playerScale;
         backward = !backward;
         Hat _hat = this.GetComponentInChildren<Hat>();
-        _hat.GetComponent<Renderer>().enabled = backward ?  false :  true;
+        _hat.GetComponent<Renderer>().enabled = backward ? false : true;
     }
     // If the player touches the enemy
     // TODO: maybe remove
