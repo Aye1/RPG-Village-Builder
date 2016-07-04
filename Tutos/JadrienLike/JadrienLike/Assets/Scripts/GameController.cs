@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Threading;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
@@ -29,31 +30,52 @@ public class GameController : MonoBehaviour {
         }
 
 		DontDestroyOnLoad(gameObject);
-        //DontDestroyOnLoad(player);
+        DontDestroyOnLoad(player);
+        DontDestroyOnLoad(boardManager);
         //DontDestroyOnLoad(uiManager);
 
 		currentBoard = new Board();
-		MapLoader loader = new MapLoader("tuto_map");
-		ArrayList layers = loader.Layers;
-		ArrayList parsedLayers = new ArrayList();
-		CSVParser parser = CSVParser.Instance;
+        LoadLevel("level_select");
+	}
 
-		foreach (string layer in layers) 
-		{
-			parsedLayers.Add(CSVParser.ParseCSV(layer));
-		}
-		if (parsedLayers.Count == 0)
-			Debug.Log("Error while loading the map.");
-		else 
-		{
-			currentBoard.Layers = parsedLayers;
-			Debug.Log ("Layers added to the board");
-			boardManager.InstantiateBoard(currentBoard);
+    /*void OnLevelWasLoaded(int level)
+    {
+        if (level == 2)
+        {
+            LoadLevel("tuto_map");
+        }
+    }*/
+
+    /*public void ChangeToLevel(string levelName)
+    {
+        SceneManager.LoadScene(2);
+        SceneManager.MoveGameObjectToScene(uiManager.gameObject, SceneManager.GetSceneAt(2));
+        //LoadLevel(levelName);
+    }*/
+
+    public void LoadLevel(string levelName)
+    {
+        MapLoader loader = new MapLoader(levelName);
+        ArrayList layers = loader.Layers;
+        ArrayList parsedLayers = new ArrayList();
+        CSVParser parser = CSVParser.Instance;
+
+        foreach (string layer in layers)
+        {
+            parsedLayers.Add(CSVParser.ParseCSV(layer));
+        }
+        if (parsedLayers.Count == 0)
+            Debug.Log("Error while loading the map.");
+        else
+        {
+            currentBoard.Layers = parsedLayers;
+            Debug.Log("Layers added to the board");
+            boardManager.InstantiateBoard(currentBoard);
             boardManager.ZoneId = 0;
-		}
+        }
         player.transform.position = boardManager.InitPlayerPosition;
         player.initPosition = boardManager.InitPlayerPosition;
-	}
+    }
 
 	// Update is called once per frame
 	void Update () {
@@ -146,6 +168,7 @@ public class GameController : MonoBehaviour {
 
     public void BackToMainMenu()
     {
-        Application.LoadLevel(0);
+        //Application.LoadLevel(0);
+        SceneManager.LoadScene(0);
     }
 }

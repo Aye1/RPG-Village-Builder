@@ -37,7 +37,8 @@ public class Door : MonoBehaviour {
         {
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                other.GetComponentInParent<Player>().Teleport(Destination);
+                //other.GetComponentInParent<Player>().Teleport(Destination);
+                other.GetComponentInParent<Player>().OnEnterDoor(this);
             }
         }
     }

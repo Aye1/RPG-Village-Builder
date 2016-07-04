@@ -38,6 +38,8 @@ public class Player : MonoBehaviour
     public Vector3 initPosition;
 
     private Enemy _onTop = null;
+
+    private bool doorTaken;
     #region Accessors
     public int Mental
     {
@@ -181,6 +183,16 @@ public class Player : MonoBehaviour
     {
         //transform.position = destination;
         transform.position = initPosition;
+    }
+
+    public void OnEnterDoor(Door door)
+    {
+        //TODO: real door management
+        if (!doorTaken)
+        {
+            FindObjectOfType<GameController>().LoadLevel("tuto_map");
+            doorTaken = true;
+        }
     }
 
     void FixedUpdate()
