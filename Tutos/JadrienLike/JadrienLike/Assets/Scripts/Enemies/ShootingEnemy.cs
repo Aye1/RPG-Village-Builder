@@ -39,7 +39,6 @@ public abstract class ShootingEnemy : Enemy {
             Bullet bulletClone;
             bulletClone = Instantiate(bullet, shootPoint.transform.position, shootPoint.transform.rotation) as Bullet;
             bulletClone.GetComponent<Rigidbody2D>().velocity = direction * bullet.bulletSpeed;
-
             _internalTimer = 0;
 
         }

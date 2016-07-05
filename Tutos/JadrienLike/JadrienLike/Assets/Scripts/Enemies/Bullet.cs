@@ -21,4 +21,9 @@ public class Bullet : MonoBehaviour {
         }
 
     }
+
+    public void Scale(float factorScale)
+    {
+        gameObject.GetComponent<Transform>().localScale = new Vector3(factorScale, factorScale, 1);
+    }
 }

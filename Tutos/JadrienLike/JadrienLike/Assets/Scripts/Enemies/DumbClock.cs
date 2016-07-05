@@ -23,7 +23,7 @@ public class DumbClock : ShootingEnemy {
             bulletClone_right = Instantiate(bullet, shootPoint.transform.position, shootPoint.transform.rotation) as Bullet;
             bulletClone_right.GetComponent<Rigidbody2D>().velocity = Vector2.right * bullet.bulletSpeed;
 
-            _internalTimer = 0;
+        _internalTimer = 0;
     }
 
     public void FixedUpdate()
