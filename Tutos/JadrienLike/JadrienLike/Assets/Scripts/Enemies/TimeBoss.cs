@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TimeBoss : Enemy {
+public class TimeBoss : Enemy
+{
 
     private int _hour;
     private int _minute;
@@ -19,7 +20,13 @@ public class TimeBoss : Enemy {
     private Vector3 _pattern1Pos3 = new Vector3(12.0f, 42.0f, 0.0f);
 
     #endregion
-   
+
+    #region Pattern 2
+    private int _stepNumberPattern2 = 3;
+    private Vector3 _pattern2Pos1 = new Vector3(25.0f, 42.0f, 0.0f);
+    private Vector3 _pattern2Pos2 = new Vector3(12.0f, 42.0f, 0.0f);
+    #endregion
+
 
     #region Accessors
     public int Hour
@@ -74,7 +81,7 @@ public class TimeBoss : Enemy {
     public override void Move()
     {
         float dist = Vector3.Distance(_targetPosition, transform.position);
-        if(dist <= 0.5f)
+        if (dist <= 0.5f)
         {
             _targetReached = true;
         }
@@ -85,20 +92,24 @@ public class TimeBoss : Enemy {
             transform.Translate(move * MoveSpeed);
         }
     }
-	
 
-	protected override void SpecialUpdate () {
-	    if (_targetReached && patternInProgress)
+
+    protected override void SpecialUpdate()
+    {
+        if (_targetReached && patternInProgress)
         {
-            switch(Hour)
+            switch (Hour)
             {
-            case 1:
-                UpdatePattern1();
-                break;
+                case 1:
+                    UpdatePattern1();
+                    break;
+                case 2:
+                    UpdatePattern2();
+                    break;
 
             }
         }
-	}
+    }
 
     private void UpdatePattern1()
     {
@@ -106,28 +117,52 @@ public class TimeBoss : Enemy {
         {
             _step++;
             _targetReached = false;
-            switch(_step)
+            switch (_step)
             {
-            case 1:
-                _targetPosition = _pattern1Pos1;
-                break;
-            case 2:
-                _targetPosition = _pattern1Pos2;
-                break;
-            case 3:
-                _targetPosition = _pattern1Pos3;
-                break;
-            case 4:
-                _targetPosition = _clockPosition;
-                break;
+                case 1:
+                    _targetPosition = _pattern1Pos1;
+                    break;
+                case 2:
+                    _targetPosition = _pattern1Pos2;
+                    break;
+                case 3:
+                    _targetPosition = _pattern1Pos3;
+                    break;
+                case 4:
+                    _targetPosition = _clockPosition;
+                    break;
             }
-        } 
-        else 
+        }
+        else
         {
             patternInProgress = false;
         }
     }
 
+    private void UpdatePattern2()
+    {
+        if (_step != _stepNumberPattern2)
+        {
+            _step++;
+            _targetReached = false;
+            switch (_step)
+            {
+                case 1:
+                    _targetPosition = _pattern2Pos1;
+                    break;
+                case 2:
+                    _targetPosition = _pattern2Pos2;
+                    break;
+                case 3:
+                    _targetPosition = _clockPosition;
+                    break;
+            }
+        }
+        else
+        {
+            patternInProgress = false;
+        }
+    }
     public override void Attack()
     {
     }
