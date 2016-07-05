@@ -377,7 +377,7 @@ public class BoardManager : MonoBehaviour {
                         break;
                     case "18":
                         toInstantiate = dumbEnemies[Random.Range(0, dumbEnemies.Length)];
-                        toInstantiate.transform.Rotate(new Vector3(0, 0, 90));
+                       
                         break;
                     case "19":
                         toInstantiate = redPotions[Random.Range(0, redPotions.Length)];

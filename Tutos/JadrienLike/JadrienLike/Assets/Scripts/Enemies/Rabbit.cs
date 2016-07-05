@@ -12,9 +12,7 @@ public class Rabbit : DumbEnemy {
         if (!groundAhead)
         {
             moveDirection *= -1;
-            Vector3 enemyScale = transform.localScale;
-            enemyScale.x *= -1;
-            transform.localScale = enemyScale;
+            Flip();
         }
     }
 }
