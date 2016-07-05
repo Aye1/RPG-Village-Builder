@@ -280,11 +280,19 @@ public class Player : MonoBehaviour
         else if (other.gameObject.CompareTag("Enemy") && !untouchable)
         {
             Debug.Log("ontop " + this.OnTop + " other " + other.GetComponent<Enemy>());
-            if (other.isActiveAndEnabled && !this.OnTop.Equals(other.GetComponent<Enemy>()))
+            if (other.isActiveAndEnabled && this.OnTop != null && !this.OnTop.Equals(other.GetComponent<Enemy>()))
             {
                 Enemy enemy = other.gameObject.GetComponentInParent<Enemy>();
                 Damage(enemy.Damage, enemy.transform.position);
             }
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.isActiveAndEnabled && this.OnTop != null && !this.OnTop.Equals(other.GetComponent<Enemy>()))
+        {
+            this.OnTop = null;
         }
     }
     public void Flip()
