@@ -4,6 +4,11 @@ using System.Collections;
 public class TimeBoss : Enemy
 {
 
+    public Bullet bullet;
+    public float ShootInterval = 0.1f;
+    public Transform shootPoint;
+
+
     private int _hour;
     private int _minute;
     private Vector3 _targetPosition;
@@ -96,6 +101,15 @@ public class TimeBoss : Enemy
 
     protected override void SpecialUpdate()
     {
+        if (patternInProgress)
+        {
+            switch (Hour)
+            {
+                case 2:
+                    Attack();
+                    break;
+            }
+        }
         if (_targetReached && patternInProgress)
         {
             switch (Hour)
@@ -108,6 +122,7 @@ public class TimeBoss : Enemy
                     break;
             }
         }
+       
     }
 
     private void UpdatePattern1()
@@ -164,6 +179,19 @@ public class TimeBoss : Enemy
     }
     public override void Attack()
     {
+        if (shootPoint == null)
+        {
+            shootPoint = GetComponentInChildren<Transform>();
+        }
+         _internalTimer += Time.deltaTime;
+        if (_internalTimer >= ShootInterval)
+        {
+            Bullet bulletClone;
+            bulletClone = Instantiate(bullet, shootPoint.transform.position, shootPoint.transform.rotation) as Bullet;
+            bulletClone.GetComponent<Rigidbody2D>().velocity = Vector2.down * bullet.bulletSpeed;
+            _internalTimer = 0;
+
+       }
     }
 
     public override void OnHit()
