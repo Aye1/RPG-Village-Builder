@@ -280,7 +280,7 @@ public class Player : MonoBehaviour
         else if (other.gameObject.CompareTag("Enemy") && !untouchable)
         {
             Debug.Log("ontop " + this.OnTop + " other " + other.GetComponent<Enemy>());
-            if (other.enabled && !this.OnTop.Equals(other.GetComponent<Enemy>()))
+            if (other.isActiveAndEnabled && !this.OnTop.Equals(other.GetComponent<Enemy>()))
             {
                 Enemy enemy = other.gameObject.GetComponentInParent<Enemy>();
                 Damage(enemy.Damage, enemy.transform.position);
@@ -322,12 +322,17 @@ public class Player : MonoBehaviour
         if (!untouchable || easyKill)
         {
             becomesUntouchable();
-            Mental = Mental - hit;
+           // Mental = Mental - hit;
+            Health = Health - hit;
             //setMental(_mental);
             gameObject.GetComponent<Animation>().Play("RedFlash");
             Vector2 direction = new Vector2(attacker.x - transform.position.x, attacker.y - transform.position.y);
             direction.Normalize();
             rb2d.AddForce(new Vector2(direction.x * -knockback.x, direction.y * knockback.y));
+        }
+        if (Health <=0)
+        {
+            Die();
         }
     }
 
@@ -355,24 +360,15 @@ public class Player : MonoBehaviour
             enemy.OnHit();
             enemy.OnHurt(hit);
         }
+        if(enemy.isdead)
+        {
+            Mental = Mental - 10;
+        }
     }
 
+public void Die()
+    {
 
-    /* public IEnumerator Knockback(float knockbackDur, float knockbackpwr, Vector3 knockbackDir)
-     {
-         float timer = 0;
-         while (knockbackDur > timer)
-         {
-             timer += Time.deltaTime;
-             Debug.Log("damage " + rb2d.velocity);
-             // rb2d.AddForce(new Vector3(knockbackDir.x * -100, knockbackDir.y * knockbackpwr, transform.position.z));
-             rb2d.velocity += new Vector2(knockbackDir.x * -10, knockbackDir.y * knockbackpwr);
-             Debug.Log("damage "+rb2d.velocity);
-         }
-
-         yield return 0;
-
-            //to launch
-            // StartCoroutine(Knockback(0.01f, 10, transform.position));
-     }*/
+    }
+   
 }

@@ -12,7 +12,7 @@ public abstract class Enemy : MonoBehaviour  {
     protected float _moveSpeed;
     protected bool _isChasingPlayer = false;
     protected float _aggroRange;
-
+    public bool isdead = false;
     protected float _internalTimer = 0;
     protected float _wakeRange;
 
@@ -215,6 +215,7 @@ public abstract class Enemy : MonoBehaviour  {
 
     public void Die()
     {
+        isdead = true;
         gameObject.SetActive(false);
     }
     #region Abstract methods

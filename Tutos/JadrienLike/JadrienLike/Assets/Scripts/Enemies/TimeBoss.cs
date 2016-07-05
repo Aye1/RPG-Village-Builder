@@ -106,7 +106,6 @@ public class TimeBoss : Enemy
                 case 2:
                     UpdatePattern2();
                     break;
-
             }
         }
     }
