@@ -4,10 +4,14 @@ using System.Collections;
 public class TimeBoss : Enemy
 {
 
-    public Bullet bullet;
-    public float ShootInterval = 0.1f;
+    #region Attack
+    public Bullet[] bullet;
+    private float ShootInterval = 1f;
     public Transform shootPoint;
-
+    private Vector2[] direction = new Vector2[16];
+    private float scale = 1.0f;
+    private int numberBullet = 1;
+    #endregion
 
     private int _hour;
     private int _minute;
@@ -71,6 +75,10 @@ public class TimeBoss : Enemy
         _clockPosition = GetComponentInParent<TimeBossClock>().transform.position;
         _targetPosition = _clockPosition;
         _moveSpeed = 0.1f;
+        if (shootPoint == null)
+        {
+            shootPoint = GetComponentInChildren<Transform>();
+        }
         patternInProgress = false;
     }
 
@@ -101,15 +109,7 @@ public class TimeBoss : Enemy
 
     protected override void SpecialUpdate()
     {
-        if (patternInProgress)
-        {
-            switch (Hour)
-            {
-                case 2:
-                    Attack();
-                    break;
-            }
-        }
+
         if (_targetReached && patternInProgress)
         {
             switch (Hour)
@@ -122,9 +122,41 @@ public class TimeBoss : Enemy
                     break;
             }
         }
-       
-    }
+        if (patternInProgress)
+        {
+            switch (Hour)
+            {
+                case 1:
+                    numberBullet = 0;
+                    direction = null;
+                    break;
+                case 2:
+                    direction[0] = Vector2.down;
+                    ShootInterval = 1.0f;
+                    scale = 5.0f;
+                    numberBullet = 1;
+                    break;
+                case 3:
+                    numberBullet = 8;
+                    scale = 7.0f;
+                    ShootInterval = 0.0f;
+                    FillDirection(numberBullet);
+                    break;
+            }
+            Attack();
+            patternInProgress = false;
+        }
 
+    }
+    private void FillDirection(int numberBullet)
+    {
+        direction[0] = new Vector2(1, 1);
+
+        direction[1] = new Vector2(1, 0);
+
+        direction[2] = new Vector2(0, 1);
+
+    }
     private void UpdatePattern1()
     {
         if (_step != _stepNumberPattern1)
@@ -179,19 +211,21 @@ public class TimeBoss : Enemy
     }
     public override void Attack()
     {
-        if (shootPoint == null)
+        _internalTimer += Time.deltaTime;
+        if (_internalTimer >= ShootInterval )
         {
-            shootPoint = GetComponentInChildren<Transform>();
+            for (int i = 0; i < direction.Length; i++)
+            {
+                Bullet bulletClone;
+                bulletClone = Instantiate(bullet[Minute - 1], shootPoint.transform.position, shootPoint.transform.rotation) as Bullet;
+                bulletClone.GetComponent<Rigidbody2D>().velocity = direction[i] * bulletClone.bulletSpeed;
+                bulletClone.Scale(scale);
+                if (ShootInterval != 0.0f)
+                {
+                    _internalTimer = 0;
+                }
+            }
         }
-         _internalTimer += Time.deltaTime;
-        if (_internalTimer >= ShootInterval)
-        {
-            Bullet bulletClone;
-            bulletClone = Instantiate(bullet, shootPoint.transform.position, shootPoint.transform.rotation) as Bullet;
-            bulletClone.GetComponent<Rigidbody2D>().velocity = Vector2.down * bullet.bulletSpeed;
-            _internalTimer = 0;
-
-       }
     }
 
     public override void OnHit()

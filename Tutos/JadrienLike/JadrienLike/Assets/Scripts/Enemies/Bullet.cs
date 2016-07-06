@@ -8,7 +8,6 @@ public class Bullet : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-    
         if (col.gameObject.CompareTag("Physical_Background") || col.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
             Destroy(gameObject);
@@ -16,10 +15,8 @@ public class Bullet : MonoBehaviour {
         else if (col.gameObject.CompareTag("Player"))
         {
             col.GetComponent<Player>().Damage(damage, transform.position);
-          
             Destroy(gameObject);
         }
-
     }
 
     public void Scale(float factorScale)
