@@ -150,12 +150,11 @@ public class TimeBoss : Enemy
     }
     private void FillDirection(int numberBullet)
     {
-        direction[0] = new Vector2(1, 1);
-
-        direction[1] = new Vector2(1, 0);
-
-        direction[2] = new Vector2(0, 1);
-
+        float increment = 2 * Mathf.PI / numberBullet;
+        for (int i = 0; i < numberBullet; i++)
+        {
+            direction[i] = new Vector2(Mathf.Cos(i * increment), Mathf.Sin(i * increment));
+        }
     }
     private void UpdatePattern1()
     {
