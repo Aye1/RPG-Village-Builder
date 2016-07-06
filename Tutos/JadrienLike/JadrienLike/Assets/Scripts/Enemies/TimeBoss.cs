@@ -7,9 +7,9 @@ public class TimeBoss : Enemy
     #region Attack
     public Bullet[] bullet;
     private float ShootInterval = 1f;
-    public Transform shootPoint;
+    public Vector3 shootPoint;
     private Vector2[] direction = new Vector2[16];
-    private float scale = 1.0f;
+    private float scale = 1.0f; //scale of the bullet
     private int numberBullet = 1;
     #endregion
 
@@ -75,10 +75,7 @@ public class TimeBoss : Enemy
         _clockPosition = GetComponentInParent<TimeBossClock>().transform.position;
         _targetPosition = _clockPosition;
         _moveSpeed = 0.1f;
-        if (shootPoint == null)
-        {
-            shootPoint = GetComponentInChildren<Transform>();
-        }
+        shootPoint = _clockPosition;
         patternInProgress = false;
     }
 
@@ -129,18 +126,30 @@ public class TimeBoss : Enemy
                 case 1:
                     numberBullet = 0;
                     direction = null;
+                    shootPoint = _clockPosition;
                     break;
                 case 2:
+                    numberBullet = 1;
                     direction[0] = Vector2.down;
                     ShootInterval = 1.0f;
                     scale = 5.0f;
-                    numberBullet = 1;
+                    shootPoint = _clockPosition;
                     break;
                 case 3:
                     numberBullet = 8;
-                    scale = 7.0f;
+                    scale = 3.0f;
                     ShootInterval = 0.0f;
-                    FillDirection(numberBullet);
+                    FillDirectionInCircle(numberBullet);
+                    shootPoint = _clockPosition;
+                    break;
+                case 4:
+                    numberBullet = 16;
+                    scale = 1.0f;
+                    ShootInterval = 0.0f;
+                    FillDirectionInCircle(numberBullet);
+                    shootPoint = _pattern1Pos1;
+                    Attack();
+                    shootPoint = _pattern1Pos3;
                     break;
             }
             Attack();
@@ -148,7 +157,9 @@ public class TimeBoss : Enemy
         }
 
     }
-    private void FillDirection(int numberBullet)
+
+    //Fill the array of direction with #numberbullet vectors, along a circle
+    private void FillDirectionInCircle(int numberBullet)
     {
         float increment = 2 * Mathf.PI / numberBullet;
         for (int i = 0; i < numberBullet; i++)
@@ -183,7 +194,6 @@ public class TimeBoss : Enemy
             patternInProgress = false;
         }
     }
-
     private void UpdatePattern2()
     {
         if (_step != _stepNumberPattern2)
@@ -216,7 +226,7 @@ public class TimeBoss : Enemy
             for (int i = 0; i < direction.Length; i++)
             {
                 Bullet bulletClone;
-                bulletClone = Instantiate(bullet[Minute - 1], shootPoint.transform.position, shootPoint.transform.rotation) as Bullet;
+                bulletClone = Instantiate(bullet[Minute - 1], shootPoint, Quaternion.identity) as Bullet;
                 bulletClone.GetComponent<Rigidbody2D>().velocity = direction[i] * bulletClone.bulletSpeed;
                 bulletClone.Scale(scale);
                 if (ShootInterval != 0.0f)

@@ -121,7 +121,7 @@ public class TimeBossClock : MonoBehaviour {
         if (timeBoss != null)
         {
             //timeBoss.transform.Rotate(0.0f, 0.0f, 90.0f);
-            timeBoss.LaunchPattern(3, 1);
+            timeBoss.LaunchPattern(4, 1);
             /*
              * Stuff happens
              */
