@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class TimeBoss : Enemy
 {
@@ -8,9 +9,10 @@ public class TimeBoss : Enemy
     public Bullet[] bullet;
     private float ShootInterval = 1f;
     public Vector3 shootPoint;
-    private Vector2[] direction = new Vector2[16];
+    private ArrayList direction = new ArrayList();
     private float scale = 1.0f; //scale of the bullet
     private int numberBullet = 1;
+    private bool AttackEnded = true;
     #endregion
 
     private int _hour;
@@ -86,6 +88,7 @@ public class TimeBoss : Enemy
         _step = 0;
         _targetReached = true;
         patternInProgress = true;
+        AttackEnded = false;
     }
 
     public override void Move()
@@ -106,7 +109,6 @@ public class TimeBoss : Enemy
 
     protected override void SpecialUpdate()
     {
-
         if (_targetReached && patternInProgress)
         {
             switch (Hour)
@@ -116,6 +118,12 @@ public class TimeBoss : Enemy
                     break;
                 case 2:
                     UpdatePattern2();
+                    break;
+                case 3:
+                    UpdatePattern3();
+                    break;
+                case 4:
+                    UpdatePattern4();
                     break;
             }
         }
@@ -130,41 +138,49 @@ public class TimeBoss : Enemy
                     break;
                 case 2:
                     numberBullet = 1;
-                    direction[0] = Vector2.down;
-                    ShootInterval = 1.0f;
+                    if(direction.Count <=0)
+                    {
+                        direction.Add(Vector2.down);
+                    }
+                    ShootInterval = 0.5f;
                     scale = 5.0f;
-                    shootPoint = _clockPosition;
+                    shootPoint = gameObject.transform.position;
                     break;
                 case 3:
                     numberBullet = 8;
                     scale = 3.0f;
                     ShootInterval = 0.0f;
-                    FillDirectionInCircle(numberBullet);
+                    if (direction.Count <=0)
+                    {
+                        FillDirectionInCircle(numberBullet);
+                    }
                     shootPoint = _clockPosition;
                     break;
                 case 4:
                     numberBullet = 16;
                     scale = 1.0f;
                     ShootInterval = 0.0f;
-                    FillDirectionInCircle(numberBullet);
+                    if (direction.Count <=0)
+                    {
+                        FillDirectionInCircle(numberBullet);
+                    }
                     shootPoint = _pattern1Pos1;
                     Attack();
                     shootPoint = _pattern1Pos3;
                     break;
             }
             Attack();
-            patternInProgress = false;
         }
-
     }
 
+   
     //Fill the array of direction with #numberbullet vectors, along a circle
     private void FillDirectionInCircle(int numberBullet)
     {
         float increment = 2 * Mathf.PI / numberBullet;
         for (int i = 0; i < numberBullet; i++)
         {
-            direction[i] = new Vector2(Mathf.Cos(i * increment), Mathf.Sin(i * increment));
+            direction.Add(new Vector2(Mathf.Cos(i * increment), Mathf.Sin(i * increment)));
         }
     }
     private void UpdatePattern1()
@@ -192,6 +208,11 @@ public class TimeBoss : Enemy
         else
         {
             patternInProgress = false;
+            AttackEnded = true;
+            if(direction !=null)
+            {
+                direction.Clear();
+            }
         }
     }
     private void UpdatePattern2()
@@ -216,22 +237,45 @@ public class TimeBoss : Enemy
         else
         {
             patternInProgress = false;
+            AttackEnded = true;
+            direction.Clear();
         }
     }
+    private void UpdatePattern3()
+    {
+        if(AttackEnded)
+        {
+            patternInProgress = false;
+            direction.Clear();
+        }
+    }
+
+    private void UpdatePattern4()
+    {
+        if (AttackEnded)
+        {
+            patternInProgress = false;
+            direction.Clear();
+        }
+    }
+
     public override void Attack()
     {
         _internalTimer += Time.deltaTime;
-        if (_internalTimer >= ShootInterval )
+        if (_internalTimer >= ShootInterval && direction != null)
         {
-            for (int i = 0; i < direction.Length; i++)
+            foreach(Vector2 vec in direction)
             {
                 Bullet bulletClone;
                 bulletClone = Instantiate(bullet[Minute - 1], shootPoint, Quaternion.identity) as Bullet;
-                bulletClone.GetComponent<Rigidbody2D>().velocity = direction[i] * bulletClone.bulletSpeed;
+                bulletClone.GetComponent<Rigidbody2D>().velocity = vec * bulletClone.bulletSpeed;
                 bulletClone.Scale(scale);
                 if (ShootInterval != 0.0f)
                 {
                     _internalTimer = 0;
+                }
+                else { 
+                    AttackEnded = true;
                 }
             }
         }

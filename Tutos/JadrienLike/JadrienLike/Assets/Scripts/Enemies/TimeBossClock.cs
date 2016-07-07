@@ -28,7 +28,7 @@ public class TimeBossClock : MonoBehaviour {
     private int _hour = 1;
     private int _minute = 1;
 
-    private int _rotationDuration = 5000;
+    private int _rotationDuration = 2000;
 
 
     // Use this for initialization
