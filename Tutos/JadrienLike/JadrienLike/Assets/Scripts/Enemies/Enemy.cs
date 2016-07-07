@@ -15,6 +15,7 @@ public abstract class Enemy : MonoBehaviour  {
     public bool isdead = false;
     protected float _internalTimer = 0;
     protected float _wakeRange;
+    protected ParticleSystem _bloodEmitter;
 
     protected float moveDirection = 1.0f;
 
@@ -154,6 +155,7 @@ public abstract class Enemy : MonoBehaviour  {
         animator = gameObject.GetComponent<Animator>();
         Player player = FindObjectsOfType(typeof(Player))[0] as Player;
         Target = player.transform;
+        _bloodEmitter = gameObject.GetComponentInChildren<ParticleSystem>();
     }
 
     void Start()
@@ -206,6 +208,10 @@ public abstract class Enemy : MonoBehaviour  {
 
     public void OnHurt(int hit)
     {
+        if (_bloodEmitter != null)
+        {
+            _bloodEmitter.Play();
+        }
         health -= hit;
         if (health <= 0)
         {
