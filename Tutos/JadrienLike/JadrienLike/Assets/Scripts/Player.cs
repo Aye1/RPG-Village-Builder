@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     public Vector2 knockback;
     private bool untouchable = false;
     public int FootHit = 20;
-    public int weaponDamage = 40;
+    public int weaponDamage = 20;
     public Text textMental;
     private bool backward = false;
     private int _mental = 50;
@@ -374,7 +374,7 @@ public class Player : MonoBehaviour
         }
     }
 
-public void Die()
+    public void Die()
     {
 
     }
