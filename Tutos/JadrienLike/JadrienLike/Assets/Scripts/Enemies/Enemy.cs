@@ -6,7 +6,7 @@ public abstract class Enemy : MonoBehaviour  {
     protected Animator animator;
     protected Transform _target;
 
-    protected int health;
+    public int health; //to change
     protected int _maxHealth;
     protected int _damage;
     protected float _moveSpeed;
