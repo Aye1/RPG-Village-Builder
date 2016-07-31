@@ -35,7 +35,7 @@ public class GameController : MonoBehaviour {
         //DontDestroyOnLoad(uiManager);
 
 		currentBoard = new Board();
-        LoadLevel("bossmap");
+        LoadLevel("large_level");
 	}
 
     /*void OnLevelWasLoaded(int level)
@@ -111,7 +111,7 @@ public class GameController : MonoBehaviour {
             Time.timeScale = 0;
             uiManager.LaunchBlackScreenTransition();
             Timer t = new Timer(CheckPlayerMentalCallback);
-            t.Change (3900, 0);
+            t.Change (2400, 0);
         }
     }
 
