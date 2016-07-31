@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Threading;
 using System;
 
 public class TimeBoss : Enemy
@@ -11,7 +12,7 @@ public class TimeBoss : Enemy
     public Vector3 shootPoint;
     private ArrayList _direction = new ArrayList();
     private float scale = 1.0f; //scale of the bullet
-    private int numberBullet = 1;
+    private int _numberBullet = 1;
     private bool AttackEnded = true;
     #endregion
 
@@ -140,16 +141,16 @@ public class TimeBoss : Enemy
         }
         if (patternInProgress)
         {
-            scale = _minute / 12.0f * 3.0f;
+            scale = _minute / 12.0f * 5.0f;
             switch (Hour)
             {
                 case 1:
-                    numberBullet = 0;
+                    _numberBullet = 0;
                     _direction.Clear();
                     shootPoint = _clockPosition;
                     break;
                 case 2:
-                    numberBullet = 1;
+                    _numberBullet = 1;
                     if(_direction.Count <=0)
                     {
                         _direction.Add(Vector2.down);
@@ -159,26 +160,30 @@ public class TimeBoss : Enemy
                     shootPoint = gameObject.transform.position;
                     break;
                 case 3:
-                    numberBullet = 8;
+                    _numberBullet = 8;
                     //scale = 3.0f;
                     ShootInterval = 0.0f;
                     if (_direction.Count <=0)
                     {
-                        FillDirectionInCircle(numberBullet);
+                        FillDirectionInCircle(_numberBullet);
                     }
                     shootPoint = _clockPosition;
+                    Attack();
+                    AttackEnded = true;
                     break;
                 case 4:
-                    numberBullet = 16;
+                    _numberBullet = 16;
                     //scale = 1.0f;
                     ShootInterval = 0.0f;
                     if (_direction.Count <=0)
                     {
-                        FillDirectionInCircle(numberBullet);
+                        FillDirectionInCircle(_numberBullet);
                     }
                     shootPoint = _pattern1Pos1;
                     Attack();
                     shootPoint = _pattern1Pos3;
+                    Attack();
+                    AttackEnded = true;
                     break;
             }
             Attack();
@@ -221,7 +226,7 @@ public class TimeBoss : Enemy
         {
             patternInProgress = false;
             AttackEnded = true;
-            if(_direction !=null)
+            if(_direction.Count > 0)
             {
                 _direction.Clear();
             }
@@ -255,26 +260,28 @@ public class TimeBoss : Enemy
     }
     private void UpdatePattern3()
     {
-        if(AttackEnded)
+        WaitABit();
+        /*if(AttackEnded)
         {
             patternInProgress = false;
             _direction.Clear();
-        }
+        }*/
     }
 
     private void UpdatePattern4()
     {
-        if (AttackEnded)
+        WaitABit();
+        /*if (AttackEnded)
         {
             patternInProgress = false;
             _direction.Clear();
-        }
+        }*/
     }
 
     public override void Attack()
     {
         _internalTimer += Time.deltaTime;
-        if (_internalTimer >= ShootInterval && _direction != null)
+        if (_internalTimer >= ShootInterval && _direction.Count > 0 && !AttackEnded)
         {
             foreach(Vector2 vec in _direction)
             {
@@ -287,14 +294,30 @@ public class TimeBoss : Enemy
                 {
                     _internalTimer = 0;
                 }
-                else { 
+                /*else { 
                     AttackEnded = true;
-                }
+                }*/
             }
         }
     }
 
     public override void OnHit()
     {
+    }
+
+    private void WaitABit()
+    {
+        int time = 2000;
+        Timer t = new Timer(WaitABitCallback);
+        t.Change(time, 0);
+    }
+
+    public void WaitABitCallback(object state)
+    {
+        if (AttackEnded)
+        {
+            patternInProgress = false;
+            _direction.Clear();
+        }
     }
 }
