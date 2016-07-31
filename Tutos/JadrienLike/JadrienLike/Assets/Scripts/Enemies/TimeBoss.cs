@@ -28,7 +28,7 @@ public class TimeBoss : Enemy
     #region Pattern 1
     private int _stepNumberPattern1 = 4;
     private Vector3 _pattern1Pos1 = new Vector3(6.5f, 0.0f, 0.0f);
-    private Vector3 _pattern1Pos2 = new Vector3(0.0f, -6.0f, 0.0f);
+    private Vector3 _pattern1Pos2 = new Vector3(0.0f, -4.0f, 0.0f);
     private Vector3 _pattern1Pos3 = new Vector3(-6.5f, 0.0f, 0.0f);
 
     #endregion
@@ -115,6 +115,10 @@ public class TimeBoss : Enemy
             Vector3 move = _targetPosition - transform.position;
             move.Normalize();
             transform.Translate(move * MoveSpeed);
+            if(move.x * transform.localScale.x >= 0)
+            {
+                Flip();
+            }
         }
     }
 
