@@ -120,18 +120,7 @@ public class TimeBossClock : MonoBehaviour {
         _canLaunchAttack = false;
         if (timeBoss != null)
         {
-            //timeBoss.transform.Rotate(0.0f, 0.0f, 90.0f);
-            timeBoss.LaunchPattern(4, 1);
-            /*
-             * Stuff happens
-             */
-            /*Timer t = new Timer(DummyCallback);
-            t.Change(5000, 0);*/
+            timeBoss.LaunchPattern((_hour % 4)+1, _minute);
         }
     }
-
-    /*public void DummyCallback(object state)
-    {
-        _canLaunchRotation = true;
-    }*/
 }

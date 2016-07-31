@@ -9,7 +9,7 @@ public class TimeBoss : Enemy
     public Bullet[] bullet;
     private float ShootInterval = 1f;
     public Vector3 shootPoint;
-    private ArrayList direction = new ArrayList();
+    private ArrayList _direction = new ArrayList();
     private float scale = 1.0f; //scale of the bullet
     private int numberBullet = 1;
     private bool AttackEnded = true;
@@ -26,16 +26,16 @@ public class TimeBoss : Enemy
 
     #region Pattern 1
     private int _stepNumberPattern1 = 4;
-    private Vector3 _pattern1Pos1 = new Vector3(25.0f, 42.0f, 0.0f);
-    private Vector3 _pattern1Pos2 = new Vector3(18.0f, 36.0f, 0.0f);
-    private Vector3 _pattern1Pos3 = new Vector3(12.0f, 42.0f, 0.0f);
+    private Vector3 _pattern1Pos1 = new Vector3(6.5f, 0.0f, 0.0f);
+    private Vector3 _pattern1Pos2 = new Vector3(0.0f, -6.0f, 0.0f);
+    private Vector3 _pattern1Pos3 = new Vector3(-6.5f, 0.0f, 0.0f);
 
     #endregion
 
     #region Pattern 2
     private int _stepNumberPattern2 = 3;
-    private Vector3 _pattern2Pos1 = new Vector3(25.0f, 42.0f, 0.0f);
-    private Vector3 _pattern2Pos2 = new Vector3(12.0f, 42.0f, 0.0f);
+    private Vector3 _pattern2Pos1 = new Vector3(6.5f, 0.0f, 0.0f);
+    private Vector3 _pattern2Pos2 = new Vector3(-6.5f, 0.0f, 0.0f);
     #endregion
 
 
@@ -76,9 +76,19 @@ public class TimeBoss : Enemy
         _targetPosition = new Vector3(0.0f, 0.0f, 0.0f);
         _clockPosition = GetComponentInParent<TimeBossClock>().transform.position;
         _targetPosition = _clockPosition;
+        InitPatternPosition();
         _moveSpeed = 0.1f;
         shootPoint = _clockPosition;
         patternInProgress = false;
+    }
+
+    private void InitPatternPosition()
+    {
+        _pattern1Pos1 = _pattern1Pos1 + _clockPosition;
+        _pattern1Pos2 = _pattern1Pos2 + _clockPosition;
+        _pattern1Pos3 = _pattern1Pos3 + _clockPosition;
+        _pattern2Pos1 = _pattern2Pos1 + _clockPosition;
+        _pattern2Pos2 = _pattern2Pos2 + _clockPosition;
     }
 
     public void LaunchPattern(int hour, int minute)
@@ -94,9 +104,10 @@ public class TimeBoss : Enemy
     public override void Move()
     {
         float dist = Vector3.Distance(_targetPosition, transform.position);
-        if (dist <= 0.5f)
+        if (dist <= 0.1f)
         {
             _targetReached = true;
+            transform.position = _targetPosition;
         }
         else
         {
@@ -129,28 +140,29 @@ public class TimeBoss : Enemy
         }
         if (patternInProgress)
         {
+            scale = _minute / 12.0f * 3.0f;
             switch (Hour)
             {
                 case 1:
                     numberBullet = 0;
-                    direction = null;
+                    _direction.Clear();
                     shootPoint = _clockPosition;
                     break;
                 case 2:
                     numberBullet = 1;
-                    if(direction.Count <=0)
+                    if(_direction.Count <=0)
                     {
-                        direction.Add(Vector2.down);
+                        _direction.Add(Vector2.down);
                     }
                     ShootInterval = 0.5f;
-                    scale = 5.0f;
+                    //scale = 5.0f;
                     shootPoint = gameObject.transform.position;
                     break;
                 case 3:
                     numberBullet = 8;
-                    scale = 3.0f;
+                    //scale = 3.0f;
                     ShootInterval = 0.0f;
-                    if (direction.Count <=0)
+                    if (_direction.Count <=0)
                     {
                         FillDirectionInCircle(numberBullet);
                     }
@@ -158,9 +170,9 @@ public class TimeBoss : Enemy
                     break;
                 case 4:
                     numberBullet = 16;
-                    scale = 1.0f;
+                    //scale = 1.0f;
                     ShootInterval = 0.0f;
-                    if (direction.Count <=0)
+                    if (_direction.Count <=0)
                     {
                         FillDirectionInCircle(numberBullet);
                     }
@@ -180,7 +192,7 @@ public class TimeBoss : Enemy
         float increment = 2 * Mathf.PI / numberBullet;
         for (int i = 0; i < numberBullet; i++)
         {
-            direction.Add(new Vector2(Mathf.Cos(i * increment), Mathf.Sin(i * increment)));
+            _direction.Add(new Vector2(Mathf.Cos(i * increment), Mathf.Sin(i * increment)));
         }
     }
     private void UpdatePattern1()
@@ -209,9 +221,9 @@ public class TimeBoss : Enemy
         {
             patternInProgress = false;
             AttackEnded = true;
-            if(direction !=null)
+            if(_direction !=null)
             {
-                direction.Clear();
+                _direction.Clear();
             }
         }
     }
@@ -238,7 +250,7 @@ public class TimeBoss : Enemy
         {
             patternInProgress = false;
             AttackEnded = true;
-            direction.Clear();
+            _direction.Clear();
         }
     }
     private void UpdatePattern3()
@@ -246,7 +258,7 @@ public class TimeBoss : Enemy
         if(AttackEnded)
         {
             patternInProgress = false;
-            direction.Clear();
+            _direction.Clear();
         }
     }
 
@@ -255,19 +267,20 @@ public class TimeBoss : Enemy
         if (AttackEnded)
         {
             patternInProgress = false;
-            direction.Clear();
+            _direction.Clear();
         }
     }
 
     public override void Attack()
     {
         _internalTimer += Time.deltaTime;
-        if (_internalTimer >= ShootInterval && direction != null)
+        if (_internalTimer >= ShootInterval && _direction != null)
         {
-            foreach(Vector2 vec in direction)
+            foreach(Vector2 vec in _direction)
             {
                 Bullet bulletClone;
-                bulletClone = Instantiate(bullet[Minute - 1], shootPoint, Quaternion.identity) as Bullet;
+                //bulletClone = Instantiate(bullet[Minute - 1], shootPoint, Quaternion.identity) as Bullet;
+                bulletClone = Instantiate(bullet[0], shootPoint, Quaternion.identity) as Bullet;
                 bulletClone.GetComponent<Rigidbody2D>().velocity = vec * bulletClone.bulletSpeed;
                 bulletClone.Scale(scale);
                 if (ShootInterval != 0.0f)
