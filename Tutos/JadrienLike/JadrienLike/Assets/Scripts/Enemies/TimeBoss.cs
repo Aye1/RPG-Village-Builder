@@ -8,6 +8,7 @@ public class TimeBoss : Enemy
 
     #region Attack
     public Bullet[] bullet;
+    public Color[] bulletColor;
     private float ShootInterval = 1f;
     public Vector3 shootPoint;
     private ArrayList _direction = new ArrayList();
@@ -28,7 +29,7 @@ public class TimeBoss : Enemy
     #region Pattern 1
     private int _stepNumberPattern1 = 4;
     private Vector3 _pattern1Pos1 = new Vector3(6.5f, 0.0f, 0.0f);
-    private Vector3 _pattern1Pos2 = new Vector3(0.0f, -6.0f, 0.0f);
+    private Vector3 _pattern1Pos2 = new Vector3(0.0f, -4.0f, 0.0f);
     private Vector3 _pattern1Pos3 = new Vector3(-6.5f, 0.0f, 0.0f);
 
     #endregion
@@ -115,6 +116,10 @@ public class TimeBoss : Enemy
             Vector3 move = _targetPosition - transform.position;
             move.Normalize();
             transform.Translate(move * MoveSpeed);
+            if(move.x * transform.localScale.x >= 0)
+            {
+                Flip();
+            }
         }
     }
 
@@ -141,7 +146,7 @@ public class TimeBoss : Enemy
         }
         if (patternInProgress)
         {
-            scale = _minute / 12.0f * 5.0f;
+            scale = (_minute*0.08f) / 12.0f * 3.0f;
             switch (Hour)
             {
                 case 1:
@@ -278,6 +283,7 @@ public class TimeBoss : Enemy
         }*/
     }
 
+
     public override void Attack()
     {
         _internalTimer += Time.deltaTime;
@@ -289,7 +295,8 @@ public class TimeBoss : Enemy
                 //bulletClone = Instantiate(bullet[Minute - 1], shootPoint, Quaternion.identity) as Bullet;
                 bulletClone = Instantiate(bullet[0], shootPoint, Quaternion.identity) as Bullet;
                 bulletClone.GetComponent<Rigidbody2D>().velocity = vec * bulletClone.bulletSpeed;
-                bulletClone.Scale(scale);
+               bulletClone.Scale(scale);
+                bulletClone.SetColor(bulletColor[Minute-1]);
                 if (ShootInterval != 0.0f)
                 {
                     _internalTimer = 0;

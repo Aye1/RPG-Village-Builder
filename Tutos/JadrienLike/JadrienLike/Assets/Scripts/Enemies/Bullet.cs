@@ -22,5 +22,13 @@ public class Bullet : MonoBehaviour {
     public void Scale(float factorScale)
     {
         gameObject.GetComponent<Transform>().localScale = new Vector3(factorScale, factorScale, 1);
+       
+    }
+
+    public void SetColor(Color colorBullet)
+    {
+        colorBullet.a = 1;
+        gameObject.GetComponent<SpriteRenderer>().color = colorBullet;
+        
     }
 }
