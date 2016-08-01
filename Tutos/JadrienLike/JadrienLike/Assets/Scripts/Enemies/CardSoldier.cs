@@ -30,7 +30,7 @@ public class CardSoldier : MeleeEnemy {
             //to change : wrong animation
             gameObject.GetComponent<Animation>().Play("BlueFlash");
             moveDirection = direction.x >= 0 ? 1.0f : -1.0f;
-            currentMoveSpeed = MoveSpeed * 5.0f;
+            currentMoveSpeed = MoveSpeed * 3.0f;
         }
         else
         {
