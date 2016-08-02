@@ -190,7 +190,7 @@ public class Player : MonoBehaviour
         //TODO: real door management
         if (!doorTaken)
         {
-            FindObjectOfType<GameController>().LoadLevel("tuto_map");
+            FindObjectOfType<GameController>().LoadLevel("large_level");
             doorTaken = true;
         }
     }
@@ -318,7 +318,7 @@ public class Player : MonoBehaviour
     [Obsolete("Will be removed soon")]
     void setCoins(int count)
     {
-        textCount.text = "Coins : " + count;
+        textCount.text = "Spirit : " + count;
     }
 
     public void Damage(int hit, Vector3 attacker)
