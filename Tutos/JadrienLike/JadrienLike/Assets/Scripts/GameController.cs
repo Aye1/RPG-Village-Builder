@@ -111,7 +111,7 @@ public class GameController : MonoBehaviour {
             Time.timeScale = 0;
             uiManager.LaunchBlackScreenTransition();
             Timer t = new Timer(CheckPlayerMentalCallback);
-            t.Change (3900, 0);
+            t.Change (2400, 0);
         }
     }
 

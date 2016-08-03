@@ -323,10 +323,7 @@ public class Player : MonoBehaviour
 
     public void Damage(int hit, Vector3 attacker)
     {
-        if (easyKill)
-        {
-            hit = 1000;
-        }
+        
         if (!untouchable || easyKill)
         {
             becomesUntouchable();
@@ -370,7 +367,14 @@ public class Player : MonoBehaviour
         }
         if(enemy.isdead)
         {
-            Mental = Mental - 10;
+            if (easyKill)
+            {
+                Mental = Mental - 1000;
+            }
+            else
+            {
+                Mental = Mental - 10;
+            }
         }
     }
 
