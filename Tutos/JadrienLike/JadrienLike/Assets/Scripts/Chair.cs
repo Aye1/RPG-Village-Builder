@@ -4,7 +4,7 @@ using System.Collections;
 public class Chair : Destructible {
 
     private DropManager dropManager;
-
+    public LivingCollectible Drop;
 	// Use this for initialization
 	void Start () {
         dropManager = FindObjectOfType<DropManager>();
@@ -17,7 +17,7 @@ public class Chair : Destructible {
 
     public override void OnHit()
     {
-        dropManager.CreateCoin(gameObject.transform.position);
+        dropManager.CreateSphere(Drop, gameObject.transform.position);
         Destroy(gameObject);
     }
 }

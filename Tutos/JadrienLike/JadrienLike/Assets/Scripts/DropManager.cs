@@ -3,8 +3,6 @@ using System.Collections;
 
 public class DropManager : MonoBehaviour {
 
-    public GameObject coin;
-
     private DropManager instance;
 
     void Start()
@@ -17,10 +15,11 @@ public class DropManager : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+      
     }
 
-    public void CreateCoin(Vector3 pos)
+    public void CreateSphere(LivingCollectible Drop, Vector3 pos)
     {
-        Instantiate(coin, pos, Quaternion.identity);
+        Instantiate(Drop, pos, Quaternion.identity);
     }
 }
