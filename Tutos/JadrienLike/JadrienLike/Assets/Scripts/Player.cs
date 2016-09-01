@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     public Vector2 knockback;
     private bool untouchable = false;
     public int FootHit = 20;
-    public int weaponDamage = 20;
+    public int weaponDamage = 50;
     public Text textMental;
     private bool backward = false;
     private int _mental = 50;
@@ -127,7 +127,7 @@ public class Player : MonoBehaviour
              float ladderMiddleX = ladder.transform.position.x;
              transform.position = new Vector3(ladderMiddleX, transform.position.y, transform.position.z);
 
-             grounded = true;
+            grounded = true;
 
              Hat _hat = this.GetComponentInChildren<Hat>();
              _hat.GetComponent<Renderer>().enabled = false;
@@ -280,7 +280,7 @@ public class Player : MonoBehaviour
         else if (other.gameObject.CompareTag("Enemy") && !untouchable)
         {
             Debug.Log("ontop " + this.OnTop + " other " + other.GetComponent<Enemy>());
-            if (other.isActiveAndEnabled && this.OnTop != null && !this.OnTop.Equals(other.GetComponent<Enemy>()))
+            if (other.isActiveAndEnabled && (this.OnTop == null || (this.OnTop != null && !this.OnTop.Equals(other.GetComponent<Enemy>()))))
             {
                 Enemy enemy = other.gameObject.GetComponentInParent<Enemy>();
                 Damage(enemy.Damage, enemy.transform.position);
@@ -331,13 +331,16 @@ public class Player : MonoBehaviour
             Health = Health - hit;
             //setMental(_mental);
             gameObject.GetComponent<Animation>().Play("RedFlash");
+            
             Vector2 direction = new Vector2(attacker.x - transform.position.x, attacker.y - transform.position.y);
             direction.Normalize();
             rb2d.AddForce(new Vector2(direction.x * -knockback.x, direction.y * knockback.y));
+         
         }
         if (Health <=0)
         {
             Die();
+            
         }
     }
 
@@ -380,7 +383,6 @@ public class Player : MonoBehaviour
 
     public void Die()
     {
-
     }
    
 }

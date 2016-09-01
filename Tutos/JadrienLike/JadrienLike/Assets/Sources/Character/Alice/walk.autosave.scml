@@ -592,32 +592,32 @@
             </timeline>
             <timeline id="1" name="cuisse_000">
                 <key id="0" spin="0">
-                    <object folder="0" file="2" x="-20.512821" y="-197.519102" angle="357.442265" scale_x="1" scale_y="1"/>
+                    <object folder="0" file="2" x="-20.512821" y="-197.519102" angle="357.442265"/>
                 </key>
             </timeline>
             <timeline id="2" name="tibia_000">
                 <key id="0" spin="0">
-                    <object folder="0" file="6" x="-28.669601" y="-287.233997" angle="0.348484" scale_x="1" scale_y="1"/>
+                    <object folder="0" file="6" x="-28.669601" y="-287.233997" angle="0.348484"/>
                 </key>
             </timeline>
             <timeline id="3" name="shoe_000">
                 <key id="0" spin="0">
-                    <object folder="0" file="4" x="-28.239735" y="-323.294754" angle="6.757029" scale_x="1" scale_y="1"/>
+                    <object folder="0" file="4" x="-28.239735" y="-323.294754" angle="6.757029"/>
                 </key>
             </timeline>
             <timeline id="4" name="cuisse">
                 <key id="0" spin="0">
-                    <object folder="0" file="2" x="-22.164685" y="-205.365989" angle="2.996125" scale_x="1" scale_y="1"/>
+                    <object folder="0" file="2" x="-22.164685" y="-205.365989" angle="2.996125"/>
                 </key>
             </timeline>
             <timeline id="5" name="tibia">
                 <key id="0" spin="0">
-                    <object folder="0" file="6" x="-19.640437" y="-287.952708" angle="358.424513" scale_x="1" scale_y="1"/>
+                    <object folder="0" file="6" x="-19.640437" y="-287.952708" angle="358.424513"/>
                 </key>
             </timeline>
             <timeline id="6" name="shoe">
                 <key id="0" spin="0">
-                    <object folder="0" file="4" x="-17.677949" y="-329.022192" angle="358.424513" scale_x="1" scale_y="1"/>
+                    <object folder="0" file="4" x="-17.677949" y="-329.022192" angle="358.424513"/>
                 </key>
             </timeline>
             <timeline id="7" name="body">
