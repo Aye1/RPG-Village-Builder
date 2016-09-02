@@ -35,7 +35,7 @@ public class GameController : MonoBehaviour {
         //DontDestroyOnLoad(uiManager);
 
 		currentBoard = new Board();
-        LoadLevel("bossmap");
+        LoadLevel("tuto_map");
 	}
 
     /*void OnLevelWasLoaded(int level)
