@@ -23,10 +23,6 @@ public abstract class Enemy : MonoBehaviour  {
 
     public bool groundAhead = false;
 
-    //for the drop after death
-    private DropManager dropManager;
-    public LivingCollectible Drop;
-
     // Ony for Unity setting
     public int initMaxHealth = 10;
     public int initDamage = 3;
@@ -169,7 +165,7 @@ public abstract class Enemy : MonoBehaviour  {
         WakeRange = initWakeRange;
         MoveSpeed = initMoveSpeed;
         AggroRange = initAggroRange;
-        dropManager = FindObjectOfType<DropManager>(); //for the drop
+        //dropManager = FindObjectOfType<DropManager>(); //for the drop
         Init();
     }
 
@@ -226,7 +222,7 @@ public abstract class Enemy : MonoBehaviour  {
     public void Die()
     {
         isdead = true;
-        dropManager.CreateSphere(Drop, gameObject.transform.position);
+        DropManager.Instance.CreateSphere(gameObject.transform.position);
         gameObject.SetActive(false);
     }
     #region Abstract methods
