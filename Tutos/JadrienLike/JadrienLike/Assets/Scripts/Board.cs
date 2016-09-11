@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 
 public class Board {
 	
@@ -11,6 +10,7 @@ public class Board {
 	private int _sizeY;
 	private Transform _boardHolder;
 	private ArrayList _layers;
+    private ArrayList _dynamicObjects;
 	#endregion
 	
 	#region Accessors
@@ -52,25 +52,6 @@ public class Board {
 	}
 
 	/// <summary>
-	/// Gets or sets the rows of the map.
-	/// </summary>
-	/// <value>The rows of the map</value>
-	/*public ArrayList Rows 
-	{
-		get { return _rows; }
-		set { 
-			if (value != null)
-			{
-				_rows = value;
-				SizeY = _rows.Count;
-				ArrayList firstRow = _rows.ToArray()[0] as ArrayList;
-				SizeX = firstRow.Count;
-				_rows.Insert (0, firstRow);
-			}
-		}
-	}*/
-
-	/// <summary>
 	/// Gets or sets the different layers of the map
 	/// </summary>
 	/// <value>The layers of the map.</value>
@@ -88,6 +69,21 @@ public class Board {
 			}
 		}
 	}
+
+    /// <summary>
+    /// Gets or sets the dynamic objects of the map (e.g. doors)
+    /// </summary>
+    public ArrayList DynamicObjects
+    {
+        get { return _dynamicObjects; }
+        set
+        {
+            if (value != null)
+            {
+                _dynamicObjects = value;
+            }
+        }
+    }
 	#endregion
 	
 	#region Constructors

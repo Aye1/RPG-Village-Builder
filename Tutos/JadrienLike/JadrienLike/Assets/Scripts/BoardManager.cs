@@ -1,19 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using Random = UnityEngine.Random;
 using System;
-using UnityEngine.UI;
 
 public class BoardManager : MonoBehaviour {
 
     #region Unity debug variables
+    [Header("Debug")]
     public bool debugMode = false;
     public int debugZoneId = 0;
     #endregion
 
     #region Tiles
+    [Header("Tiles")]
     public GameObject[] topTiles;
 	public GameObject[] bottomTiles;
 	public GameObject[] leftTiles;
@@ -28,13 +28,14 @@ public class BoardManager : MonoBehaviour {
 	public GameObject[] cliffhgTiles;
 	public GameObject[] cliffhdTiles;
 	public GameObject[] backgroundTiles;
-    public GameObject[] exitTiles;
+    public Door[] exitTiles;
     public GameObject   ladderTile;
     public GameObject   leftChair;
     public GameObject[] oneWayPlatformTiles;
     #endregion
 
     #region Enemies
+    [Header("Enemies")]
     public GameObject[] clockEnemies;
     public GameObject[] dumbEnemies;
     public GameObject[] cardEnemies;
@@ -43,6 +44,7 @@ public class BoardManager : MonoBehaviour {
     #endregion
 
     #region Collectibles
+    [Header("Collectibles")]
     public GameObject[] coins;
     public GameObject[] redPotions;
     public GameObject[] bluePotions;
@@ -240,6 +242,26 @@ public class BoardManager : MonoBehaviour {
 		InstantiateBoard(board);
 		return board;
 	}
+
+    /// <summary>
+    /// Deletes all children of the board.
+    /// </summary>
+    public void EmptyBoard()
+    {
+        int removeCount = 0;
+        // First loading, you can't empty the board
+        if (boardHolder == null)
+        {
+            return;
+        }
+
+        foreach (Transform child in boardHolder.transform)
+        {
+            Destroy(child.gameObject);
+            removeCount++;
+        }
+        Debug.Log("Elements removed from board: " + removeCount);
+    }
 	
     [Obsolete("Old map generation, may be removed")]
 	private IntCouple GenerateBoardSize() {
@@ -303,9 +325,12 @@ public class BoardManager : MonoBehaviour {
 	public void InstantiateBoard(Board board) 
 	{
         CreateZones();
-		boardHolder = new GameObject("Board").transform;
-		board.BoardHolder = boardHolder;
-
+        // First board creation
+        if (boardHolder == null)
+        {
+            boardHolder = new GameObject("Board").transform;
+        }
+        board.BoardHolder = boardHolder;
         int xOffset = 0;
         int yOffset = 0;
         float currentZ = 0;
@@ -346,7 +371,8 @@ public class BoardManager : MonoBehaviour {
 					    toInstantiate = cornerhdTiles[Random.Range(0, cornerhdTiles.Length)];
 					    break;
 				    case "8":
-                        toInstantiate = exitTiles[Random.Range(0, exitTiles.Length)];
+                            toInstantiate = exitTiles[Random.Range(0, exitTiles.Length)].gameObject;
+                            //throw new Exception("Doors are managed dynamically now");
 					    break;
 				    case "9":
 					    toInstantiate = leftTiles[Random.Range(0, leftTiles.Length)];
@@ -422,6 +448,26 @@ public class BoardManager : MonoBehaviour {
 			}
             currentZ += 0.1f;
 		}
+        InstantiateDynamicObjects(board);
         ChangeZoneLayout();
 	}
+    
+    private void InstantiateDynamicObjects(Board board)
+    {
+        //TODO: this code should be more generic
+        foreach (DynamicMapObject obj in board.DynamicObjects)
+        {
+            if (obj.ObjectType == MapObjectType.Door)
+            {
+                Door toInstantiate = exitTiles[Random.Range(0, exitTiles.Length)];
+                toInstantiate.destination = obj.properties["destination"];
+                if (toInstantiate != null)
+                {
+                    GameObject instance = Instantiate(toInstantiate.gameObject, new Vector3(obj.x, board.SizeY - obj.y, toInstantiate.transform.position.z), Quaternion.identity) as GameObject;
+                    instance.transform.SetParent(boardHolder);
+                }
+            }
+        }
+    }
 }
+
