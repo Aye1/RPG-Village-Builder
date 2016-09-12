@@ -35,7 +35,7 @@ public class GameController : MonoBehaviour {
         //DontDestroyOnLoad(uiManager);
 
 		currentBoard = new Board();
-        LoadLevel("tuto_map");
+        LoadLevel("level_select");
 	}
 
     /*void OnLevelWasLoaded(int level)
@@ -55,10 +55,15 @@ public class GameController : MonoBehaviour {
 
     public void LoadLevel(string levelName)
     {
+        boardManager.EmptyBoard();
+
         MapLoader loader = new MapLoader(levelName);
         ArrayList layers = loader.Layers;
         ArrayList parsedLayers = new ArrayList();
         CSVParser parser = CSVParser.Instance;
+
+        // Dynamic objects (e.g. doors)
+        currentBoard.DynamicObjects = loader.DynamicObjects;
 
         foreach (string layer in layers)
         {

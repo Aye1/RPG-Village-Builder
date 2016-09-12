@@ -190,7 +190,7 @@ public class Player : MonoBehaviour
         //TODO: real door management
         if (!doorTaken)
         {
-            FindObjectOfType<GameController>().LoadLevel("large_level");
+            FindObjectOfType<GameController>().LoadLevel(door.destination);
             doorTaken = true;
         }
     }

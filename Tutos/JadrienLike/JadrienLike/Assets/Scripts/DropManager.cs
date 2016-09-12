@@ -1,25 +1,34 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class DropManager : MonoBehaviour {
 
-    private DropManager instance;
+    private static DropManager _instance;
+    public LivingCollectible sphere;
 
-    void Start()
+    public static DropManager Instance
     {
-        if(instance == null)
+        get
         {
-            instance = this;
+            if (_instance == null)
+            {
+                _instance = new DropManager();
+            }
+            return _instance;
         }
-        else if (instance != this)
+        private set
         {
-            Destroy(gameObject);
+            _instance = value;
         }
-      
     }
 
-    public void CreateSphere(LivingCollectible Drop, Vector3 pos)
+    void Awake()
     {
-        Instantiate(Drop, pos, Quaternion.identity);
+        Instance = this;
+    }
+
+    public void CreateSphere(Vector3 pos)
+    {
+        if (sphere != null)
+            Instantiate(sphere, pos, Quaternion.identity);
     }
 }

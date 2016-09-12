@@ -1,25 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Door : MonoBehaviour {
 
-    private Vector3 _destination;
-
-    public Vector3 Destination
-    {
-        get
-        {
-            return _destination;
-        }
-
-        set
-        {
-            if (value != null)
-            {
-                _destination = value;
-            }
-        }
-    }
+    public string destination;
 
 	// Use this for initialization
 	void Start () {
