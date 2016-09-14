@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 {
 
     #region Unity debug only
+    [Header("Unity debug")]
     public bool easyKill = true;
     #endregion
 
@@ -19,27 +20,28 @@ public class Player : MonoBehaviour
     public AudioClip[] jumpClips;
     #endregion
 
+    [Header("Move Characteristics")]
     public float speed = 50f;
     public float jumpPower = 800f;
     public bool grounded = true;
-    public Text textCount;
-    private int count = 0;
-    public Vector2 knockback;
-    private bool untouchable = false;
+    public Vector3 initPosition;
+
+    [Header("Attack Characteristics")]
     public int FootHit = 20;
     public int weaponDamage = 50;
-    public Text textMental;
+    public Vector2 knockback;
+
+    public Text textCount;
+    private int count = 0;
+    private bool untouchable = false;
     private bool backward = false;
     private int _mental = 50;
     private int _health = 100;
-
     private bool _isOnLadder = false;
     private int _countLadder = 0;
-    public Vector3 initPosition;
-
     private Enemy _onTop = null;
-
     private bool doorTaken;
+
     #region Accessors
     public int Mental
     {
@@ -111,6 +113,7 @@ public class Player : MonoBehaviour
     {
         animator.SetBool("grounded", grounded);
     }
+
     #region Ladder
     public void OnEnterLadder(Ladder ladder)
     {
@@ -179,9 +182,22 @@ public class Player : MonoBehaviour
     }
     #endregion Ladder
 
+    /// <summary>
+    /// Teleports the player to the given destination
+    /// </summary>
+    /// <param name="destination"></param>
     public void Teleport(Vector3 destination)
     {
         //transform.position = destination;
+        transform.position = destination;
+    }
+
+    /// <summary>
+    /// Resets the position of the player at its initial position
+    /// TODO: Test after level change
+    /// </summary>
+    public void ResetPosition()
+    {
         transform.position = initPosition;
     }
 
