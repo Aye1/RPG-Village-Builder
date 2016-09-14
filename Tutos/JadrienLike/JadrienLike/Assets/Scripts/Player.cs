@@ -215,6 +215,12 @@ public class Player : MonoBehaviour
     {
         _isOnLadder = _countLadder > 0;
         float h = Input.GetAxis("Horizontal");
+
+        if (Input.GetButtonDown("Jump") && grounded)
+        {
+            Jump();
+        }
+
         if (!_isOnLadder || (_isOnLadder && !grounded ))
         {
             if (h > 0)
@@ -243,12 +249,6 @@ public class Player : MonoBehaviour
                 animator.SetTrigger("Rest");
             }
         }
-      
-        if (Input.GetButtonDown("Jump") && grounded)
-        {
-            Jump();
-        }
-
     }
 
     private void Jump()
