@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
     public Vector2 knockback;
 
     public Text textCount;
-    private int count = 0;
+    private int _spiritCount = 0;
     private bool untouchable = false;
     private bool backward = false;
     private int _mental = 50;
@@ -41,6 +41,8 @@ public class Player : MonoBehaviour
     private int _countLadder = 0;
     private Enemy _onTop = null;
     private bool doorTaken;
+
+    private int _maxSpirit = 1000;
 
     #region Accessors
     public int Mental
@@ -98,6 +100,29 @@ public class Player : MonoBehaviour
         set
         {
             _onTop = value;
+        }
+    }
+
+    public int Spirit
+    {
+        get
+        {
+            return _spiritCount;
+        }
+        set
+        {
+            if (value >= 0 && value <= _maxSpirit)
+            {
+                _spiritCount = value;
+            }
+            else if (value < 0)
+            {
+                _spiritCount = 0;
+            }
+            else if (value > _maxSpirit)
+            {
+                _spiritCount = _maxSpirit;
+            }
         }
     }
     #endregion
@@ -280,8 +305,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.CompareTag("Coin"))
         {
             other.gameObject.SetActive(false);
-            count++;
-            setCoins(count);
+            _spiritCount++;
         }
         else if (other.gameObject.CompareTag("MentalUp"))
         {
@@ -331,11 +355,6 @@ public class Player : MonoBehaviour
             Damage(enemy.Damage, enemy.transform.position);
         }
     }
-    [Obsolete("Will be removed soon")]
-    void setCoins(int count)
-    {
-        textCount.text = "Spirit : " + count;
-    }
 
     public void Damage(int hit, Vector3 attacker)
     {
@@ -360,6 +379,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Starts invincibility frames
+    /// </summary>
     private void becomesUntouchable()
     {
         // Time in ms
@@ -369,6 +391,10 @@ public class Player : MonoBehaviour
         t.Change(untouchTime, 0);
     }
 
+    /// <summary>
+    /// Stops invincibility frames (callback)
+    /// </summary>
+    /// <param name="state"></param>
     private void stopsBeingUntouchableCallback(object state)
     {
         untouchable = false;

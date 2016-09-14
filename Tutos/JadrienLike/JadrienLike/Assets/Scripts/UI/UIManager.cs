@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour {
     public Player player;
     public GameController gameController;
     public Canvas pauseMenu;
+    public Text spiritCount;
 
     private BlackScreen _blackScreen;
      
@@ -26,9 +27,13 @@ public class UIManager : MonoBehaviour {
         {
             mentalBar.CurrentValue = player.Mental;
         }
-        if(healthBar != null && healthBar != null)
+        if(healthBar != null && healthBar != null && player != null)
         {
             healthBar.CurrentValue = player.Health;
+        }
+        if (spiritCount != null && player != null)
+        {
+            spiritCount.text = "Spirit: " + player.Spirit;
         }
         pauseMenu.enabled = gameController.pause;
 
@@ -45,5 +50,4 @@ public class UIManager : MonoBehaviour {
             Debug.Log("Black screen not found");
         }
     }
-
 }
