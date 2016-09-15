@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 {
 
     #region Unity debug only
+    [Header("Unity debug")]
     public bool easyKill = true;
     #endregion
 
@@ -19,27 +20,30 @@ public class Player : MonoBehaviour
     public AudioClip[] jumpClips;
     #endregion
 
+    [Header("Move Characteristics")]
     public float speed = 50f;
     public float jumpPower = 800f;
     public bool grounded = true;
-    public Text textCount;
-    private int count = 0;
-    public Vector2 knockback;
-    private bool untouchable = false;
+    public Vector3 initPosition;
+
+    [Header("Attack Characteristics")]
     public int FootHit = 20;
     public int weaponDamage = 50;
-    public Text textMental;
+    public Vector2 knockback;
+
+    public Text textCount;
+    private int _spiritCount = 0;
+    private bool untouchable = false;
     private bool backward = false;
     private int _mental = 50;
     private int _health = 100;
-
     private bool _isOnLadder = false;
     private int _countLadder = 0;
-    public Vector3 initPosition;
-
     private Enemy _onTop = null;
-
     private bool doorTaken;
+
+    private int _maxSpirit = 1000;
+
     #region Accessors
     public int Mental
     {
@@ -98,6 +102,29 @@ public class Player : MonoBehaviour
             _onTop = value;
         }
     }
+
+    public int Spirit
+    {
+        get
+        {
+            return _spiritCount;
+        }
+        set
+        {
+            if (value >= 0 && value <= _maxSpirit)
+            {
+                _spiritCount = value;
+            }
+            else if (value < 0)
+            {
+                _spiritCount = 0;
+            }
+            else if (value > _maxSpirit)
+            {
+                _spiritCount = _maxSpirit;
+            }
+        }
+    }
     #endregion
 
     void Start()
@@ -111,6 +138,7 @@ public class Player : MonoBehaviour
     {
         animator.SetBool("grounded", grounded);
     }
+
     #region Ladder
     public void OnEnterLadder(Ladder ladder)
     {
@@ -179,9 +207,22 @@ public class Player : MonoBehaviour
     }
     #endregion Ladder
 
+    /// <summary>
+    /// Teleports the player to the given destination
+    /// </summary>
+    /// <param name="destination"></param>
     public void Teleport(Vector3 destination)
     {
         //transform.position = destination;
+        transform.position = destination;
+    }
+
+    /// <summary>
+    /// Resets the position of the player at its initial position
+    /// TODO: Test after level change
+    /// </summary>
+    public void ResetPosition()
+    {
         transform.position = initPosition;
     }
 
@@ -264,8 +305,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.CompareTag("Coin"))
         {
             other.gameObject.SetActive(false);
-            count++;
-            setCoins(count);
+            _spiritCount++;
         }
         else if (other.gameObject.CompareTag("MentalUp"))
         {
@@ -315,11 +355,6 @@ public class Player : MonoBehaviour
             Damage(enemy.Damage, enemy.transform.position);
         }
     }
-    [Obsolete("Will be removed soon")]
-    void setCoins(int count)
-    {
-        textCount.text = "Spirit : " + count;
-    }
 
     public void Damage(int hit, Vector3 attacker)
     {
@@ -344,6 +379,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Starts invincibility frames
+    /// </summary>
     private void becomesUntouchable()
     {
         // Time in ms
@@ -353,6 +391,10 @@ public class Player : MonoBehaviour
         t.Change(untouchTime, 0);
     }
 
+    /// <summary>
+    /// Stops invincibility frames (callback)
+    /// </summary>
+    /// <param name="state"></param>
     private void stopsBeingUntouchableCallback(object state)
     {
         untouchable = false;
