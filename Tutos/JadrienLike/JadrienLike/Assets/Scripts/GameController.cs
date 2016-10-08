@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour {
 
 	private Board currentBoard = null;
 	private static GameController instance = null;
+    private RoomManager _roomManager;
 
     public bool pause;
 
@@ -28,30 +29,14 @@ public class GameController : MonoBehaviour {
         {
             player = GetComponent<Player>();
         }
-
 		DontDestroyOnLoad(gameObject);
         DontDestroyOnLoad(player);
         DontDestroyOnLoad(boardManager);
         //DontDestroyOnLoad(uiManager);
 
 		currentBoard = new Board();
-        LoadLevel("level_select");
+        LoadLevel("triple-room");
 	}
-
-    /*void OnLevelWasLoaded(int level)
-    {
-        if (level == 2)
-        {
-            LoadLevel("tuto_map");
-        }
-    }*/
-
-    /*public void ChangeToLevel(string levelName)
-    {
-        SceneManager.LoadScene(2);
-        SceneManager.MoveGameObjectToScene(uiManager.gameObject, SceneManager.GetSceneAt(2));
-        //LoadLevel(levelName);
-    }*/
 
     public void LoadLevel(string levelName)
     {

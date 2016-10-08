@@ -5,9 +5,10 @@ public class Camera_behaviour : MonoBehaviour
 {
 
     public GameObject player;
-    private Vector3 offset;
+    private Vector3 _offset;
     private Vector3 minResolution = new Vector3(1024f, 768f, 0);
     private float targetRatio = 16f / 9f;
+    private Vector3 _roomOffset = new Vector3(8.5f, 5.5f, -10.0f);
 
     private Camera _camera;
     private int _width;
@@ -49,18 +50,39 @@ public class Camera_behaviour : MonoBehaviour
         }
     }
 
+    // Offset of the camera
+    public Vector3 Offset
+    {
+        get
+        {
+            return _offset;
+        }
+
+        set
+        {
+            if (value != _offset)
+            {
+                _offset = value;
+            }
+        }
+    }
+
 
     // Use this for initialization
     void Start()
     {
-        offset = transform.position; //- player.transform.position;
+        //_offset = transform.position; //- player.transform.position;
+        Offset = Vector3.zero;
         _camera = GetComponent<Camera>();
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        transform.position = player.transform.position + offset;
+        // Used when the camera follows the player
+        //transform.position = player.transform.position + offset;
+        transform.position = _roomOffset + Offset;
+
         Width = Screen.width;
         Height = Screen.height;
         //AdjustScreenScale();
