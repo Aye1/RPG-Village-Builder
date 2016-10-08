@@ -11,7 +11,6 @@ public class GameController : MonoBehaviour {
 
 	private Board currentBoard = null;
 	private static GameController instance = null;
-    private RoomManager _roomManager;
 
     public bool pause;
 
@@ -35,7 +34,7 @@ public class GameController : MonoBehaviour {
         //DontDestroyOnLoad(uiManager);
 
 		currentBoard = new Board();
-        LoadLevel("triple-room");
+        LoadLevel("simple-18-10");
 	}
 
     public void LoadLevel(string levelName)
@@ -60,7 +59,7 @@ public class GameController : MonoBehaviour {
         {
             currentBoard.Layers = parsedLayers;
             Debug.Log("Layers added to the board");
-            boardManager.InstantiateBoard(currentBoard);
+            boardManager.InstantiateBoard(currentBoard, Vector3.zero);
             boardManager.ZoneId = 0;
         }
         player.transform.position = boardManager.InitPlayerPosition;

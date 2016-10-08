@@ -239,7 +239,7 @@ public class BoardManager : MonoBehaviour {
         // First line may be removed
 		IntCouple boardsize = GenerateBoardSize();
 		Board board = new Board(boardsize);
-		InstantiateBoard(board);
+		InstantiateBoard(board, Vector3.zero);
 		return board;
 	}
 
@@ -322,7 +322,7 @@ public class BoardManager : MonoBehaviour {
 		}
 	}*/
 
-	public void InstantiateBoard(Board board) 
+	public void InstantiateBoard(Board board, Vector3 offset) 
 	{
         CreateZones();
         // First board creation
@@ -331,8 +331,8 @@ public class BoardManager : MonoBehaviour {
             boardHolder = new GameObject("Board").transform;
         }
         board.BoardHolder = boardHolder;
-        int xOffset = 0;
-        int yOffset = 0;
+        float xOffset = offset.x;
+        float yOffset = offset.y;
         float currentZ = 0;
 		GameObject toInstantiate = null;
 
@@ -469,5 +469,33 @@ public class BoardManager : MonoBehaviour {
             }
         }
     }
+
+    public void LoadRoom(string roomName, Vector3 offset)
+    {
+        //boardManager.EmptyBoard();
+
+        MapLoader loader = new MapLoader(roomName);
+        ArrayList layers = loader.Layers;
+        ArrayList parsedLayers = new ArrayList();
+        CSVParser parser = CSVParser.Instance;
+        Board currentBoard = new Board();
+        // Dynamic objects (e.g. doors)
+        currentBoard.DynamicObjects = loader.DynamicObjects;
+
+        foreach (string layer in layers)
+        {
+            parsedLayers.Add(CSVParser.ParseCSV(layer));
+        }
+        if (parsedLayers.Count == 0)
+            Debug.Log("Error while loading the map.");
+        else
+        {
+            currentBoard.Layers = parsedLayers;
+            Debug.Log("Layers added to the board");
+            InstantiateBoard(currentBoard, offset);
+            ZoneId = 0;
+        }
+    }
+
 }
 

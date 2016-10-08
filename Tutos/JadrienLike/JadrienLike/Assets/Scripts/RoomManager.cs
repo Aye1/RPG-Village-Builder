@@ -12,6 +12,7 @@ public class RoomManager : MonoBehaviour {
     private Player _player;
     private Camera _camera;
     private Camera_behaviour _camera_behaviour;
+    private BoardManager _boardManager;
 
     // Use this for initialization
     void Start() {
@@ -20,6 +21,7 @@ public class RoomManager : MonoBehaviour {
         _player = FindObjectOfType<Player>();
         _camera = FindObjectOfType<Camera>();
         _camera_behaviour = _camera.GetComponentInChildren<Camera_behaviour>();
+        _boardManager = FindObjectOfType<GameController>().boardManager;
     }
 
     // Update is called once per frame
@@ -46,7 +48,9 @@ public class RoomManager : MonoBehaviour {
         }
 
         if (shouldMove)
-        {      
+        {
+            Vector3 offset = new Vector3(_currentRoomX * _roomWidth, _currentRoomY * _roomHeight, 0.0f);
+            _boardManager.LoadRoom("simple-18-10", offset);
             MoveCamera();
         }
         MovePlayer(move);
@@ -54,7 +58,7 @@ public class RoomManager : MonoBehaviour {
 
     private void MoveCamera()
     {
-        Vector2 offset = new Vector3(_currentRoomX * _roomWidth, _currentRoomY * _roomHeight, 0.0f);
+        Vector3 offset = new Vector3(_currentRoomX * _roomWidth, _currentRoomY * _roomHeight, 0.0f);
         _camera_behaviour.Offset = offset;
     }
 
