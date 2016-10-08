@@ -22,5 +22,5 @@ sysinfo.txt
 
 # Added by AJR
 *.exe
-Tutos/JadrienLike/JadrienLike/Alice_Data/*
+/Tutos/JadrienLike/JadrienLike/Alice_Data/
 *.pdb

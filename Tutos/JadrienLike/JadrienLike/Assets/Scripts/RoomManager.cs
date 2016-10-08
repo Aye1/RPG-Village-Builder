@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class RoomManager : MonoBehaviour {
 
@@ -13,6 +14,7 @@ public class RoomManager : MonoBehaviour {
     private Camera _camera;
     private Camera_behaviour _camera_behaviour;
     private BoardManager _boardManager;
+    private Dictionary<Vector2, bool> _rooms;
 
     // Use this for initialization
     void Start() {
@@ -22,6 +24,7 @@ public class RoomManager : MonoBehaviour {
         _camera = FindObjectOfType<Camera>();
         _camera_behaviour = _camera.GetComponentInChildren<Camera_behaviour>();
         _boardManager = FindObjectOfType<GameController>().boardManager;
+        _rooms = new Dictionary<Vector2, bool>();
     }
 
     // Update is called once per frame
@@ -50,7 +53,11 @@ public class RoomManager : MonoBehaviour {
         if (shouldMove)
         {
             Vector3 offset = new Vector3(_currentRoomX * _roomWidth, _currentRoomY * _roomHeight, 0.0f);
-            _boardManager.LoadRoom("simple-18-10", offset);
+            if (!_rooms.ContainsKey(new Vector2(_currentRoomX, _currentRoomY)))
+            {
+                _boardManager.LoadRoom("simple-18-10", offset);
+                _rooms.Add(new Vector2(_currentRoomX, _currentRoomY), true);
+            }
             MoveCamera();
         }
         MovePlayer(move);
