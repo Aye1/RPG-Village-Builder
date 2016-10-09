@@ -8,8 +8,6 @@ public class GameController : MonoBehaviour {
 	public Player player;
 	public BoardManager boardManager;
     public UIManager uiManager;
-
-    private Room currentRoom;
 	private static GameController instance = null;
 
     public bool pause;
@@ -34,16 +32,13 @@ public class GameController : MonoBehaviour {
         //DontDestroyOnLoad(uiManager);
 
 		//currentBoard = new Board();
-        LoadLevel("simple-18-11");
+        LoadLevel("Rooms/room_132_001");
 	}
 
     public void LoadLevel(string levelName)
     {
         boardManager.EmptyBoard();
-
-        Room room = new Room(levelName);
-        currentRoom = room;
-        boardManager.InstantiateRoom(room, Vector3.zero);
+        boardManager.LoadRoom(levelName, Vector3.zero);
         boardManager.ZoneId = 0;
         player.transform.position = boardManager.InitPlayerPosition;
         player.initPosition = boardManager.InitPlayerPosition;

@@ -53,15 +53,10 @@ public class BoardManager : MonoBehaviour {
 
     #region Private variables
     private Vector3 _initPlayerPosition;
-
-    private int minX = 20;
-	private int maxX = 40;
-	private int minY = 20;
-	private int maxY = 40;
-
     private int _zoneId = 0;
     private Dictionary<int, Zone> _zonesDico;
     private Transform boardHolder;
+    private Room currentRoom;
     #endregion
 
     #region Accessors
@@ -268,6 +263,10 @@ public class BoardManager : MonoBehaviour {
 
         float xOffset = offset.x;
         float yOffset = offset.y;
+
+        room.PosX = (int) xOffset / RoomManager.RoomWidth;
+        room.PosY = (int)yOffset / RoomManager.RoomHeight;
+
         float currentZ = 0;
         GameObject toInstantiate = null;
 
@@ -409,6 +408,7 @@ public class BoardManager : MonoBehaviour {
     {
         //boardManager.EmptyBoard();
         Room room = new Room(roomName);
+        currentRoom = room;
         InstantiateRoom(room, offset);
     }
 
