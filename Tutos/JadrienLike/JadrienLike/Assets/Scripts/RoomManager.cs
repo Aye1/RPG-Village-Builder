@@ -11,7 +11,7 @@ public class RoomManager : MonoBehaviour {
     public bool canStartChecking;
 
     public static readonly int RoomWidth = 18;
-    public static readonly int RoomHeight = 10;
+    public static readonly int RoomHeight = 11;
     private static readonly string RoomFolder = "Rooms/";
 
     private bool _init;
@@ -74,6 +74,18 @@ public class RoomManager : MonoBehaviour {
             shouldMove = true;
             _currentRoomX--;
             move = new Vector3(-1.2f, 0.0f, 0.0f);
+        }
+        else if (_player.transform.position.y < _currentRoomY * RoomHeight + 0.3)
+        {
+            shouldMove = true;
+            _currentRoomY--;
+            move = new Vector3(0.0f, 0.0f, 0.0f);
+        }
+        else if (_player.transform.position.y > (_currentRoomY+1) * RoomHeight - 0.3)
+        {
+            shouldMove = true;
+            _currentRoomY++;
+            move = new Vector3(0.0f, 1.2f, 0.0f);
         }
 
         if (shouldMove)
