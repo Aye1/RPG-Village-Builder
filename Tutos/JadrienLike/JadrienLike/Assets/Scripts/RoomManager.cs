@@ -138,15 +138,20 @@ public class RoomManager : MonoBehaviour {
     private string SelectNextRoom()
     {
         string nextRoomPath = "";
-        List<string> pool = CreatePathPool(ComputePattern());
+        List<string> pool = CreatePathPool(ComputePatterns());
         string selectedRoom = pool[Random.Range(0, pool.Count)];
         nextRoomPath = RoomFolder  + selectedRoom;
         return nextRoomPath;
     }
 
-    private int ComputePattern()
+    /// <summary>
+    /// Computes the positive and negative patterns for the doors/walls
+    /// </summary>
+    /// <returns></returns>
+    private Vector2 ComputePatterns()
     {
-        int pattern = 0;
+        int positivePattern = 0;
+        int negativePattern = 0;
         Vector2 leftVector = new Vector2(_currentRoomX - 1, _currentRoomY);
         Vector2 rightVector = new Vector2(_currentRoomX + 1, _currentRoomY);
         Vector2 topVector = new Vector2(_currentRoomX, _currentRoomY + 1);
@@ -156,11 +161,19 @@ public class RoomManager : MonoBehaviour {
             Room _leftRoom = _rooms[leftVector];
             if (_leftRoom.doorRightBot)
             {
-                pattern += 128;
+                positivePattern += 128;
+            }
+            else
+            {
+                negativePattern += 128;
             }
             if (_leftRoom.doorRightTop)
             {
-                pattern += 64;
+                positivePattern += 64;
+            }
+            else
+            {
+                negativePattern += 64;
             }
         }
         if (_rooms.ContainsKey(rightVector))
@@ -168,11 +181,19 @@ public class RoomManager : MonoBehaviour {
             Room _rightRoom = _rooms[rightVector];
             if (_rightRoom.doorLeftBot)
             {
-                pattern += 4;
+                positivePattern += 4;
+            }
+            else
+            {
+                negativePattern += 4;
             }
             if (_rightRoom.doorLeftTop)
             {
-                pattern += 8;
+                positivePattern += 8;
+            }
+            else
+            {
+                negativePattern += 8;
             }
         }
         if (_rooms.ContainsKey(topVector))
@@ -180,11 +201,19 @@ public class RoomManager : MonoBehaviour {
             Room _topRoom = _rooms[topVector];
             if (_topRoom.holeBottomLeft)
             {
-                pattern += 32;
+                positivePattern += 32;
+            }
+            else
+            {
+                negativePattern += 32;
             }
             if (_topRoom.holeBottomRight)
             {
-                pattern += 16;
+                positivePattern += 16;
+            }
+            else
+            {
+                negativePattern += 16;
             }
         }
         if (_rooms.ContainsKey(bottomVector))
@@ -192,14 +221,22 @@ public class RoomManager : MonoBehaviour {
             Room _bottomRoom = _rooms[bottomVector];
             if (_bottomRoom.holeTopLeft)
             {
-                pattern += 1;
+                positivePattern += 1;
+            }
+            else
+            {
+                negativePattern += 1;
             }
             if (_bottomRoom.holeTopRight)
             {
-                pattern += 2;
+                positivePattern += 2;
+            }
+            else
+            {
+                negativePattern += 2;
             }
         }
-        return pattern;
+        return new Vector2(positivePattern, negativePattern);
     }
 
     /// <summary>
@@ -207,7 +244,7 @@ public class RoomManager : MonoBehaviour {
     /// </summary>
     /// <param name="pattern">Pattern which defines the options</param>
     /// <returns>A list of the filenames of the correct rooms</returns>
-    private List<string> CreatePathPool(int pattern)
+    private List<string> CreatePathPool(Vector2 patterns)
     {
         List<string> pool = new List<string>();
         foreach(string file in System.IO.Directory.GetFiles("Assets/Resources/Rooms"))
@@ -216,11 +253,15 @@ public class RoomManager : MonoBehaviour {
             {
                 string shortfile = RoomNameParser.GetShortFilename(file);
                 int number = RoomNameParser.GetNumberFromFilename(shortfile);
-                if ((number & pattern) == pattern)
+                if ((number & (int)patterns.x) == patterns.x && (((int)patterns.y & ~number) == patterns.y))
                 {
                     pool.Add(shortfile);
                 }
             }
+        }
+        if (pool.Count == 0)
+        {
+            Debug.Log("No room found for this configuration:" + patterns.x + " - " + patterns.y);
         }
         return pool;
     }
