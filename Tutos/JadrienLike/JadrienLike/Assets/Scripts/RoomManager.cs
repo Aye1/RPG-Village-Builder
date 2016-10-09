@@ -55,7 +55,7 @@ public class RoomManager : MonoBehaviour {
             Vector3 offset = new Vector3(_currentRoomX * _roomWidth, _currentRoomY * _roomHeight, 0.0f);
             if (!_rooms.ContainsKey(new Vector2(_currentRoomX, _currentRoomY)))
             {
-                _boardManager.LoadRoom("simple-18-10", offset);
+                _boardManager.LoadRoom("simple-18-11", offset);
                 _rooms.Add(new Vector2(_currentRoomX, _currentRoomY), true);
             }
             MoveCamera();

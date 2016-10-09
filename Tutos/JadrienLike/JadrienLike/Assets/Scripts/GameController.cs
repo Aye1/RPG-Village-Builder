@@ -9,7 +9,7 @@ public class GameController : MonoBehaviour {
 	public BoardManager boardManager;
     public UIManager uiManager;
 
-	private Board currentBoard = null;
+    private Room currentRoom;
 	private static GameController instance = null;
 
     public bool pause;
@@ -33,35 +33,18 @@ public class GameController : MonoBehaviour {
         DontDestroyOnLoad(boardManager);
         //DontDestroyOnLoad(uiManager);
 
-		currentBoard = new Board();
-        LoadLevel("simple-18-10");
+		//currentBoard = new Board();
+        LoadLevel("simple-18-11");
 	}
 
     public void LoadLevel(string levelName)
     {
         boardManager.EmptyBoard();
 
-        MapLoader loader = new MapLoader(levelName);
-        ArrayList layers = loader.Layers;
-        ArrayList parsedLayers = new ArrayList();
-        CSVParser parser = CSVParser.Instance;
-
-        // Dynamic objects (e.g. doors)
-        currentBoard.DynamicObjects = loader.DynamicObjects;
-
-        foreach (string layer in layers)
-        {
-            parsedLayers.Add(CSVParser.ParseCSV(layer));
-        }
-        if (parsedLayers.Count == 0)
-            Debug.Log("Error while loading the map.");
-        else
-        {
-            currentBoard.Layers = parsedLayers;
-            Debug.Log("Layers added to the board");
-            boardManager.InstantiateBoard(currentBoard, Vector3.zero);
-            boardManager.ZoneId = 0;
-        }
+        Room room = new Room(levelName);
+        currentRoom = room;
+        boardManager.InstantiateRoom(room, Vector3.zero);
+        boardManager.ZoneId = 0;
         player.transform.position = boardManager.InitPlayerPosition;
         player.initPosition = boardManager.InitPlayerPosition;
     }
