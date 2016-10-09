@@ -265,7 +265,7 @@ public class BoardManager : MonoBehaviour {
         float yOffset = offset.y;
 
         room.PosX = (int) xOffset / RoomManager.RoomWidth;
-        room.PosY = (int)yOffset / RoomManager.RoomHeight;
+        room.PosY = (int) yOffset / RoomManager.RoomHeight;
 
         float currentZ = 0;
         GameObject toInstantiate = null;
@@ -404,10 +404,8 @@ public class BoardManager : MonoBehaviour {
         }
     }
 
-    public void LoadRoom(string roomName, Vector3 offset)
+    public void LoadRoom(Room room, Vector3 offset)
     {
-        //boardManager.EmptyBoard();
-        Room room = new Room(roomName);
         currentRoom = room;
         InstantiateRoom(room, offset);
     }

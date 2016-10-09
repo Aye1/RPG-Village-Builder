@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour {
 
 	public Player player;
 	public BoardManager boardManager;
+    private RoomManager _roomManager;
     public UIManager uiManager;
 	private static GameController instance = null;
 
@@ -26,22 +27,27 @@ public class GameController : MonoBehaviour {
         {
             player = GetComponent<Player>();
         }
-		DontDestroyOnLoad(gameObject);
+        _roomManager = GetComponent<RoomManager>();
+        DontDestroyOnLoad(gameObject);
         DontDestroyOnLoad(player);
         DontDestroyOnLoad(boardManager);
         //DontDestroyOnLoad(uiManager);
 
 		//currentBoard = new Board();
-        LoadLevel("Rooms/room_132_001");
+        LoadLevel("Rooms/room_132_ini");
 	}
 
     public void LoadLevel(string levelName)
     {
         boardManager.EmptyBoard();
-        boardManager.LoadRoom(levelName, Vector3.zero);
+        // RoomManager may not be initialized before being used, for some reason
+        _roomManager.Init();
+        _roomManager.LoadRoom(levelName, Vector3.zero);
+
         boardManager.ZoneId = 0;
         player.transform.position = boardManager.InitPlayerPosition;
         player.initPosition = boardManager.InitPlayerPosition;
+        _roomManager.canStartChecking = true;
     }
 
 	// Update is called once per frame
