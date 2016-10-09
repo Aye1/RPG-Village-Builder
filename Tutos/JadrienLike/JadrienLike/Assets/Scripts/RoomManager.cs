@@ -126,10 +126,68 @@ public class RoomManager : MonoBehaviour {
     private string SelectNextRoom()
     {
         string nextRoomPath = "";
-        List<string> pool = CreatePathPool(128);
+        List<string> pool = CreatePathPool(ComputePattern());
         string selectedRoom = pool[Random.Range(0, pool.Count)];
         nextRoomPath = RoomFolder  + selectedRoom;
         return nextRoomPath;
+    }
+
+    private int ComputePattern()
+    {
+        int pattern = 0;
+        Vector2 leftVector = new Vector2(_currentRoomX - 1, _currentRoomY);
+        Vector2 rightVector = new Vector2(_currentRoomX + 1, _currentRoomY);
+        Vector2 topVector = new Vector2(_currentRoomX, _currentRoomY + 1);
+        Vector2 bottomVector = new Vector2(_currentRoomX, _currentRoomY - 1);
+        if (_rooms.ContainsKey(leftVector))
+        {
+            Room _leftRoom = _rooms[leftVector];
+            if (_leftRoom.doorRightBot)
+            {
+                pattern += 128;
+            }
+            if (_leftRoom.doorRightTop)
+            {
+                pattern += 64;
+            }
+        }
+        if (_rooms.ContainsKey(rightVector))
+        {
+            Room _rightRoom = _rooms[rightVector];
+            if (_rightRoom.doorLeftBot)
+            {
+                pattern += 4;
+            }
+            if (_rightRoom.doorLeftTop)
+            {
+                pattern += 8;
+            }
+        }
+        if (_rooms.ContainsKey(topVector))
+        {
+            Room _topRoom = _rooms[topVector];
+            if (_topRoom.holeBottomLeft)
+            {
+                pattern += 32;
+            }
+            if (_topRoom.holeBottomRight)
+            {
+                pattern += 16;
+            }
+        }
+        if (_rooms.ContainsKey(bottomVector))
+        {
+            Room _bottomRoom = _rooms[bottomVector];
+            if (_bottomRoom.holeTopLeft)
+            {
+                pattern += 1;
+            }
+            if (_bottomRoom.holeTopRight)
+            {
+                pattern += 2;
+            }
+        }
+        return pattern;
     }
 
     /// <summary>

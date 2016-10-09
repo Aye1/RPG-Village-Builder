@@ -11,14 +11,14 @@ public class Room {
 
     private string _name;
 
-    private bool _doorLeftBot;
-    private bool _doorLeftTop;
-    private bool _doorRightBot;
-    private bool _doorRightTop;
-    private bool _holeTopLeft;
-    private bool _holeTopRight;
-    private bool _holeBottomLeft;
-    private bool _holeBottomRight;
+    public bool doorLeftBot;
+    public bool doorLeftTop;
+    public bool doorRightBot;
+    public bool doorRightTop;
+    public bool holeTopLeft;
+    public bool holeTopRight;
+    public bool holeBottomLeft;
+    public bool holeBottomRight;
 
     #region Accessors
     /// <summary>
@@ -145,13 +145,13 @@ public class Room {
     private void LoadDoorInfo()
     {
         int number = RoomNameParser.GetNumberFromFilename(_name);
-        _doorLeftBot = (number & 128) == 128;
-        _doorLeftTop = (number & 64) == 64;
-        _holeTopLeft = (number & 32) == 32;
-        _holeTopRight = (number & 16) == 16;
-        _doorRightTop = (number & 8) == 8;
-        _doorRightBot = (number & 4) == 4;
-        _holeBottomRight = (number & 2) == 2;
-        _holeBottomLeft = (number & 1) == 1;
+        doorLeftBot = (number & 128) == 128;
+        doorLeftTop = (number & 64) == 64;
+        holeTopLeft = (number & 32) == 32;
+        holeTopRight = (number & 16) == 16;
+        doorRightTop = (number & 8) == 8;
+        doorRightBot = (number & 4) == 4;
+        holeBottomRight = (number & 2) == 2;
+        holeBottomLeft = (number & 1) == 1;
     }
 }
