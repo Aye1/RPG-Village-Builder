@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEngine;
 
 public class Room {
 
@@ -8,6 +9,7 @@ public class Room {
     private int _sizeY;
     private int _posX;
     private int _posY;
+    private ArrayList _enemies;
 
     private string _name;
 
@@ -118,6 +120,28 @@ public class Room {
             }
         }
     }
+
+    /// <summary>
+    /// List of enemies in the room
+    /// </summary>
+    public ArrayList Enemies
+    {
+        get
+        {
+            if (_enemies == null)
+            {
+                _enemies = new ArrayList();
+            }
+            return _enemies;
+        }
+        set
+        {
+            if (value != _enemies)
+            {
+                _enemies = value;
+            }
+        }
+    }
     #endregion
 
     public Room (string name)
@@ -153,5 +177,23 @@ public class Room {
         doorRightBot = (number & 4) == 4;
         holeBottomRight = (number & 2) == 2;
         holeBottomLeft = (number & 1) == 1;
+    }
+
+    public void OnPlayerExit()
+    {
+        foreach(GameObject enemy in Enemies)
+        {
+            enemy.gameObject.SetActive(false);
+            Debug.Log("Deactivating enemy "+ enemy+ " in room (" + PosX + "," + PosY + ")");
+        }
+    }
+
+    public void OnPlayerEnter()
+    {
+        foreach(GameObject enemy in Enemies)
+        {
+            enemy.gameObject.SetActive(true);
+            Debug.Log("Reactivating enemy "+ enemy+ " in room (" + PosX + "," + PosY + ")");
+        }
     }
 }

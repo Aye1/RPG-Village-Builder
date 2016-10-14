@@ -42,7 +42,7 @@ public class GameController : MonoBehaviour {
         boardManager.EmptyBoard();
         // RoomManager may not be initialized before being used, for some reason
         _roomManager.Init();
-        _roomManager.LoadRoom(levelName, Vector3.zero);
+        _roomManager.LoadRoom(levelName);
 
         boardManager.ZoneId = 0;
         player.transform.position = boardManager.InitPlayerPosition;

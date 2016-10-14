@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Threading;
+using Random = UnityEngine.Random;
 
-public class TimeBossClock : MonoBehaviour {
+public class TimeBossClock : Enemy {
 
     public GameObject little;
     public GameObject big;
@@ -122,5 +122,30 @@ public class TimeBossClock : MonoBehaviour {
         {
             timeBoss.LaunchPattern((_hour % 4)+1, _minute);
         }
+    }
+
+    protected override void Init()
+    {
+        //throw new NotImplementedException();
+    }
+
+    public override void Attack()
+    {
+       // throw new NotImplementedException();
+    }
+
+    public override void Move()
+    {
+        //throw new NotImplementedException();
+    }
+
+    public override void OnHit()
+    {
+       // throw new NotImplementedException();
+    }
+
+    protected override void SpecialUpdate()
+    {
+        //throw new NotImplementedException();
     }
 }

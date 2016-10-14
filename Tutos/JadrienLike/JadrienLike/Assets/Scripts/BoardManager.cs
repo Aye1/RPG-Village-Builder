@@ -36,11 +36,11 @@ public class BoardManager : MonoBehaviour {
 
     #region Enemies
     [Header("Enemies")]
-    public GameObject[] clockEnemies;
-    public GameObject[] dumbEnemies;
-    public GameObject[] cardEnemies;
-    public GameObject timeBoss;
-    public GameObject timeBossClock;
+    public Enemy[] clockEnemies;
+    public Enemy[] dumbEnemies;
+    public Enemy[] cardEnemies;
+    public Enemy timeBoss;
+    public Enemy timeBossClock;
     #endregion
 
     #region Collectibles
@@ -333,11 +333,10 @@ public class BoardManager : MonoBehaviour {
                             toInstantiate = cliffbdTiles[Random.Range(0, cliffbdTiles.Length)];
                             break;
                         case "17":
-                            toInstantiate = clockEnemies[Random.Range(0, clockEnemies.Length)];
+                            toInstantiate = clockEnemies[Random.Range(0, clockEnemies.Length)].gameObject;
                             break;
                         case "18":
-                            toInstantiate = dumbEnemies[Random.Range(0, dumbEnemies.Length)];
-
+                            toInstantiate = dumbEnemies[Random.Range(0, dumbEnemies.Length)].gameObject;
                             break;
                         case "19":
                             toInstantiate = redPotions[Random.Range(0, redPotions.Length)];
@@ -349,7 +348,7 @@ public class BoardManager : MonoBehaviour {
                             toInstantiate = coins[Random.Range(0, coins.Length)];
                             break;
                         case "22":
-                            toInstantiate = cardEnemies[Random.Range(0, cardEnemies.Length)];
+                            toInstantiate = cardEnemies[Random.Range(0, cardEnemies.Length)].gameObject;
                             break;
                         case "23":
                             toInstantiate = ladderTile;
@@ -358,10 +357,10 @@ public class BoardManager : MonoBehaviour {
                             toInstantiate = drinkMePotions[Random.Range(0, drinkMePotions.Length)];
                             break;
                         case "25":
-                            toInstantiate = timeBoss;
+                            toInstantiate = timeBoss.gameObject;
                             break;
                         case "26":
-                            toInstantiate = timeBossClock;
+                            toInstantiate = timeBossClock.gameObject;
                             break;
                         case "27":
                             toInstantiate = leftChair;
@@ -377,6 +376,12 @@ public class BoardManager : MonoBehaviour {
                     {
                         GameObject instance = Instantiate(toInstantiate, new Vector3(x + xOffset, room.SizeY - y + yOffset, toInstantiate.transform.position.z), Quaternion.identity) as GameObject;
                         instance.transform.SetParent(boardHolder);
+
+                        // TODO: better management, through Type
+                        if (elem == "17" || elem == "18" || elem == "22" || elem == "25" || elem == "26")
+                        {
+                            room.Enemies.Add(instance);
+                        }
                     }
                 }
             }
