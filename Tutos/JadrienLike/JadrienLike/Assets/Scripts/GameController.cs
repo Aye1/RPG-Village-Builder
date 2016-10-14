@@ -7,9 +7,8 @@ public class GameController : MonoBehaviour {
 
 	public Player player;
 	public BoardManager boardManager;
+    private RoomManager _roomManager;
     public UIManager uiManager;
-
-	private Board currentBoard = null;
 	private static GameController instance = null;
 
     public bool pause;
@@ -28,58 +27,27 @@ public class GameController : MonoBehaviour {
         {
             player = GetComponent<Player>();
         }
-
-		DontDestroyOnLoad(gameObject);
+        _roomManager = GetComponent<RoomManager>();
+        DontDestroyOnLoad(gameObject);
         DontDestroyOnLoad(player);
         DontDestroyOnLoad(boardManager);
         //DontDestroyOnLoad(uiManager);
 
-		currentBoard = new Board();
-        LoadLevel("level_select");
+		//currentBoard = new Board();
+        LoadLevel("Rooms/room_132_ini");
 	}
-
-    /*void OnLevelWasLoaded(int level)
-    {
-        if (level == 2)
-        {
-            LoadLevel("tuto_map");
-        }
-    }*/
-
-    /*public void ChangeToLevel(string levelName)
-    {
-        SceneManager.LoadScene(2);
-        SceneManager.MoveGameObjectToScene(uiManager.gameObject, SceneManager.GetSceneAt(2));
-        //LoadLevel(levelName);
-    }*/
 
     public void LoadLevel(string levelName)
     {
         boardManager.EmptyBoard();
+        // RoomManager may not be initialized before being used, for some reason
+        _roomManager.Init();
+        _roomManager.LoadRoom(levelName, Vector3.zero);
 
-        MapLoader loader = new MapLoader(levelName);
-        ArrayList layers = loader.Layers;
-        ArrayList parsedLayers = new ArrayList();
-        CSVParser parser = CSVParser.Instance;
-
-        // Dynamic objects (e.g. doors)
-        currentBoard.DynamicObjects = loader.DynamicObjects;
-
-        foreach (string layer in layers)
-        {
-            parsedLayers.Add(CSVParser.ParseCSV(layer));
-        }
-        if (parsedLayers.Count == 0)
-            Debug.Log("Error while loading the map.");
-        else
-        {
-            currentBoard.Layers = parsedLayers;
-            Debug.Log("Layers added to the board");
-            boardManager.InstantiateBoard(currentBoard);
-            boardManager.ZoneId = 0;
-        }
+        boardManager.ZoneId = 0;
         player.transform.position = boardManager.InitPlayerPosition;
         player.initPosition = boardManager.InitPlayerPosition;
+        _roomManager.canStartChecking = true;
     }
 
 	// Update is called once per frame
