@@ -14,10 +14,17 @@ public class UIManager : MonoBehaviour {
     public Text spiritCount;
 
     private BlackScreen _blackScreen;
+
+    private static UIManager instance = null;
      
 
 	// Use this for initialization
 	void Start () {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+
         _blackScreen = GetComponentInChildren<BlackScreen>();
 	}
 	

@@ -44,6 +44,8 @@ public class Player : MonoBehaviour
 
     private int _maxSpirit = 1000;
 
+    private static Player instance = null;
+
     #region Accessors
     public int Mental
     {
@@ -129,6 +131,11 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+
         animator = GetComponent<Animator>();
         rb2d = gameObject.GetComponent<Rigidbody2D>();
         audioSource = gameObject.GetComponent<AudioSource>();
