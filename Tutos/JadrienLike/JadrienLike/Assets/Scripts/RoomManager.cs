@@ -4,9 +4,9 @@ using Random = UnityEngine.Random;
 
 public class RoomManager : MonoBehaviour {
 
-    public int _currentRoomId;
-    public int _currentRoomX;
-    public int _currentRoomY;
+    //public int currentRoomId;
+    public int currentRoomX;
+    public int currentRoomY;
 
     private Vector2 _nextRoomPos;
 
@@ -24,6 +24,14 @@ public class RoomManager : MonoBehaviour {
     private BoardManager _boardManager;
     private Dictionary<Vector2, Room> _rooms;
 
+    public Dictionary<Vector2, Room> Rooms
+    {
+        get
+        {
+            return _rooms;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -34,8 +42,8 @@ public class RoomManager : MonoBehaviour {
     {
         if (!_init)
         {
-            _currentRoomX = 0;
-            _currentRoomY = 0;
+            currentRoomX = 0;
+            currentRoomY = 0;
             _nextRoomPos = Vector2.zero;
             _player = FindObjectOfType<Player>();
             _camera = FindObjectOfType<Camera>();
@@ -54,7 +62,7 @@ public class RoomManager : MonoBehaviour {
     public void AddFirstRoom(Room room)
     {
         // Add the first room to the dictionary of created rooms
-        _rooms.Add(new Vector2(_currentRoomX, _currentRoomY), room);
+        _rooms.Add(new Vector2(currentRoomX, currentRoomY), room);
     }
 
     private void CheckPlayerPosition()
@@ -63,31 +71,31 @@ public class RoomManager : MonoBehaviour {
         if (!canStartChecking)
             return;
 
-        int newRoomX = _currentRoomX;
-        int newRoomY = _currentRoomY;
+        int newRoomX = currentRoomX;
+        int newRoomY = currentRoomY;
 
         bool shouldMove = false;
         Vector3 move = Vector3.zero;
-        if (_player.transform.position.x > (_currentRoomX+1)*RoomWidth-0.5)
+        if (_player.transform.position.x > (currentRoomX+1)*RoomWidth-0.5)
         {
             Debug.Log("Changement de pièce");
             shouldMove = true;
             newRoomX++;
             move = new Vector3(1.2f, 0.0f, 0.0f);
         }
-        else if(_player.transform.position.x < _currentRoomX * RoomWidth + 0.5)
+        else if(_player.transform.position.x < currentRoomX * RoomWidth + 0.5)
         {
             shouldMove = true;
             newRoomX--;
             move = new Vector3(-1.2f, 0.0f, 0.0f);
         }
-        else if (_player.transform.position.y < _currentRoomY * RoomHeight + 0.3)
+        else if (_player.transform.position.y < currentRoomY * RoomHeight + 0.3)
         {
             shouldMove = true;
             newRoomY--;
             move = new Vector3(0.0f, 0.0f, 0.0f);
         }
-        else if (_player.transform.position.y > (_currentRoomY+1) * RoomHeight - 0.3)
+        else if (_player.transform.position.y > (currentRoomY+1) * RoomHeight - 0.3)
         {
             shouldMove = true;
             newRoomY++;
@@ -107,10 +115,10 @@ public class RoomManager : MonoBehaviour {
                 //Room loadedRoom = _boardManager.LoadRoom(SelectNextRoom(), offset);
             }
             _rooms[_nextRoomPos].OnPlayerEnter();
-            _rooms[new Vector2(_currentRoomX, _currentRoomY)].OnPlayerExit();
+            _rooms[new Vector2(currentRoomX, currentRoomY)].OnPlayerExit();
             MoveCamera();
-            _currentRoomX = newRoomX;
-            _currentRoomY = newRoomY;
+            currentRoomX = newRoomX;
+            currentRoomY = newRoomY;
         }
         MovePlayer(move);
     }
