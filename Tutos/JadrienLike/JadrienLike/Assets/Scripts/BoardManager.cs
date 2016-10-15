@@ -377,8 +377,8 @@ public class BoardManager : MonoBehaviour {
                         GameObject instance = Instantiate(toInstantiate, new Vector3(x + xOffset, room.SizeY - y + yOffset, toInstantiate.transform.position.z), Quaternion.identity) as GameObject;
                         instance.transform.SetParent(boardHolder);
 
-                        // TODO: better management, through Type
-                        if (elem == "17" || elem == "18" || elem == "22" || elem == "25" || elem == "26")
+                        // Enemies are added to the room
+                        if (instance.GetComponent<Enemy>() != null)
                         {
                             room.Enemies.Add(instance);
                         }
