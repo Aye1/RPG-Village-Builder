@@ -14,36 +14,74 @@ public class MiniMap : MonoBehaviour {
     // Number of rooms which can be displayed in each dimension
     private const int _mapSize = 7;
     private const float _halfMapSize = _mapSize / 2.0f;
+    private const float flatPadding = 50.0f;
 
-    public bool largeMap = false;
+    private Vector3 _initialPosition;
+
+    private Camera _camera;
+
+    public bool fullMap = false;
 
 	// Use this for initialization
 	void Start () {
         _roomManager = FindObjectOfType<RoomManager>();
         _roomImages = new Dictionary<Vector2, Image>();
-        RectTransform rectTransform = (RectTransform) transform;
-        rectTransform.sizeDelta = new Vector2(_sizeRoomX * _mapSize, _sizeRoomY * _mapSize); 
+        _camera = FindObjectOfType<Camera>();
+        _initialPosition = new Vector3(350.0f, 180.0f, 0.0f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        SetSize();
+        UpdateMissingRooms();
+        DrawRooms();
+	}
+
+    private void SetSize()
+    {
+        RectTransform rectTransform = (RectTransform)transform;
+        if (fullMap)
+        {
+            rectTransform.sizeDelta = new Vector2(360, 220);
+            rectTransform.localPosition = new Vector3(8.5f, 6.0f, 0.0f);
+        }
+        else
+        {
+            rectTransform.sizeDelta = new Vector2(_sizeRoomX * _mapSize, _sizeRoomY * _mapSize);
+            rectTransform.localPosition = _initialPosition;
+        }
+    }
+
+    private void UpdateMissingRooms()
+    {
         Dictionary<Vector2, Room> rooms = _roomManager.Rooms;
-        Vector2 offset = new Vector2(_roomManager.currentRoomX, _roomManager.currentRoomY);
         foreach (KeyValuePair<Vector2, Room> pair in rooms)
         {
             Vector2 pos = pair.Key;
-            if(!_roomImages.ContainsKey(pos))
+            if (!_roomImages.ContainsKey(pos))
             {
                 Image img = CreateImageAtPos(pos);
                 _roomImages.Add(pos, img);
             }
         }
+    }
+
+    private void DrawRooms()
+    {
+        Vector2 offset = new Vector2(_roomManager.currentRoomX, _roomManager.currentRoomY);
+        Vector2 roomSize = GetRoomSize();
+        float ratio = GetImageScale(roomSize);
         foreach (KeyValuePair<Vector2, Image> pair in _roomImages)
         {
             Image img = pair.Value;
+            img.transform.localScale = new Vector2(ratio, ratio);
             Vector3 offsetPos = pair.Key - offset;
-            img.transform.localPosition = new Vector3(offsetPos.x * _sizeRoomX, offsetPos.y * _sizeRoomY, 0.0f);
-            if(offsetPos.x < -_halfMapSize || offsetPos.x > _halfMapSize || offsetPos.y < -_halfMapSize || offsetPos.y > _halfMapSize)
+            img.transform.localPosition = new Vector3(offsetPos.x * roomSize.x, offsetPos.y * roomSize.y, 0.0f);
+            if (!fullMap 
+                && (offsetPos.x < -_halfMapSize 
+                || offsetPos.x > _halfMapSize 
+                || offsetPos.y < -_halfMapSize 
+                || offsetPos.y > _halfMapSize))
             {
                 img.enabled = false;
             }
@@ -52,7 +90,13 @@ public class MiniMap : MonoBehaviour {
                 img.enabled = true;
             }
         }
-	}
+    }
+
+    private float GetImageScale(Vector2 size)
+    {
+        float ratio = size.x / _sizeRoomX * _imageScale ;
+        return ratio;
+    }
 
     private Image CreateImageAtPos(Vector2 pos)
     {
@@ -60,7 +104,45 @@ public class MiniMap : MonoBehaviour {
         resImage = (Image)Instantiate(roomImage, pos, Quaternion.identity);
         resImage.transform.SetParent(transform);
         resImage.transform.localScale = new Vector3(_imageScale, _imageScale, _imageScale);
-        resImage.transform.localPosition = new Vector3(pos.x * _sizeRoomX, pos.y * _sizeRoomY, 0.0f);
+
+        Vector2 roomSize = GetRoomSize();
+        resImage.transform.localPosition = new Vector3(pos.x * roomSize.x, pos.y * roomSize.y, 0.0f);
         return resImage;
+    }
+
+    private Vector2 GetRoomSize()
+    {
+        Vector2 res = Vector2.zero;
+        if (fullMap)
+        {
+            float size = GetMapSize();
+            res.x = Mathf.Min(360 / size / 2, _sizeRoomX);
+            res.y = Mathf.Min(220 / size / 2, _sizeRoomY);
+        }
+        else
+        {
+            res.x = _sizeRoomX;
+            res.y = _sizeRoomY;
+        }
+        return res;
+    }
+
+    private float GetMapSize()
+    {
+        float minX = 0;
+        float maxX = 0;
+        float minY = 0;
+        float maxY = 0;
+        foreach (KeyValuePair<Vector2, Image> pair in _roomImages)
+        {
+            Vector2 pos = pair.Key;
+            minX = (pos.x < minX) ? pos.x : minX;
+            maxX = (pos.x > maxX) ? pos.x : maxX;
+            minY = (pos.y < minY) ? pos.y : minY;
+            maxY = (pos.y > maxY) ? pos.y : maxY;
+        }
+        float lengthX = maxX - minX;
+        float lengthY = maxY - minY;
+        return Mathf.Max(lengthX, lengthY) + 1;
     }
 }
