@@ -5,13 +5,25 @@ using UnityEngine.UI;
 public class MiniMap : MonoBehaviour {
 
     public Image roomImage;
+    public bool fullMap = false;
+
     private RoomManager _roomManager;
     private Dictionary<Vector2, Image> _roomImages;
+    private Camera _camera;
+    private RawImage _currentRoomImage;
+
+    // Scale of the room images
     private const float _imageScale = 0.2f;
+
+    // Ratio imageSizeInPixels / roomSizeInUnits
+    // e.g. image 180x110, room 18x10 => ratio 10
     private const float _imageInitialPNGRatio = 10.0f;
+
+    // Reference room size (used for mini map mode)
     private float _sizeRoomX = RoomManager.RoomWidth * _imageScale * _imageInitialPNGRatio;
     private float _sizeRoomY = RoomManager.RoomHeight * _imageScale * _imageInitialPNGRatio;
-    // Number of rooms which can be displayed in each dimension
+
+    // Number of rooms which can be displayed in each dimension (in mini map mode)
     private const int _mapSize = 7;
     private const float _halfMapSize = _mapSize / 2.0f;
 
@@ -20,16 +32,13 @@ public class MiniMap : MonoBehaviour {
     private Vector3 _initialPosition;
     private Vector3 _fullMapSize;
 
-    private Camera _camera;
-
-    public bool fullMap = false;
-
 	// Use this for initialization
 	void Start () {
         _roomManager = FindObjectOfType<RoomManager>();
         _roomImages = new Dictionary<Vector2, Image>();
         _camera = FindObjectOfType<Camera>();
         _initialPosition = new Vector3(350.0f, 180.0f, 0.0f);
+        _currentRoomImage = GetComponentsInChildren<RawImage>()[1];
 
         Vector3 minResolution = Camera_behaviour.minResolution;
         _fullMapSize = new Vector3(minResolution.x - flatPadding, minResolution.y - flatPadding, 0.0f);
@@ -75,6 +84,7 @@ public class MiniMap : MonoBehaviour {
     {
         Vector2 offset = new Vector2(_roomManager.currentRoomX, _roomManager.currentRoomY);
         Vector2 roomSize = GetRoomSize();
+        UpdateCurrentRoomSize(roomSize);
         float ratio = GetImageScale(roomSize);
         foreach (KeyValuePair<Vector2, Image> pair in _roomImages)
         {
@@ -95,6 +105,12 @@ public class MiniMap : MonoBehaviour {
                 img.enabled = true;
             }
         }
+    }
+
+    private void UpdateCurrentRoomSize(Vector2 roomSize)
+    {
+        RectTransform rect = (RectTransform)_currentRoomImage.transform;
+        rect.sizeDelta = roomSize;
     }
 
     private float GetImageScale(Vector2 size)
