@@ -14,9 +14,11 @@ public class MiniMap : MonoBehaviour {
     // Number of rooms which can be displayed in each dimension
     private const int _mapSize = 7;
     private const float _halfMapSize = _mapSize / 2.0f;
-    private const float flatPadding = 50.0f;
+
+    private const float flatPadding = 100.0f;
 
     private Vector3 _initialPosition;
+    private Vector3 _fullMapSize;
 
     private Camera _camera;
 
@@ -28,6 +30,9 @@ public class MiniMap : MonoBehaviour {
         _roomImages = new Dictionary<Vector2, Image>();
         _camera = FindObjectOfType<Camera>();
         _initialPosition = new Vector3(350.0f, 180.0f, 0.0f);
+
+        Vector3 minResolution = Camera_behaviour.minResolution;
+        _fullMapSize = new Vector3(minResolution.x - flatPadding, minResolution.y - flatPadding, 0.0f);
 	}
 	
 	// Update is called once per frame
@@ -42,8 +47,8 @@ public class MiniMap : MonoBehaviour {
         RectTransform rectTransform = (RectTransform)transform;
         if (fullMap)
         {
-            rectTransform.sizeDelta = new Vector2(360, 220);
-            rectTransform.localPosition = new Vector3(8.5f, 6.0f, 0.0f);
+            rectTransform.sizeDelta = _fullMapSize;
+            rectTransform.localPosition = Vector3.zero;
         }
         else
         {
@@ -116,8 +121,8 @@ public class MiniMap : MonoBehaviour {
         if (fullMap)
         {
             float size = GetMapSize();
-            res.x = Mathf.Min(360 / size / 2, _sizeRoomX);
-            res.y = Mathf.Min(220 / size / 2, _sizeRoomY);
+            res.x = Mathf.Min(_fullMapSize.x / size / 2, _sizeRoomX);
+            res.y = Mathf.Min(_fullMapSize.y / size / 2, _sizeRoomY);
         }
         else
         {

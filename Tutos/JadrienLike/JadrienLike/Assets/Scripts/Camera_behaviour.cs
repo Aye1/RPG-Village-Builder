@@ -5,7 +5,7 @@ public class Camera_behaviour : MonoBehaviour
 {
 
     public GameObject player;
-    public static readonly Vector3 minResolution = new Vector3(1024f, 768f, 0);
+    public static readonly Vector3 minResolution = new Vector3(1024f, 576f, 0);
 
     private Vector3 _offset;
     private float targetRatio = 16f / 9f;
