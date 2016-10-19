@@ -281,8 +281,8 @@ public class Player : MonoBehaviour
         AudioClip currentClip = jumpClips[Random.Range(0, jumpClips.Length)];
         audioSource.clip = currentClip;
         audioSource.Play();
-
-        if (_countLadder <= 0)
+        Debug.Log("Jump keybutton");
+        /*if (_countLadder <= 0)
         {
             animator.SetBool("On_Ladder", false);
             animator.SetTrigger("Jump");
@@ -296,7 +296,7 @@ public class Player : MonoBehaviour
         if (isOnLadder)
         {
             rb2d.isKinematic = false;
-        }
+        }*/
         rb2d.AddForce(Vector2.up * jumpPower);
     }
 
