@@ -5,7 +5,7 @@ Jadrien's quest is a Rogue-like 2D game, in the universe of Alice in Wonderland.
 ###Gameplay
 * The player can choose his/her mapping by deciding the order of the levels.
 * Backtracking will be possible.
-* Dream and nightmare are intrinsically linked, allowing the player to switch between the two. These modes have differents objects, difficulties, features, ...
+* Dream and nightmare are intrinsically linked, allowing the player to switch between the two. These modes have different objects, difficulties, features, ...
 * Objects can modify Alice appearance and/or capacities.
 
 ###Story
