@@ -17,6 +17,7 @@ Jadrien's quest is a Rogue-like 2D game, in the universe of Alice in Wonderland.
 ### Tools
 * The game is developed in the Unity engine.
 * The room are currently generated using [Tiled](http://www.mapeditor.org/).
+* The task management is done with [Asana](https://app.asana.com/).
 
 ### Procedural generation
 * Rooms are picked randomly, creating a whole new world at each game.
