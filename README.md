@@ -19,11 +19,11 @@ Jadrien's quest is a Rogue-like 2D game, in the universe of Alice in Wonderland.
 * The room are currently generated using [Tiled](http://www.mapeditor.org/).
 
 ### Procedural generation
-* Rooms are picked randomly according to an algorithm, creating a whole new world at each beginning.
+* Rooms are picked randomly, creating a whole new world at each game.
 * Enemies belong to differents pools. When creating a room, enemies are randomly picked into a particular pool.
 
 ###Graphism
-* All characters are drawn with Photoshop CS5, with a graphic tablet. All body parts are split to help the animations.
+* All characters are drawn with Photoshop, with a graphic tablet. All body parts are split to help the animations.
 * Animations are either made with [Spriter](https://brashmonkey.com/spriter-features/#) or directly in Unity
 
 ###Functionalities in progress
