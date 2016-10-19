@@ -34,7 +34,7 @@ Jadrien's quest is a Rogue-like 2D game, in the universe of Alice in Wonderland.
 * Modify the graphical touch.
 
 ### Authors and Contributors
-The game is developed by two people only, @AliceChester and @Aye1, on our spare time.
+The game is developed by two people only, [@AliceChester](https://github.com/AliceChester) and [@Aye1](https://github.com/Aye1), on our spare time.
 
 ### Support or Contact
 If you want any information about the game, feel free to mail us at janvier.adrien@gmail.com.
