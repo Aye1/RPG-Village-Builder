@@ -27,15 +27,14 @@ Jadrien's quest is a Rogue-like 2D game, in the universe of Alice in Wonderland.
 
 ###Graphism
 * All characters are drawn with Photoshop, with a graphic tablet. All body parts are split to help the animations.
-* Animations are either made with [Spriter](https://brashmonkey.com/spriter-features/#) or directly in Unity
+* Animations are either made with [Spriter](https://brashmonkey.com/spriter-features/#) or directly in Unity.
+* The graphical style may be changed in the future.
 
 ###Functionalities in progress
 * Mini map and full map display.
 * Alice movement improvement.
 
-###Futur changes
-* Modify the graphical touch.
-
+## Project
 ### Authors and Contributors
 The game is developed by two people only, [@AliceChester](https://github.com/AliceChester) and [@Aye1](https://github.com/Aye1), on our spare time.
 
