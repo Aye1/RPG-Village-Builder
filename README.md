@@ -10,6 +10,7 @@ Jadrien's quest is a Rogue-like 2D game, in the universe of Alice in Wonderland.
 
 ###Story
 * Each level represents a fear to fight, with his own level design.
+  * The first level to be developed is the time. Alice shouldn't be late to encounter the white rabbit.
 * Finishing a level will facilitate to progression in other levels, by the power acquired, and the features unlocked.
 
 
