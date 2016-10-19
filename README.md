@@ -20,7 +20,7 @@ Jadrien's quest is a Rogue-like 2D game, in the universe of Alice in Wonderland.
 * The task management is done with [Asana](https://app.asana.com/).
 
 ### Procedural generation
-* Rooms are picked randomly, creating a whole new world at each game.
+* Rooms are picked randomly, according to the current level configuration, creating a whole new world at each game.
 * Enemies belong to differents pools. When creating a room, enemies are randomly picked into a particular pool.
 
 ###Graphism
