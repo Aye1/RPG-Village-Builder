@@ -240,18 +240,24 @@ public class Player : MonoBehaviour
     {
         _isOnLadder = _countLadder > 0;
         float h = Input.GetAxis("Horizontal");
-
+        if(grounded)
+        {
+            animator.SetBool("Jump", false);
+        }
         if (Input.GetButtonDown("Jump") && grounded)
         {
             Jump();
         }
 
-        if (!_isOnLadder || (_isOnLadder && !grounded ))
-        {
+        /*if (!_isOnLadder || (_isOnLadder && !grounded ))
+        {*/
             if (h > 0)
             {
                 rb2d.velocity = new Vector2(speed, rb2d.velocity.y);
+            if (grounded)
+            {
                 animator.SetTrigger("Walk");
+            }
                 animator.SetBool("backward", false);
                 if (backward)
                 {
@@ -262,8 +268,11 @@ public class Player : MonoBehaviour
             {
                 rb2d.velocity = new Vector2(-speed, rb2d.velocity.y);
                 animator.SetBool("backward", true);
+            if (grounded)
+            {
                 animator.SetTrigger("Walk");
-                if (!backward)
+            }
+            if (!backward)
                 {
                     Flip();
                 }
@@ -271,9 +280,12 @@ public class Player : MonoBehaviour
             else
             {
                 rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+            if (grounded)
+            {
                 animator.SetTrigger("Rest");
             }
         }
+       // }
     }
 
     private void Jump()
@@ -281,7 +293,7 @@ public class Player : MonoBehaviour
         AudioClip currentClip = jumpClips[Random.Range(0, jumpClips.Length)];
         audioSource.clip = currentClip;
         audioSource.Play();
-        Debug.Log("Jump keybutton");
+        animator.SetBool("Jump",true);
         /*if (_countLadder <= 0)
         {
             animator.SetBool("On_Ladder", false);
