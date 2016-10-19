@@ -15,7 +15,7 @@ Jadrien's quest is a Rogue-like 2D game, in the universe of Alice in Wonderland.
 * Finishing a level will facilitate to progression in other levels, by the power acquired, and the features unlocked.
 
 ###Inspirations
-As much as we want to do an original game with a unique user experience, we still have to rely on strong references. Our inspirations mainly come from the following games
+As much as we want to do an original game with a unique user experience, we still have to rely on strong references. Our inspirations mainly come from the following games:
 * [http://bindingofisaac.com/](The Binding of Isaac), for many game mechanics.
 * [http://www.cellardoorgames.com/roguelegacy/](Rogue Legacy), mainly for deplacement mechanics.
 * [http://store.steampowered.com/app/19680/](Alice: Madness Returns), for its dark universe.
