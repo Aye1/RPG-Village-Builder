@@ -4,9 +4,11 @@ using Random = UnityEngine.Random;
 
 public class RoomManager : MonoBehaviour {
 
-    public int _currentRoomId;
-    public int _currentRoomX;
-    public int _currentRoomY;
+    //public int currentRoomId;
+    public int currentRoomX;
+    public int currentRoomY;
+
+    private Vector2 _nextRoomPos;
 
     public bool canStartChecking;
 
@@ -22,6 +24,14 @@ public class RoomManager : MonoBehaviour {
     private BoardManager _boardManager;
     private Dictionary<Vector2, Room> _rooms;
 
+    public Dictionary<Vector2, Room> Rooms
+    {
+        get
+        {
+            return _rooms;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -32,8 +42,9 @@ public class RoomManager : MonoBehaviour {
     {
         if (!_init)
         {
-            _currentRoomX = 0;
-            _currentRoomY = 0;
+            currentRoomX = 0;
+            currentRoomY = 0;
+            _nextRoomPos = Vector2.zero;
             _player = FindObjectOfType<Player>();
             _camera = FindObjectOfType<Camera>();
             _camera_behaviour = _camera.GetComponentInChildren<Camera_behaviour>();
@@ -51,7 +62,7 @@ public class RoomManager : MonoBehaviour {
     public void AddFirstRoom(Room room)
     {
         // Add the first room to the dictionary of created rooms
-        _rooms.Add(new Vector2(_currentRoomX, _currentRoomY), room);
+        _rooms.Add(new Vector2(currentRoomX, currentRoomY), room);
     }
 
     private void CheckPlayerPosition()
@@ -60,43 +71,54 @@ public class RoomManager : MonoBehaviour {
         if (!canStartChecking)
             return;
 
+        int newRoomX = currentRoomX;
+        int newRoomY = currentRoomY;
+
         bool shouldMove = false;
         Vector3 move = Vector3.zero;
-        if (_player.transform.position.x > (_currentRoomX+1)*RoomWidth-0.5)
+        if (_player.transform.position.x > (currentRoomX+1)*RoomWidth-0.5)
         {
             Debug.Log("Changement de pièce");
             shouldMove = true;
-            _currentRoomX++;
+            newRoomX++;
             move = new Vector3(1.2f, 0.0f, 0.0f);
         }
-        else if(_player.transform.position.x < _currentRoomX * RoomWidth + 0.5)
+        else if(_player.transform.position.x < currentRoomX * RoomWidth + 0.5)
         {
             shouldMove = true;
-            _currentRoomX--;
+            newRoomX--;
             move = new Vector3(-1.2f, 0.0f, 0.0f);
         }
-        else if (_player.transform.position.y < _currentRoomY * RoomHeight + 0.3)
+        else if (_player.transform.position.y < currentRoomY * RoomHeight + 0.3)
         {
             shouldMove = true;
-            _currentRoomY--;
+            newRoomY--;
             move = new Vector3(0.0f, 0.0f, 0.0f);
         }
-        else if (_player.transform.position.y > (_currentRoomY+1) * RoomHeight - 0.3)
+        else if (_player.transform.position.y > (currentRoomY+1) * RoomHeight - 0.3)
         {
             shouldMove = true;
-            _currentRoomY++;
+            newRoomY++;
             move = new Vector3(0.0f, 1.2f, 0.0f);
         }
 
+        // Update the next room pos for the other methods
+        _nextRoomPos.x = newRoomX;
+        _nextRoomPos.y = newRoomY;
+
         if (shouldMove)
         {
-            Vector3 offset = new Vector3(_currentRoomX * RoomWidth, _currentRoomY * RoomHeight, 0.0f);
-            if (!_rooms.ContainsKey(new Vector2(_currentRoomX, _currentRoomY)))
+            
+            if (!_rooms.ContainsKey(_nextRoomPos))
             {
-                LoadRoom(SelectNextRoom(), offset);
+                LoadRoom(SelectNextRoom());
                 //Room loadedRoom = _boardManager.LoadRoom(SelectNextRoom(), offset);
             }
+            _rooms[_nextRoomPos].OnPlayerEnter();
+            _rooms[new Vector2(currentRoomX, currentRoomY)].OnPlayerExit();
             MoveCamera();
+            currentRoomX = newRoomX;
+            currentRoomY = newRoomY;
         }
         MovePlayer(move);
     }
@@ -106,7 +128,7 @@ public class RoomManager : MonoBehaviour {
     /// </summary>
     private void MoveCamera()
     {
-        Vector3 offset = new Vector3(_currentRoomX * RoomWidth, _currentRoomY * RoomHeight, 0.0f);
+        Vector3 offset = new Vector3(_nextRoomPos.x * RoomWidth, _nextRoomPos.y * RoomHeight, 0.0f);
         _camera_behaviour.Offset = offset;
     }
 
@@ -124,10 +146,11 @@ public class RoomManager : MonoBehaviour {
     /// </summary>
     /// <param name="roomName"></param>
     /// <param name="offset"></param>
-    public void LoadRoom(string roomName, Vector3 offset)
+    public void LoadRoom(string roomName)
     {
+        Vector3 offset = new Vector3(_nextRoomPos.x * RoomWidth, _nextRoomPos.y * RoomHeight, 0.0f);
         Room room = new Room(roomName);
-        _rooms.Add(new Vector2(_currentRoomX, _currentRoomY), room);
+        _rooms.Add(_nextRoomPos, room);
         _boardManager.LoadRoom(room, offset);
     }
 
@@ -152,10 +175,10 @@ public class RoomManager : MonoBehaviour {
     {
         int positivePattern = 0;
         int negativePattern = 0;
-        Vector2 leftVector = new Vector2(_currentRoomX - 1, _currentRoomY);
-        Vector2 rightVector = new Vector2(_currentRoomX + 1, _currentRoomY);
-        Vector2 topVector = new Vector2(_currentRoomX, _currentRoomY + 1);
-        Vector2 bottomVector = new Vector2(_currentRoomX, _currentRoomY - 1);
+        Vector2 leftVector = new Vector2(_nextRoomPos.x - 1, _nextRoomPos.y);
+        Vector2 rightVector = new Vector2(_nextRoomPos.x + 1, _nextRoomPos.y);
+        Vector2 topVector = new Vector2(_nextRoomPos.x, _nextRoomPos.y + 1);
+        Vector2 bottomVector = new Vector2(_nextRoomPos.x, _nextRoomPos.y - 1);
         if (_rooms.ContainsKey(leftVector))
         {
             Room _leftRoom = _rooms[leftVector];

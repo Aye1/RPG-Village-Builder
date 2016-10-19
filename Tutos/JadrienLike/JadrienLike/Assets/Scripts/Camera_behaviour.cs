@@ -5,15 +5,18 @@ public class Camera_behaviour : MonoBehaviour
 {
 
     public GameObject player;
+    public static readonly Vector3 minResolution = new Vector3(1024f, 576f, 0);
+
     private Vector3 _offset;
-    private Vector3 minResolution = new Vector3(1024f, 768f, 0);
     private float targetRatio = 16f / 9f;
     private Vector3 _roomOffset = new Vector3(8.5f, 6.0f, -10.0f);
 
+    private static Camera_behaviour instance = null;
     private Camera _camera;
     private int _width;
     private int _height;
 
+    #region Accessors
     // Width of the camera
     public int Width
     {
@@ -66,14 +69,20 @@ public class Camera_behaviour : MonoBehaviour
             }
         }
     }
-
+    #endregion
 
     // Use this for initialization
     void Start()
     {
         //_offset = transform.position; //- player.transform.position;
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+
         Offset = Vector3.zero;
         _camera = GetComponent<Camera>();
+        DontDestroyOnLoad(_camera);
     }
 
     // Update is called once per frame

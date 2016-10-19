@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
 
     [Header("Move Characteristics")]
     public float speed = 50f;
+    public float maxVelocity = 20.0f;
     public float jumpPower = 800f;
     public bool grounded = true;
     public Vector3 initPosition;
@@ -43,6 +44,8 @@ public class Player : MonoBehaviour
     private bool doorTaken;
 
     private int _maxSpirit = 1000;
+
+    private static Player instance = null;
 
     #region Accessors
     public int Mental
@@ -129,6 +132,11 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+
         animator = GetComponent<Animator>();
         rb2d = gameObject.GetComponent<Rigidbody2D>();
         audioSource = gameObject.GetComponent<AudioSource>();
@@ -137,6 +145,18 @@ public class Player : MonoBehaviour
     void Update()
     {
         animator.SetBool("grounded", grounded);
+        LimitVelocity();
+    }
+
+    /// <summary>
+    /// Limits the velocity of the player (useful for falls)
+    /// </summary>
+    private void LimitVelocity()
+    {
+        if (rb2d.velocity.SqrMagnitude() > maxVelocity * maxVelocity)
+        {
+            rb2d.velocity = maxVelocity * rb2d.velocity.normalized;
+        }
     }
 
     #region Ladder
@@ -317,7 +337,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.CompareTag("Coin"))
         {
             other.gameObject.SetActive(false);
-            _spiritCount++;
+            Spirit++;
         }
         else if (other.gameObject.CompareTag("MentalUp"))
         {

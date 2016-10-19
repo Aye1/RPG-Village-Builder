@@ -31,7 +31,8 @@ public class GameController : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
         DontDestroyOnLoad(player);
         DontDestroyOnLoad(boardManager);
-        //DontDestroyOnLoad(uiManager);
+        DontDestroyOnLoad(uiManager);
+        DontDestroyOnLoad(uiManager.pauseMenu);
 
 		//currentBoard = new Board();
         LoadLevel("Rooms/room_132_ini");
@@ -42,7 +43,7 @@ public class GameController : MonoBehaviour {
         boardManager.EmptyBoard();
         // RoomManager may not be initialized before being used, for some reason
         _roomManager.Init();
-        _roomManager.LoadRoom(levelName, Vector3.zero);
+        _roomManager.LoadRoom(levelName);
 
         boardManager.ZoneId = 0;
         player.transform.position = boardManager.InitPlayerPosition;
@@ -142,6 +143,31 @@ public class GameController : MonoBehaviour {
     public void BackToMainMenu()
     {
         //Application.LoadLevel(0);
+        pause = false;
+        HideUI();
+        HidePlayer();
         SceneManager.LoadScene(0);
+    }
+
+    public void HideUI()
+    {
+        uiManager.gameObject.SetActive(false);
+        uiManager.pauseMenu.gameObject.SetActive(false);
+    }
+
+    public void DisplayUI()
+    {
+        uiManager.gameObject.SetActive(true);
+        uiManager.pauseMenu.gameObject.SetActive(true);
+    }
+
+    public void HidePlayer()
+    {
+        player.gameObject.SetActive(false);
+    }
+
+    public void DisplayPlayer()
+    {
+        player.gameObject.SetActive(true);
     }
 }
