@@ -49,7 +49,16 @@ public class MiniMap : MonoBehaviour {
         SetSize();
         UpdateMissingRooms();
         DrawRooms();
+        CheckMapChangeKey();
 	}
+
+    private void CheckMapChangeKey()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            fullMap = !fullMap;
+        }
+    }
 
     private void SetSize()
     {
