@@ -5,6 +5,19 @@ public class Bullet : MonoBehaviour {
 
     public int damage;
     public float bulletSpeed;
+    public void Update()
+    {
+        CheckPosition();
+    }
+
+    void CheckPosition()
+    {
+
+        if (Mathf.Abs(this.transform.position.x % RoomManager.RoomWidth) <= 0.3f || Mathf.Abs(this.transform.position.y % RoomManager.RoomHeight) <= 0.2f)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
     void OnTriggerEnter2D(Collider2D col)
     {

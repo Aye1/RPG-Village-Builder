@@ -183,8 +183,11 @@ public class Room {
     {
         foreach(GameObject enemy in Enemies)
         {
-            enemy.gameObject.SetActive(false);
-            Debug.Log("Deactivating enemy "+ enemy+ " in room (" + PosX + "," + PosY + ")");
+            if (enemy != null)
+            {
+                enemy.gameObject.SetActive(false);
+                Debug.Log("Deactivating enemy " + enemy + " in room (" + PosX + "," + PosY + ")");
+            }
         }
     }
 
@@ -192,8 +195,11 @@ public class Room {
     {
         foreach(GameObject enemy in Enemies)
         {
-            enemy.gameObject.SetActive(true);
-            Debug.Log("Reactivating enemy "+ enemy+ " in room (" + PosX + "," + PosY + ")");
+            if (enemy != null)
+            {
+                enemy.gameObject.SetActive(true);
+                Debug.Log("Reactivating enemy " + enemy + " in room (" + PosX + "," + PosY + ")");
+            }
         }
     }
 }

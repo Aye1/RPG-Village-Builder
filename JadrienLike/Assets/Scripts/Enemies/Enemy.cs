@@ -178,6 +178,16 @@ public abstract class Enemy : MonoBehaviour  {
             animator.SetBool("Awake", awake);
         }
         Move();
+        CheckPosition();
+    }
+
+    void CheckPosition()
+    {
+
+        if (Mathf.Abs(this.transform.position.x % 18) <= 0.3f || Mathf.Abs(this.transform.position.y % 11) <= 0.2f)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     void RangeCheck()
