@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class BlueRibbon : Equipment {
 
@@ -6,5 +7,10 @@ public class BlueRibbon : Equipment {
     public override void Init()
     {
         _tag = "hat";
+    }
+
+    public override void UpdateStats()
+    {
+        _player.Speed *= 1.3f;
     }
 }

@@ -21,9 +21,13 @@ public class Player : MonoBehaviour
     #endregion
 
     [Header("Move Characteristics")]
-    public float speed = 50f;
+    public float initalSpeed = 8.0f;
+    private float _speed;
+
+    public float initialJumpPower = 800.0f;
+    private float _jumpPower;
+
     public float maxVelocity = 20.0f;
-    public float jumpPower = 800f;
     public bool grounded = true;
     public Vector3 initPosition;
     public bool backward = false;
@@ -129,6 +133,36 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    public float Speed
+    {
+        get
+        {
+            return _speed;
+        }
+        set
+        {
+            if (value > 0 && value != _speed)
+            {
+                _speed = value;
+            }
+        }
+    }
+
+    public float JumpPower
+    {
+        get
+        {
+            return _jumpPower;
+        }
+        set
+        {
+            if (value > 0 && value != _jumpPower)
+            {
+                _jumpPower = value;
+            }
+        }
+    }
     #endregion
 
     void Start()
@@ -148,6 +182,17 @@ public class Player : MonoBehaviour
         animator.SetBool("grounded", grounded);
         LimitVelocity();
         GameObject.FindGameObjectWithTag("hat").GetComponent<Renderer>().enabled = backward || _isOnLadder ? false : true;
+        UpdateStats();
+    }
+
+    private void UpdateStats()
+    {
+        Speed = initalSpeed;
+        JumpPower = initialJumpPower;
+        foreach(Item item in gameObject.GetComponentsInChildren<Item>())
+        {
+            item.UpdateStats();   
+        }
     }
 
     /// <summary>
@@ -278,7 +323,7 @@ public class Player : MonoBehaviour
         {*/
             if (h > 0)
             {
-                rb2d.velocity = new Vector2(speed, rb2d.velocity.y);
+                rb2d.velocity = new Vector2(Speed, rb2d.velocity.y);
             if (grounded)
             {
                 animator.SetTrigger("Walk");
@@ -291,7 +336,7 @@ public class Player : MonoBehaviour
             }
             else if (h < 0)
             {
-                rb2d.velocity = new Vector2(-speed, rb2d.velocity.y);
+                rb2d.velocity = new Vector2(-Speed, rb2d.velocity.y);
                 animator.SetBool("backward", true);
             if (grounded)
             {
@@ -334,7 +379,7 @@ public class Player : MonoBehaviour
         {
             rb2d.isKinematic = false;
         }*/
-        rb2d.AddForce(Vector2.up * jumpPower);
+        rb2d.AddForce(Vector2.up * JumpPower);
     }
 
     void OnTriggerEnter2D(Collider2D other)

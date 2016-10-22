@@ -5,6 +5,7 @@ public abstract class Item : MonoBehaviour {
 
     public abstract void Init();
     public abstract void OnPlayerTouches();
+    public abstract void UpdateStats();
 
 
     public void Flip()

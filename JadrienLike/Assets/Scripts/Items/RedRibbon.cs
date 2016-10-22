@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class RedRibbon : Equipment {
 
@@ -8,4 +9,9 @@ public class RedRibbon : Equipment {
     {
         _tag = "hat";
 	}
+
+    public override void UpdateStats()
+    {
+        _player.JumpPower *= 1.2f;
+    }
 }
