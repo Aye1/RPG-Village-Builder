@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     public float jumpPower = 800f;
     public bool grounded = true;
     public Vector3 initPosition;
+    public bool backward = false;
 
     [Header("Attack Characteristics")]
     public int FootHit = 20;
@@ -35,7 +36,6 @@ public class Player : MonoBehaviour
     public Text textCount;
     private int _spiritCount = 0;
     private bool untouchable = false;
-    private bool backward = false;
     private int _mental = 50;
     private int _health = 100;
     private bool _isOnLadder = false;
@@ -146,6 +146,7 @@ public class Player : MonoBehaviour
     {
         animator.SetBool("grounded", grounded);
         LimitVelocity();
+        GameObject.FindGameObjectWithTag("hat").GetComponent<Renderer>().enabled = backward || _isOnLadder ? false : true;
     }
 
     /// <summary>
@@ -177,8 +178,10 @@ public class Player : MonoBehaviour
 
             grounded = true;
 
-             Hat _hat = this.GetComponentInChildren<Hat>();
-             _hat.GetComponent<Renderer>().enabled = false;
+             /*Hat _hat = this.GetComponentInChildren<Hat>();
+             _hat.GetComponent<Renderer>().enabled = false;*/
+
+            //GameObject.FindGameObjectWithTag("hat").GetComponent<Renderer>().enabled = false;
          }
     }
 
@@ -205,8 +208,9 @@ public class Player : MonoBehaviour
             grounded = false;
 
             animator.SetBool("On_Ladder", _isOnLadder);
-            Hat _hat = this.GetComponentInChildren<Hat>();
-            _hat.GetComponent<Renderer>().enabled = backward ? false : true;
+            /*Hat _hat = this.GetComponentInChildren<Hat>();
+            _hat.GetComponent<Renderer>().enabled = backward ? false : true;*/
+            //GameObject.FindGameObjectWithTag("hat").GetComponent<Renderer>().enabled = backward ? false : true;
         }
     }
 
@@ -358,6 +362,11 @@ public class Player : MonoBehaviour
                 Damage(enemy.Damage, enemy.transform.position);
             }
         }
+        else if (other.gameObject.CompareTag("Item"))
+        {
+            Item item = other.gameObject.GetComponent<Item>();
+            item.OnPlayerTouches();
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -373,8 +382,8 @@ public class Player : MonoBehaviour
         playerScale.x *= -1;
         transform.localScale = playerScale;
         backward = !backward;
-        Hat _hat = this.GetComponentInChildren<Hat>();
-        _hat.GetComponent<Renderer>().enabled = backward ? false : true;
+        /*Hat _hat = this.GetComponentInChildren<Hat>();
+        _hat.GetComponent<Renderer>().enabled = backward ? false : true;*/
     }
     // If the player touches the enemy
     // TODO: maybe remove
