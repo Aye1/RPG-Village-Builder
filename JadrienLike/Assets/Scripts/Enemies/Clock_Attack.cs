@@ -16,7 +16,7 @@ public class Clock_Attack : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D col)
     {
-        if (col.gameObject.CompareTag("Player") && enemy != null)
+        if (col.gameObject.CompareTag(TagConstants.TagPlayer) && enemy != null)
         {
             enemy.Attack(); 
         }

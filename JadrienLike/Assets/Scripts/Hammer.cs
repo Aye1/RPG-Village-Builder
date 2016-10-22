@@ -17,7 +17,7 @@ public class Hammer : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag(TagConstants.TagEnemy))
         {
             Enemy enemy = other.GetComponent<Enemy>();
             _player.Attack(enemy, _player.weaponDamage);

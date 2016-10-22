@@ -6,7 +6,7 @@ public class BlueRibbon : Equipment {
     // Use this for initialization
     public override void Init()
     {
-        _tag = "hat";
+        _tag = TagConstants.TagHat;
     }
 
     public override void UpdateStats()

@@ -6,7 +6,7 @@ public class ScalingCollectible : MonoBehaviour
     public float multiplicatorFactor = 1.0f;
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag(TagConstants.TagPlayer))
         {
             Player player = other.GetComponent<Player>();
             Vector3 scale = player.transform.localScale;

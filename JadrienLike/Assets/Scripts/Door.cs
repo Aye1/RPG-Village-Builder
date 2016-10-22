@@ -16,7 +16,7 @@ public class Door : MonoBehaviour {
 
     void OnTriggerStay2D (Collider2D other)
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag(TagConstants.TagPlayer))
         {
             if (Input.GetKey(KeyCode.UpArrow))
             {

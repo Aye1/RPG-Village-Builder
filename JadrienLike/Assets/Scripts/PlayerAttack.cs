@@ -41,12 +41,12 @@ public class PlayerAttack : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Enemy") && attacktrigger.enabled)
+        if (other.gameObject.CompareTag(TagConstants.TagEnemy) && attacktrigger.enabled)
         {
            Player player = this.GetComponentInParent<Player>();
             player.Attack(other.GetComponent<Enemy>(), player.weaponDamage);
         }
-        if (other.gameObject.CompareTag("Destructible"))
+        if (other.gameObject.CompareTag(TagConstants.TagDestructible))
         {
             Destructible destObj = (Destructible) other.GetComponent<Destructible>();
             destObj.OnHit();

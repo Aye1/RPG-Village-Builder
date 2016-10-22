@@ -16,12 +16,12 @@ public class GroundCheckEnemy : MonoBehaviour {
         //TODO simplifier en utilisant uniquement les layers
         if (colliderObject.CompareTag("Corner")
             || colliderObject.layer == LayerMask.NameToLayer("Wall")
-            || colliderObject.CompareTag("Enemy"))
+            || colliderObject.CompareTag(TagConstants.TagEnemy))
         {
             enemy.groundAhead = false;
         }
       
-        else if (colliderObject.CompareTag("Player"))
+        else if (colliderObject.CompareTag(TagConstants.TagPlayer))
         {
         }
         else if (colliderObject.layer == LayerMask.NameToLayer("Floor"))

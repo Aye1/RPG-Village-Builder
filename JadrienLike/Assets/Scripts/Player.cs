@@ -181,7 +181,7 @@ public class Player : MonoBehaviour
     {
         animator.SetBool("grounded", grounded);
         LimitVelocity();
-        GameObject.FindGameObjectWithTag("hat").GetComponent<Renderer>().enabled = backward || _isOnLadder ? false : true;
+        GameObject.FindGameObjectWithTag(TagConstants.TagHat).GetComponent<Renderer>().enabled = backward || _isOnLadder ? false : true;
         UpdateStats();
     }
 
@@ -223,11 +223,6 @@ public class Player : MonoBehaviour
              transform.position = new Vector3(ladderMiddleX, transform.position.y, transform.position.z);
 
             grounded = true;
-
-             /*Hat _hat = this.GetComponentInChildren<Hat>();
-             _hat.GetComponent<Renderer>().enabled = false;*/
-
-            //GameObject.FindGameObjectWithTag("hat").GetComponent<Renderer>().enabled = false;
          }
     }
 
@@ -254,9 +249,6 @@ public class Player : MonoBehaviour
             grounded = false;
 
             animator.SetBool("On_Ladder", _isOnLadder);
-            /*Hat _hat = this.GetComponentInChildren<Hat>();
-            _hat.GetComponent<Renderer>().enabled = backward ? false : true;*/
-            //GameObject.FindGameObjectWithTag("hat").GetComponent<Renderer>().enabled = backward ? false : true;
         }
     }
 
@@ -399,7 +391,7 @@ public class Player : MonoBehaviour
             other.gameObject.SetActive(false);
             Mental = Mental + Constantes.mentalDown;
         }
-        else if (other.gameObject.CompareTag("Enemy") && !untouchable)
+        else if (other.gameObject.CompareTag(TagConstants.TagEnemy) && !untouchable)
         {
             Debug.Log("ontop " + this.OnTop + " other " + other.GetComponent<Enemy>());
             if (other.isActiveAndEnabled && (this.OnTop == null || (this.OnTop != null && !this.OnTop.Equals(other.GetComponent<Enemy>()))))
@@ -436,14 +428,12 @@ public class Player : MonoBehaviour
         playerScale.x *= -1;
         transform.localScale = playerScale;
         backward = !backward;
-        /*Hat _hat = this.GetComponentInChildren<Hat>();
-        _hat.GetComponent<Renderer>().enabled = backward ? false : true;*/
     }
     // If the player touches the enemy
     // TODO: maybe remove
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.CompareTag("Enemy") && !untouchable)
+        if (col.gameObject.CompareTag(TagConstants.TagEnemy) && !untouchable)
         {
             Enemy enemy = col.gameObject.GetComponentInParent<Enemy>();
             enemy.OnHit();
