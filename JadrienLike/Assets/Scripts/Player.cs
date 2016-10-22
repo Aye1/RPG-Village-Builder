@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
     private int _countLadder = 0;
     private Enemy _onTop = null;
     private bool doorTaken;
+    private bool _canPickItem = true;
 
     private int _maxSpirit = 1000;
 
@@ -362,11 +363,19 @@ public class Player : MonoBehaviour
                 Damage(enemy.Damage, enemy.transform.position);
             }
         }
-        else if (other.gameObject.CompareTag("Item"))
+        else if (other.gameObject.CompareTag("Item") && _canPickItem)
         {
             Item item = other.gameObject.GetComponent<Item>();
+            StartCoroutine(DisablePickingObjects());
             item.OnPlayerTouches();
         }
+    }
+
+    private IEnumerator DisablePickingObjects()
+    {
+        _canPickItem = false;
+        yield return new WaitForSeconds(2);
+        _canPickItem = true;
     }
 
     void OnTriggerExit2D(Collider2D other)
