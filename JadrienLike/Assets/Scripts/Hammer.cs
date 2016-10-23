@@ -20,7 +20,7 @@ public class Hammer : MonoBehaviour {
         if (other.gameObject.CompareTag(TagConstants.TagEnemy))
         {
             Enemy enemy = other.GetComponent<Enemy>();
-            _player.Attack(enemy, _player.weaponDamage);
+            _player.Attack(enemy, _player.Strength);
         }
     }
 }

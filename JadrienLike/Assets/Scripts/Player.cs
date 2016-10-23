@@ -33,8 +33,11 @@ public class Player : MonoBehaviour
     public bool backward = false;
 
     [Header("Attack Characteristics")]
-    public int FootHit = 20;
-    public int weaponDamage = 50;
+    public int footHit = 20;
+
+    public float initialStrength;
+    private float _strength = 50;
+
     public Vector2 knockback;
 
     public Text textCount;
@@ -163,6 +166,21 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    public float Strength
+    {
+        get
+        {
+            return _strength;
+        }
+        set
+        {
+            if (value > 0 && value != _strength)
+            {
+                _strength = value;
+            }
+        }
+    }
     #endregion
 
     void Start()
@@ -189,6 +207,7 @@ public class Player : MonoBehaviour
     {
         Speed = initalSpeed;
         JumpPower = initialJumpPower;
+        Strength = initialStrength;
         foreach(Item item in gameObject.GetComponentsInChildren<Item>())
         {
             item.UpdateStats();   
@@ -488,7 +507,7 @@ public class Player : MonoBehaviour
             t.Dispose();
     }
 
-    public void Attack(Enemy enemy, int hit)
+    public void Attack(Enemy enemy, float hit)
     {
         if (enemy.isActiveAndEnabled)
         {

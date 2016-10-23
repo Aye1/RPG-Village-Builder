@@ -6,7 +6,7 @@ public abstract class Enemy : MonoBehaviour  {
     protected Animator animator;
     protected Transform _target;
 
-    public int health; //to change
+    public float health; //to change
     protected int _maxHealth;
     protected int _damage;
     protected float _moveSpeed;
@@ -216,7 +216,7 @@ public abstract class Enemy : MonoBehaviour  {
         return direction.x * moveDirection > 0;
     }
 
-    public void OnHurt(int hit)
+    public void OnHurt(float hit)
     {
         if (_bloodEmitter != null)
         {

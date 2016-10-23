@@ -44,7 +44,7 @@ public class PlayerAttack : MonoBehaviour {
         if (other.gameObject.CompareTag(TagConstants.TagEnemy) && attacktrigger.enabled)
         {
            Player player = this.GetComponentInParent<Player>();
-            player.Attack(other.GetComponent<Enemy>(), player.weaponDamage);
+            player.Attack(other.GetComponent<Enemy>(), player.Strength);
         }
         if (other.gameObject.CompareTag(TagConstants.TagDestructible))
         {
