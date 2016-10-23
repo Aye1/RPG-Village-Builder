@@ -25,6 +25,12 @@ public class Inventory : MonoBehaviour {
         healthText.text = player.Health.ToString();
         speedText.text = player.Speed.ToString();
         strengthText.text = player.Strength.ToString();
-        jumpText.text = player.JumpPower.ToString();   
+        jumpText.text = player.JumpPower.ToString();
+        //UpdateAliceRendering();
 	}
+
+    /*private void UpdateAliceRendering()
+    {
+        GetComponentInChildren<AliceRenderer>().UpdateAliceRendering();
+    }*/
 }
