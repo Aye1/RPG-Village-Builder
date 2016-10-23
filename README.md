@@ -25,10 +25,12 @@ As much as we want to do an original game with a unique user experience, we stil
 * The game is developed in the [Unity](https://unity3d.com/) engine.
 * The room are currently generated using [Tiled](http://www.mapeditor.org/).
 * The task management is done with [Asana](https://app.asana.com/).
+* Pair programming
 
 ### Procedural generation
 * Rooms are picked randomly, according to the current level configuration, creating a whole new world at each game.
 * Enemies belong to differents pools. When creating a room, enemies are randomly picked into a particular pool.
+* A map and a mini map are available, to help the player navigate through the level.
 
 ###Graphism
 * All characters are drawn with Photoshop, with a graphic tablet. All body parts are split to help the animations.
@@ -36,7 +38,7 @@ As much as we want to do an original game with a unique user experience, we stil
 * The graphical style may be changed in the future.
 
 ###Functionalities in progress
-* Mini map and full map display.
+* Inventory.
 * Alice movement improvement.
 
 ## Project
