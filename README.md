@@ -25,6 +25,7 @@ As much as we want to do an original game with a unique user experience, we stil
 * The game is developed in the [Unity](https://unity3d.com/) engine.
 * The room are currently generated using [Tiled](http://www.mapeditor.org/).
 * The task management is done with [Asana](https://app.asana.com/).
+* Pair programming
 
 ### Procedural generation
 * Rooms are picked randomly, according to the current level configuration, creating a whole new world at each game.
