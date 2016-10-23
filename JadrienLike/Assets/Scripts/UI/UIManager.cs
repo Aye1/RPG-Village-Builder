@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour {
     public GameController gameController;
     public Canvas pauseMenu;
     public Text spiritCount;
+    public Inventory inventory;
 
     private BlackScreen _blackScreen;
 
@@ -26,6 +27,7 @@ public class UIManager : MonoBehaviour {
             Destroy(gameObject);
 
         _blackScreen = GetComponentInChildren<BlackScreen>();
+        inventory.gameObject.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -43,7 +45,7 @@ public class UIManager : MonoBehaviour {
             spiritCount.text = "Spirit: " + player.Spirit;
         }
         pauseMenu.enabled = gameController.pause;
-
+        CheckInventoryChangeKey();
 	}
 
     public void LaunchBlackScreenTransition()
@@ -56,5 +58,18 @@ public class UIManager : MonoBehaviour {
         {
             Debug.Log("Black screen not found");
         }
+    }
+
+    private void CheckInventoryChangeKey()
+    {
+        if (Input.GetKeyDown(KeyCode.I) && !gameController.pause)
+        {
+            inventory.gameObject.SetActive(!inventory.gameObject.activeSelf);   
+        }
+    }
+
+    public bool ShouldPause()
+    {
+        return inventory.gameObject.activeSelf;
     }
 }

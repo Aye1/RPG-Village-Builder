@@ -62,6 +62,7 @@ public class GameController : MonoBehaviour {
             boardManager.ZoneId = boardManager.debugZoneId;
         }
         ManagePause();
+        StopTimeIfNeeded();
         CheckPlayerMental();
         if(_canSwitchToNightmare)
         {
@@ -106,7 +107,11 @@ public class GameController : MonoBehaviour {
         {
             pause = !pause;
         }
-        if(pause)
+    }
+
+    private void StopTimeIfNeeded()
+    {
+        if (pause || uiManager.ShouldPause())
         {
             Time.timeScale = 0;
         }
