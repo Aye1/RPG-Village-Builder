@@ -34,9 +34,9 @@ public class GameController : MonoBehaviour {
         DontDestroyOnLoad(uiManager);
         DontDestroyOnLoad(uiManager.pauseMenu);
 
-		//currentBoard = new Board();
+        //currentBoard = new Board();
         LoadLevel("Rooms/room_132_ini");
-	}
+    }
 
     public void LoadLevel(string levelName)
     {

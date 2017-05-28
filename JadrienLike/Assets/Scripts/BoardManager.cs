@@ -57,6 +57,7 @@ public class BoardManager : MonoBehaviour {
     private Dictionary<int, Zone> _zonesDico;
     private Transform boardHolder;
     private Room currentRoom;
+    private bool backgroundInitiated;
     #endregion
 
     #region Accessors
@@ -386,9 +387,42 @@ public class BoardManager : MonoBehaviour {
                 }
             }
             currentZ += 0.1f;
+
         }
+        //if (!backgroundInitiated)
+        //{
+            //InstantiateBackground(room, offset);
+        //}
         InstantiateDynamicObjects(room);
         ChangeZoneLayout();
+    }
+
+    private void InstantiateBackground(Room room, Vector3 offset)
+    {
+        float xOffset = offset.x;
+        float yOffset = offset.y;
+        int chosenModX = 0;
+        int chosenModY = 0;
+        int imageSize = 6;
+        //int maxSize = 1000;
+        //for (int y = 0; y <= ((room.SizeY / imageSize) + 1) * imageSize + chosenMod; y++)
+        //for (int y = -maxSize; y <= maxSize; y++)
+        for (int y = 0; y <= room.SizeY; y++)
+        {
+            //for (int x = 0; x <= ((room.SizeX / imageSize) + 1) * imageSize + chosenMod; x++)
+            //for (int x = -maxSize; x <= maxSize; x++)
+            for (int x = 0; x <= room.SizeX; x++)
+            {
+                int adjustedModX = (int)(imageSize + (x + xOffset) % imageSize) % imageSize;
+                int adjustedModY = (int)(imageSize + (y + yOffset) % imageSize) % imageSize;
+                if (adjustedModX == chosenModX && adjustedModY == chosenModY)
+                {
+                    Instantiate(backgroundTiles[Random.Range(0, backgroundTiles.Length)], new Vector3(x + xOffset, room.SizeY - y + yOffset, 2), Quaternion.identity);
+
+                }
+            }
+        }
+        backgroundInitiated = true;
     }
 
     private void InstantiateDynamicObjects(Room room)
