@@ -4,19 +4,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using System.Text.RegularExpressions;
+using System.Net;
+using System.Net.Sockets;
 
 public class MainMenu : MonoBehaviour {
 
-    public enum MenuState { Main, CreateConfig, LoadConfig }
+    public enum MenuState { Main, CreateConfig, ServerLaunched }
     public MenuState menuState;
 
     public Canvas mainCanvas;
     public Canvas createConfCanvas;
+    public ServerWidget serverWidget;
+    public ClientWidget clientWidget;
 
     public Button createConfigButton;
     public Button loadConfigButton;
 
     public Dropdown typeDropdown;
+    public InputField nameInputField;
     public InputField ipInputField;
     public InputField portInputField;
 
@@ -27,14 +32,19 @@ public class MainMenu : MonoBehaviour {
     private string error = "";
     private string ipPattern = "^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
 
+    private const int NAME_MAX_LENGTH = 100;
+
 	// Use this for initialization
 	void Start () {
         menuState = MenuState.Main;
+        HideObject(clientWidget);
+        HideObject(serverWidget);
 	}
 	
 	// Update is called once per frame
 	void Update () {
         UpdateCanvas();
+        UpdateTypeDropdown();
         fileSavePathText.text = savePath;
         errorText.text = error;
 	}
@@ -47,6 +57,18 @@ public class MainMenu : MonoBehaviour {
         }
     }
 
+    private void UpdateTypeDropdown()
+    {
+        if (typeDropdown.value == 0)
+        {
+            // Server
+            ipInputField.readOnly = true;
+        } else if (typeDropdown.value == 1)
+        {
+            ipInputField.readOnly = false;
+        }
+    }
+
     private void ResetValues()
     {
         savePath = "Choisir un fichier";
@@ -54,16 +76,69 @@ public class MainMenu : MonoBehaviour {
         portInputField.text = "";
         fileSavePathText.text = "";
         typeDropdown.value = 0;
+        ipInputField.text = GetCurrentIp();
+        error = "";
+    }
+
+    private string GetCurrentIp()
+    {
+        // Internet code, be careful
+        IPHostEntry host;
+        string localIP = "";
+        host = Dns.GetHostEntry(Dns.GetHostName());
+        foreach (IPAddress ip in host.AddressList)
+        {
+            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            {
+                localIP = ip.ToString();
+                break;
+            }
+        }
+        return localIP;
+    }
+
+    private void LoadConfigInProperWidget(Config config)
+    {
+        if (config.type == Config.ConfigType.Server)
+        {
+            serverWidget.config = config;
+            DisplayObject(serverWidget);
+            HideObject(clientWidget);
+        }
+        else
+        {
+            clientWidget.config = config;
+            DisplayObject(clientWidget);
+            HideObject(serverWidget);
+        }
     }
 
     #region Config Validation
-    private bool ValidateConfig()
+
+    // Creates a config using the data in the form
+    // The Config may not be valid at this moment
+    private Config CreateConfigFromForm()
+    {
+        Config config = new Config
+        {
+            name = nameInputField.text,
+            ip = ipInputField.text,
+            port = portInputField.text,
+            type = typeDropdown.value == 0 ? Config.ConfigType.Server : Config.ConfigType.Client
+        };
+        return config;
+    }
+
+    public bool ValidateConfig(Config config)
     {
         error = "";
         bool res = true;
-        res = isIpValid(ipInputField.text) && res;
-        res = isPortValid(portInputField.text) && res;
-        res = isPathValid(fileSavePathText.text) && res;
+        res = isNameValid(config.name) && res;
+        // IP is for client only
+        if (typeDropdown.value == 1)
+            res = isIpValid(config.ip) && res;
+        res = isPortValid(config.port) && res;
+        //res = isPathValid(fileSavePathText.text) && res;
         return res;
     }
 
@@ -92,9 +167,18 @@ public class MainMenu : MonoBehaviour {
             error = error + " Chemin invalide";
         return res;
     }
+
+    private bool isNameValid(string name)
+    {
+        bool res = name.Length <= NAME_MAX_LENGTH ;
+        res = res && name.Length > 0;
+        if (!res)
+            error = error + " Nom invalide";
+        return res;
+    }
     #endregion
 
-    #region Canvas visibility management
+    #region Object visibility management
     private void UpdateCanvas()
     {
         switch(menuState)
@@ -103,7 +187,7 @@ public class MainMenu : MonoBehaviour {
                 DisplayCanvas(createConfCanvas);
                 HideCanvas(mainCanvas);
                 break;
-            case MenuState.LoadConfig:
+            case MenuState.ServerLaunched:
                 HideCanvas(mainCanvas);
                 HideCanvas(createConfCanvas);
                 break;
@@ -137,9 +221,21 @@ public class MainMenu : MonoBehaviour {
         canvas.enabled = true;
         canvas.gameObject.transform.localScale = Vector3.one;
     }
+
+    private void HideObject(Behaviour obj)
+    {
+        obj.enabled = false;
+        obj.gameObject.transform.localScale = Vector3.zero;
+    }
+
+    private void DisplayObject(Behaviour obj)
+    {
+        obj.enabled = true;
+        obj.gameObject.transform.localScale = Vector3.one;
+    }
     #endregion
 
-    #region Buttons callbacks                  
+    #region UI callbacks                  
     public void CreateConfigButtonClicked()
     {
         menuState = MenuState.CreateConfig;
@@ -148,7 +244,13 @@ public class MainMenu : MonoBehaviour {
 
     public void LoadConfigButtonClicked()
     {
-        menuState = MenuState.LoadConfig;
+        string file = EditorUtility.OpenFilePanel("Ouvrir un fichier de configuration", Application.dataPath, "json");
+        string rawText = System.IO.File.ReadAllText(file);
+        Config config = JsonUtility.FromJson<Config>(rawText);
+        if(ValidateConfig(config))
+        {
+            LoadConfigInProperWidget(config);
+        }
     }
 
     public void CancelButtonClicked()
@@ -158,21 +260,31 @@ public class MainMenu : MonoBehaviour {
 
     public void SelectFileButtonClicked()
     {
-        savePath = EditorUtility.SaveFilePanel("Title", Application.dataPath, "config", "json");
+        savePath = EditorUtility.SaveFilePanel("Fichier de configuration", Application.dataPath, "config", "json");
     }
 
     public void SaveButtonClicked()
     {
-        if (ValidateConfig())
+        Config config = CreateConfigFromForm();
+        if (ValidateConfig(config))
         {
-            Config config = new Config
-            {
-                ip = ipInputField.text,
-                port = portInputField.text,
-                type = typeDropdown.value == 0 ? Config.ConfigType.Server : Config.ConfigType.Client
-            };
             string serializedConfig = JsonUtility.ToJson(config);
             System.IO.File.WriteAllText(savePath, serializedConfig);
+            menuState = MenuState.Main;
+            LoadConfigInProperWidget(config);
+        }
+    }
+
+    public void TypeDropdownValueChanged()
+    {
+        if (typeDropdown.value == 0)
+        {
+            // Switch to server
+            ipInputField.text = GetCurrentIp();
+        } else if (typeDropdown.value == 1)
+        {
+            // Switch to client
+            ipInputField.text = "";
         }
     }
     #endregion
