@@ -1,11 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
 using System.Text.RegularExpressions;
 using System.Net;
 using System.Net.Sockets;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class MainMenu : MonoBehaviour {
 
@@ -244,13 +245,32 @@ public class MainMenu : MonoBehaviour {
 
     public void LoadConfigButtonClicked()
     {
+        #if UNITY_EDITOR
         string file = EditorUtility.OpenFilePanel("Ouvrir un fichier de configuration", Application.dataPath, "json");
-        string rawText = System.IO.File.ReadAllText(file);
-        Config config = JsonUtility.FromJson<Config>(rawText);
+        Config config = LoadConfigFromFile(file);
         if(ValidateConfig(config))
         {
             LoadConfigInProperWidget(config);
         }
+        #else
+        Debug.LogError("Can't use file windows in Standalone mode. Please use default config only");
+        #endif
+    }
+
+    public void DefaultConfigButtonClicked()
+    {
+        Config config = LoadConfigFromFile("Out/config-default.json");
+        if (ValidateConfig(config))
+        {
+            LoadConfigInProperWidget(config);
+        }
+    }
+
+    private Config LoadConfigFromFile(string path)
+    {
+        string rawText = System.IO.File.ReadAllText(path);
+        Config config = JsonUtility.FromJson<Config>(rawText);
+        return config;
     }
 
     public void CancelButtonClicked()
@@ -260,7 +280,11 @@ public class MainMenu : MonoBehaviour {
 
     public void SelectFileButtonClicked()
     {
+#if UNITY_EDITOR
         savePath = EditorUtility.SaveFilePanel("Fichier de configuration", Application.dataPath, "config", "json");
+#else
+        Debug.LogError("Can't use file windows in Standalone mode. Please use default config only");
+#endif
     }
 
     public void SaveButtonClicked()
@@ -287,5 +311,5 @@ public class MainMenu : MonoBehaviour {
             ipInputField.text = "";
         }
     }
-    #endregion
+#endregion
 }

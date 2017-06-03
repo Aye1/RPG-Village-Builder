@@ -9,6 +9,7 @@ public class Server : MonoBehaviour {
 
     private ServerState serverState;
     private Config config;
+    public ServerLogs logs;
 
     public ServerState State
     {
@@ -71,5 +72,11 @@ public class Server : MonoBehaviour {
     private void OnClientConnected(NetworkMessage msg)
     {
         Debug.Log("New client connected");
+        logs.logs.Add("New client connected");
+    }
+
+    public void SimulateClientConnected()
+    {
+        OnClientConnected(new NetworkMessage());
     }
 }
