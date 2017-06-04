@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour {
     public Text scoreP2Text;
     public Text gameEndText;
     public Button resetButton;
+    public Image p1PlayingImage;
+    public Image p2PlayingImage;
 
 	// Use this for initialization
 	void Start () {
@@ -38,6 +40,7 @@ public class GameManager : MonoBehaviour {
         currentPlayer = Player.P1;
         isGameFinished = false;
         board.ResetBoard();
+        UIHelper.HideBehaviour(p2PlayingImage);
     }
 
     private void ManageClick()
@@ -47,9 +50,13 @@ public class GameManager : MonoBehaviour {
             Vector3 currentPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Debug.Log("Mouse click at " + currentPos);
             Vector2 boardPos = new Vector2(Mathf.Floor(currentPos.x), Mathf.Floor(currentPos.y));
-            board.PlayMove(boardPos, currentPlayer);
-            ChangeCurrentPlayer();
-            CountScores();
+            if (board.IsMoveAllowed(boardPos))
+            {
+                //board.PlayMove(boardPos, currentPlayer);
+                board.PlayMoveWithAnimation(boardPos, currentPlayer);
+                ChangeCurrentPlayer();
+                CountScores();
+            }
         }
     }
     
@@ -63,6 +70,15 @@ public class GameManager : MonoBehaviour {
     private void ChangeCurrentPlayer()
     {
         currentPlayer = currentPlayer == Player.P1 ? Player.P2 : Player.P1;
+        if (currentPlayer == Player.P1)
+        {
+            UIHelper.HideBehaviour(p2PlayingImage);
+            UIHelper.DisplayBehaviour(p1PlayingImage);
+        } else
+        {
+            UIHelper.HideBehaviour(p1PlayingImage);
+            UIHelper.DisplayBehaviour(p2PlayingImage);
+        }
     }
 
     private void CountScores()
