@@ -1,0 +1,16 @@
+{
+  "cardName": "test",
+  "attack": 1,
+  "hp": 2,
+  "influence": 3,
+  "cost": 4,
+  "illusName": "test.jpg"
+},
+{
+  "cardName": "test2",
+  "attack": 5,
+  "hp": 6,
+  "influence": 7,
+  "cost": 9,
+  "illusName": "test.jpg"
+}
