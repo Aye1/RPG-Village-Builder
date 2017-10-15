@@ -27,6 +27,15 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void AddRandomCard()
+    {
+        if (_boardManager.canAddCardToHand())
+        {
+            int index = Random.Range(0, _cardManager.GetCardCount()-1);
+            _boardManager.addCardToHand(_cardManager.CreateCard(index));
+        }
+    }
+
     private IEnumerator InitCards()
     {
         if (_cardManager != null)
@@ -35,7 +44,7 @@ public class GameManager : MonoBehaviour {
             {
                 yield return null;
             }
-            AddZeroCard();
+            AddRandomCard();
         }
     }
 }

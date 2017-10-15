@@ -10,6 +10,7 @@ public class Card : MonoBehaviour {
     public int influence;
     public string infosPath;
     public string cardName;
+    public string type;
 
     private string illusName;
 
@@ -22,6 +23,9 @@ public class Card : MonoBehaviour {
 
     [Header("Other")]
     public GameObject illustration;
+
+    [Header("Debug")]
+    public bool isMouseOver = false;
 
     private const string resourcesFolder = "Resources";
     private const string illusFolder = "Illustrations";
@@ -38,11 +42,6 @@ public class Card : MonoBehaviour {
             }
         }
     }
-
-	// Use this for initialization
-	void Start () {
-		
-	}
 	
 	// Update is called once per frame
 	void Update () {

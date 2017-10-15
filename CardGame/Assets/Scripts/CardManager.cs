@@ -33,6 +33,11 @@ public class CardManager : MonoBehaviour {
         }
     }
 
+    public int GetCardCount()
+    {
+        return _cardsList.Length;
+    }
+
     public Card CreateCard(int index)
     {
         if (index >= _cardsList.Length)
