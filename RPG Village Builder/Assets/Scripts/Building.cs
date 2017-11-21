@@ -5,6 +5,7 @@ using UnityEngine;
 public class Building : MonoBehaviour {
 
     public Vector2 size;
+    public int cost;
 
 	// Use this for initialization
 	void Start () {

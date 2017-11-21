@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class BuildingManager : MonoBehaviour {
 
-    public Building house;
     public Building[] referenceBuildings;
-
     public int currentBuildingIndex = 0;
 
     private Dictionary<Vector3, Building> _buildings;
 
     private const float yOffset = 0.01f;
+    private EconomyManager _economyManager;
 
     // Use this for initialization
     void Start () {
         _buildings = new Dictionary<Vector3, Building>();
+        _economyManager = FindObjectOfType<EconomyManager>();
+        if (_economyManager == null)
+        {
+            Debug.LogError("Economy Manager not found");
+        }
 	}
 	
 	// Update is called once per frame
@@ -40,16 +44,22 @@ public class BuildingManager : MonoBehaviour {
     {
         if (CanBuildAtPos(pos))
         {
-            Building referenceBuilding = referenceBuildings[currentBuildingIndex];
+            Building referenceBuilding = GetSelectedBuilding();
             Building buildingCopy = Instantiate(referenceBuilding, transform);
             buildingCopy.transform.position = new Vector3 (pos.x, yOffset, pos.z);
             _buildings.Add(pos, buildingCopy);
+            _economyManager.SpendGold(referenceBuilding.cost);
         }
     }
 
     public bool CanBuildAtPos(Vector3 pos)
     {
-        return !IsPosOccupied(pos) && !IsYTooHigh(pos);
+        Building referenceBuilding = referenceBuildings[currentBuildingIndex];
+        bool res = true;
+        res = res & !IsPosOccupied(pos);
+        res = res & !IsYTooHigh(pos);
+        res = res & _economyManager.CanSpendGold(GetSelectedBuilding().cost);
+        return res;
     }
 
     public bool IsYTooHigh(Vector3 pos)
@@ -62,6 +72,14 @@ public class BuildingManager : MonoBehaviour {
         if (referenceBuildings.Length > 1)
         {
             currentBuildingIndex = (currentBuildingIndex + 1) % referenceBuildings.Length;
+        }
+    }
+
+    public void ChangeBuildingTool(int index)
+    {
+        if (index < referenceBuildings.Length)
+        {
+            currentBuildingIndex = index;
         }
     }
 

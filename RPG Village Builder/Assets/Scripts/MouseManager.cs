@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MouseManager : MonoBehaviour {
 
@@ -8,7 +9,6 @@ public class MouseManager : MonoBehaviour {
     private BuildingManager _buildingManager;
 
     private Building _ghostBuilding;
-    private Building _toBeDestroyedBuilding;
 
     private const float yOffset = 0.01f;
     private int div = 20;
@@ -37,6 +37,7 @@ public class MouseManager : MonoBehaviour {
             UpdateIndicatorColor(pos);
             UpdateGhostBuilding(pos);
         }
+        ManagePosIndicatorVisibility();
     }
 
     private void UpdateGhostBuilding(Vector3 pos)
@@ -81,13 +82,15 @@ public class MouseManager : MonoBehaviour {
     private float DiscreteCoord(float coord, int div)
     {
         return (int)(coord / div) * div;
-    } 
+    }
 
     private void ManageClick()
     {
-        if(Input.GetMouseButtonDown(0) && GetMousePositionInWorld().y <= 0.1f)
-        {
-            _buildingManager.CreateBuilding(GetDiscreteMousePosition());
+        if (!EventSystem.current.IsPointerOverGameObject()) {
+            if (Input.GetMouseButtonDown(0) && GetMousePositionInWorld().y <= 0.1f)
+            {
+                _buildingManager.CreateBuilding(GetDiscreteMousePosition());
+            }
         }
     }
 
@@ -99,5 +102,12 @@ public class MouseManager : MonoBehaviour {
             color = Color.green;
         }
         posIndicator.GetComponentInChildren<SpriteRenderer>().color = color;
+    }
+
+    private void ManagePosIndicatorVisibility()
+    {
+        bool visibility = !EventSystem.current.IsPointerOverGameObject();
+        posIndicator.SetActive(visibility);
+        _ghostBuilding.gameObject.SetActive(visibility);
     }
 }
