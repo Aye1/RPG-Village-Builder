@@ -33,7 +33,7 @@ public class MouseManager : MonoBehaviour {
         Vector3 hitPosition = GetMousePositionInWorld();
         if (hitPosition != Vector3.zero) {
             Vector3 pos = GetDiscreteMousePosition();
-            posIndicator.transform.position = new Vector3(pos.x, yOffset, pos.z);
+            posIndicator.transform.position = new Vector3(pos.x, pos.y + yOffset, pos.z);
             UpdateIndicatorColor(pos);
             UpdateGhostBuilding(pos);
         }
