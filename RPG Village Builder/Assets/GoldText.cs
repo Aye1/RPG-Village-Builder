@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Assets.Scripts.Helpers;
 
 public class GoldText : MonoBehaviour {
 
@@ -9,15 +10,10 @@ public class GoldText : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         _economyManager = FindObjectOfType<EconomyManager>();
-        if (_economyManager == null)
-        {
-            Debug.LogError("Economy Manager not found");
-        }
         _text = GetComponent<Text>();
-        if (_text == null)
-        {
-            Debug.LogError("Component Text not found");
-        }
+
+        ObjectChecker.CheckNullity(_economyManager, "Economy manager not found");
+        ObjectChecker.CheckNullity(_text, "Component Text not found");
 	}
 	
 	// Update is called once per frame

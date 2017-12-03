@@ -108,6 +108,9 @@ public class MouseManager : MonoBehaviour {
     {
         bool visibility = !EventSystem.current.IsPointerOverGameObject();
         posIndicator.SetActive(visibility);
-        _ghostBuilding.gameObject.SetActive(visibility);
+        if (_ghostBuilding != null)
+        {
+            _ghostBuilding.gameObject.SetActive(visibility);
+        }
     }
 }

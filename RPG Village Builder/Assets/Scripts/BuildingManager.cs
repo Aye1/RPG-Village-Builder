@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Helpers;
 
 public class BuildingManager : MonoBehaviour {
 
@@ -11,15 +12,16 @@ public class BuildingManager : MonoBehaviour {
 
     private const float yOffset = 0.01f;
     private EconomyManager _economyManager;
+    private MapInfosManager _mapInfos;
 
     // Use this for initialization
     void Start () {
         _buildings = new Dictionary<Vector3, Building>();
         _economyManager = FindObjectOfType<EconomyManager>();
-        if (_economyManager == null)
-        {
-            Debug.LogError("Economy Manager not found");
-        }
+        _mapInfos = FindObjectOfType<MapInfosManager>();
+
+        ObjectChecker.CheckNullity(_economyManager, "Economy manager not found");
+        ObjectChecker.CheckNullity(_mapInfos, "Map infos not found");
 	}
 	
 	// Update is called once per frame
@@ -33,11 +35,6 @@ public class BuildingManager : MonoBehaviour {
         {
             ChangeBuildingTool();
         }
-    }
-
-    public bool IsPosOccupied(Vector3 pos)
-    {
-        return _buildings.ContainsKey(pos);
     }
 
     public void CreateBuilding(Vector3 pos)
@@ -59,12 +56,23 @@ public class BuildingManager : MonoBehaviour {
         res = res & !IsPosOccupied(pos);
         res = res & !IsYTooHigh(pos);
         res = res & _economyManager.CanSpendGold(GetSelectedBuilding().cost);
+        res = res & IsGroundConstructible(pos);
         return res;
     }
 
     public bool IsYTooHigh(Vector3 pos)
     {
         return pos.y > 0.1f;
+    }
+
+    public bool IsPosOccupied(Vector3 pos)
+    {
+        return _buildings.ContainsKey(pos);
+    }
+
+    public bool IsGroundConstructible(Vector3 pos)
+    {
+        return _mapInfos.GetInfosAtPos(pos).mapType != MapInfosManager.MapType.Water;
     }
 
     public void ChangeBuildingTool()
