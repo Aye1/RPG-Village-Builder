@@ -53,10 +53,10 @@ public class BuildingManager : MonoBehaviour {
     {
         Building referenceBuilding = referenceBuildings[currentBuildingIndex];
         bool res = true;
-        res = res & !IsPosOccupied(pos);
-        res = res & !IsYTooHigh(pos);
-        res = res & _economyManager.CanSpendGold(GetSelectedBuilding().cost);
-        res = res & IsGroundConstructible(pos);
+        res = res && !IsPosOccupied(pos);
+        res = res && !IsYTooHigh(pos);
+        res = res && _economyManager.CanSpendGold(GetSelectedBuilding().cost);
+        res = res && IsGroundConstructible(pos);
         return res;
     }
 
@@ -72,7 +72,8 @@ public class BuildingManager : MonoBehaviour {
 
     public bool IsGroundConstructible(Vector3 pos)
     {
-        return _mapInfos.GetInfosAtPos(pos).mapType != MapInfosManager.MapType.Water;
+        //return _mapInfos.GetInfosAtPos(pos).mapType != MapInfosManager.MapType.Water;
+        return _mapInfos.GetInfosAtPos(CoordinatesConverter.RealToMapCoordinates(pos)).mapType != MapInfosManager.MapType.Water;
     }
 
     public void ChangeBuildingTool()

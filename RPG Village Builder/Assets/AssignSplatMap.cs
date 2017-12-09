@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Linq; // used for Sum of array
 using Assets.Scripts.Helpers;
 
@@ -15,13 +16,261 @@ public class AssignSplatMap : MonoBehaviour
         ObjectChecker.CheckNullity(_terrain, "Terrain component not found");
 
         ResizeTerrain();
-        AssignTextures();
+        AssignCellTextures();
     }
 
     private void ResizeTerrain()
     {
         TerrainData data = _terrain.terrainData;
-        data.size = new Vector3(_mapInfosManager.mapSize.x, _mapInfosManager.mapSize.z, _mapInfosManager.mapSize.y);
+        Vector3 mapSize = _mapInfosManager.mapSize;
+        data.size = new Vector3(mapSize.x, mapSize.z, mapSize.y) * CoordinatesConverter.cellSize;
+    }
+
+    private void ResizeRealTerrain()
+    {
+        TerrainData data = _terrain.terrainData;
+        data.size = new Vector3(_mapInfosManager.realMapSize.x, _mapInfosManager.realMapSize.z, _mapInfosManager.realMapSize.y);
+    }
+
+    private void AssignCellTextures()
+    {
+        TerrainData terrainData = _terrain.terrainData;
+
+        float[,,] splatmapData = new float[terrainData.alphamapWidth,
+                                            terrainData.alphamapHeight,
+                                            terrainData.alphamapLayers];
+        Vector2 mapSize = _mapInfosManager.mapSize;
+        for (int i=0; i<mapSize.x; i++)
+        {
+            for (int j=0; j<mapSize.y; j++)
+            {
+                Vector2 casePos = new Vector2(i, j);
+                int[,] textureIds = GetCasesInfos(casePos);
+                FillCaseTexture(casePos, textureIds, terrainData, splatmapData);
+            }
+        }
+        terrainData.SetAlphamaps(0, 0, splatmapData);
+    }
+
+    private int[,] GetCasesInfos(Vector2 pos)
+    {
+        int[,] cases = new int[3, 3];
+        int x = (int)pos.x;
+        int y = (int)pos.y;
+        cases[0, 0] = GetTextureId(_mapInfosManager.GetMapTypeAtPos(new Vector2(x + 1, y - 1)));
+        cases[0, 1] = GetTextureId(_mapInfosManager.GetMapTypeAtPos(new Vector2(x + 1, y)));
+        cases[0, 2] = GetTextureId(_mapInfosManager.GetMapTypeAtPos(new Vector2(x + 1, y + 1)));
+        cases[1, 0] = GetTextureId(_mapInfosManager.GetMapTypeAtPos(new Vector2(x , y - 1)));
+        cases[1, 1] = GetTextureId(_mapInfosManager.GetMapTypeAtPos(new Vector2(x , y)));
+        cases[1, 2] = GetTextureId(_mapInfosManager.GetMapTypeAtPos(new Vector2(x , y + 1)));
+        cases[2, 0] = GetTextureId(_mapInfosManager.GetMapTypeAtPos(new Vector2(x - 1, y - 1)));
+        cases[2, 1] = GetTextureId(_mapInfosManager.GetMapTypeAtPos(new Vector2(x - 1, y)));
+        cases[2, 2] = GetTextureId(_mapInfosManager.GetMapTypeAtPos(new Vector2(x - 1, y + 1)));
+        return cases;
+    }
+
+    private void FillCaseTexture(Vector2 pos, int[,] idTextures, TerrainData terrainData, float[,,] splatmapData)
+    {
+        int x = (int)pos.x;
+        int y = (int)pos.y;
+        int cellSize = CoordinatesConverter.cellSize;
+
+        for (int i=0; i<CoordinatesConverter.cellSize; i++)
+        {
+            for (int j=0; j<CoordinatesConverter.cellSize; j++)
+            {
+                float[] splatWeights = new float[terrainData.alphamapLayers];
+                splatWeights[idTextures[1, 1]] = 1.0f;
+                AddRandomInfluence(new Vector2(i,j), idTextures, splatWeights);
+                float z = splatWeights.Sum();
+
+                for (int k = 0; k < terrainData.alphamapLayers; k++)
+                {
+                    // Normalize so that sum of all texture weights = 1
+                    splatWeights[k] /= z;
+                    // Assign this point to the splatmap array
+                    splatmapData[x * cellSize + i, y * cellSize + j, k] = splatWeights[k];
+                }
+            }
+        }
+    }
+
+    private void AddRandomInfluence(Vector2 pos, int[,] idTextures, float[] splatWeights)
+    {
+        float perX = pos.x / CoordinatesConverter.cellSize;
+        float perY = pos.y / CoordinatesConverter.cellSize;
+        float thresh = 0.3f;
+
+        bool lowX = perX < thresh;
+        bool highX = perX > 1 - thresh;
+        bool lowY = perY < thresh;
+        bool highY = perY > 1 - thresh;
+
+        if (highX)
+        {
+            //Top
+            AddInfluence(idTextures[0, 1], splatWeights, perX);
+            if (lowY)
+            {
+                //Top Left
+                AddInfluence(idTextures[0, 0], splatWeights, perX*(1-perY));
+            } else if (highY)
+            {
+                //Top right
+                AddInfluence(idTextures[0, 2], splatWeights, perX*perY);
+            }
+        }
+        if (lowX)
+        {
+            //Bottom
+            AddInfluence(idTextures[2, 1], splatWeights, 1-perX);
+            if (lowY)
+            {
+                //Bottom Left
+                AddInfluence(idTextures[2, 0], splatWeights, (1-perX)*(1-perY));
+            }
+            else if (highY)
+            {
+                //Bottom right
+                AddInfluence(idTextures[2, 2], splatWeights, (1-perX)*perY);
+            }
+        }
+        if (lowY)
+        {
+            //Left
+            AddInfluence(idTextures[1, 0], splatWeights, 1-perY);
+        } else if (highY)
+        {
+            //Right            
+            AddInfluence(idTextures[1, 2], splatWeights, perY);
+        }
+    }
+
+    private void AddInfluence(int id, float[] splatWeights, float variation)
+    {
+        float influence = 4.0f;
+        float random = UnityEngine.Random.value;
+        if (id != -1 && random < 0.5f)
+        {
+            splatWeights[id] += influence = variation;
+        }
+    }
+
+
+    private void AssignRawTextures()
+    {
+        // Get a reference to the terrain data
+        TerrainData terrainData = _terrain.terrainData;
+
+        // Splatmap data is stored internally as a 3d array of floats, so declare a new empty array ready for your custom splatmap data:
+        float[,,] splatmapData = new float[terrainData.alphamapWidth,
+            terrainData.alphamapHeight,
+            terrainData.alphamapLayers];
+        for (int y = 0; y < terrainData.alphamapHeight; y++)
+        {
+            for (int x = 0; x < terrainData.alphamapWidth; x++)
+            {
+                // Setup an array to record the mix of texture weights at this point
+                float[] splatWeights = new float[terrainData.alphamapLayers];
+
+                CaseInfos caseInfo = _mapInfosManager.GetInfosAtPos(new Vector2(x, y));
+                int idCase = GetTextureId(caseInfo);
+
+                if (idCase == -1)
+                {
+                    splatWeights[0] = 1.0f;
+                }
+                else
+                {
+                    splatWeights[idCase] = 1.0f;
+                }
+
+                float z = splatWeights.Sum();
+                // Loop through each terrain texture
+                for (int i = 0; i < terrainData.alphamapLayers; i++)
+                {
+                    // Normalize so that sum of all texture weights = 1
+                    splatWeights[i] /= z;
+                    // Assign this point to the splatmap array
+                    splatmapData[x, y, i] = splatWeights[i];
+                }
+            }
+        }
+        // Finally assign the new splatmap to the terrainData:
+        terrainData.SetAlphamaps(0, 0, splatmapData);
+    }
+
+    private void AssignMatrixTextures()
+    {
+        // Get a reference to the terrain data
+        TerrainData terrainData = _terrain.terrainData;
+
+        // Splatmap data is stored internally as a 3d array of floats, so declare a new empty array ready for your custom splatmap data:
+        float[,,] splatmapData = new float[terrainData.alphamapWidth,
+            terrainData.alphamapHeight,
+            terrainData.alphamapLayers];
+        for (int y = 0; y < terrainData.alphamapHeight; y++)
+        {
+            for (int x = 0; x < terrainData.alphamapWidth; x++)
+            {
+                // Setup an array to record the mix of texture weights at this point
+                float[] splatWeights = new float[terrainData.alphamapLayers];
+
+                int matrixSize = 5;
+                CaseInfos[] infos = new CaseInfos[matrixSize*matrixSize];
+
+                int k = 0;
+                // size 3 : 1 0 -1
+                // size 5 : 2 1 0 -1 -2
+                for (int i = matrixSize/2; i >= -matrixSize/2; i--)
+                {
+                    // size 3 : -1 0 1
+                    // size 5 : -2 -1 0 1 2
+                    for (int j = -matrixSize/2; j <= matrixSize/2; j++)
+                    {
+                        infos[k] = _mapInfosManager.GetInfosAtPos(new Vector2(x + i, y + j));
+                        k++;
+                    }
+                }
+
+                ApplySplatMatrix(infos, splatWeights);
+
+                float z = splatWeights.Sum();
+                // Loop through each terrain texture
+                for (int i = 0; i < terrainData.alphamapLayers; i++)
+                {
+                    // Normalize so that sum of all texture weights = 1
+                    splatWeights[i] /= z;
+                    // Assign this point to the splatmap array
+                    splatmapData[x, y, i] = splatWeights[i];
+                }
+            }
+        }
+        // Finally assign the new splatmap to the terrainData:
+        terrainData.SetAlphamaps(0, 0, splatmapData);
+    }
+
+    private void ApplySplatMatrix(CaseInfos[] cases, float[] splatWeights)
+    {
+        int idTexture;
+        //int[] weightMatrix = new int[9] { 5, 5, 5, 5, 10, 5, 5, 5, 5 };
+        int[] weightMatrix = new int[25] {1, 4, 6, 4, 1,
+                                          4, 16, 24, 16, 4,
+                                          6, 24, 36, 24, 6,
+                                          4, 16, 24, 16, 4,
+                                          1, 4, 6, 4, 1};
+        if (cases.Length != weightMatrix.Length)
+        {
+            return;
+        }
+        for (int i = 0; i < cases.Length; i++)
+        {
+            idTexture = GetTextureId(cases[i]);
+            if (idTexture != -1)
+            {
+                splatWeights[idTexture] = weightMatrix[i];
+            }
+        }
     }
 
     private void AssignTextures()
@@ -152,7 +401,11 @@ public class AssignSplatMap : MonoBehaviour
         {
             return -1;
         }
-        switch(caseInfos.mapType)
+        return GetTextureId(caseInfos.mapType);
+    }
+    private int GetTextureId(MapInfosManager.MapType mapType)
+    {
+        switch (mapType)
         {
             case MapInfosManager.MapType.Grass:
                 return 0;
@@ -165,19 +418,5 @@ public class AssignSplatMap : MonoBehaviour
             default:
                 return -1;
         }
-    }
-
-    // TODO: factorize conditions
-    private float GetInfluence(CaseInfos caseInfos, MapInfosManager.MapType type)
-    {
-        if (caseInfos == null)
-        {
-            return 0.0f;
-        }
-        if (caseInfos.mapType == type)
-        {
-            return 1.0f;
-        }
-        return 0.0f;
     }
 }
