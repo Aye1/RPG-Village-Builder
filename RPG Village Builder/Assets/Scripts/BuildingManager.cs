@@ -67,6 +67,10 @@ public class BuildingManager : MonoBehaviour {
 
     public bool IsPosOccupied(Vector3 pos)
     {
+        if (_buildings == null)
+        {
+            return true;
+        }
         return _buildings.ContainsKey(pos);
     }
 

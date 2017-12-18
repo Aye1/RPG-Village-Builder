@@ -10,7 +10,6 @@ public class MapInfosManager : MonoBehaviour {
     // - type of the case
     // - height of the case
     public Dictionary<Vector2, CaseInfos> infos;
-    public Vector3 realMapSize;
 
     public Vector3 mapSize;
 
@@ -20,7 +19,8 @@ public class MapInfosManager : MonoBehaviour {
     {
         //realMapSize = new Vector3(300.0f, 500.0f, 600.0f);
         mapSize = new Vector3(64, 64, 60);
-        InitDebugMap();
+        //InitDebugMap();
+        GenerateRandomMap();
     }
 
 	// Use this for initialization
@@ -76,9 +76,9 @@ public class MapInfosManager : MonoBehaviour {
 
     private void InitMapWithGrass()
     {
-        for (int i=0; i<realMapSize.x; i++)
+        for (int i=0; i<mapSize.x; i++)
         {
-            for (int j=0; j<realMapSize.y; j++)
+            for (int j=0; j<mapSize.y; j++)
             {
                 Vector2 pos = new Vector2(i, j);
                 CaseInfos caseInfos = new CaseInfos(MapType.Grass, 0.0f);
@@ -86,55 +86,37 @@ public class MapInfosManager : MonoBehaviour {
             }
         }
     }
+
     private void GenerateRiver()
     {
-        int width = 3;
+        int width = 2;
         int beachWidth = 1;
         int currentX = 0;
-        int currentY = 100
-            ;
+        int currentY = 10;
 
-        while (currentX <= realMapSize.x)
+        while (currentX <= mapSize.x)
         {
             for (int i = 0; i < beachWidth; i++)
             {
-                for (int j = 0; j < 10; j++)
-                {
-                    for (int k = 0; k < 10; k++)
-                    {
-                        Vector2 pos = new Vector2(currentX + j + 1, currentY + k + i * 10 - beachWidth * 10 + 1);
-                        infos[pos].mapType = MapType.Sand;
-                    }
-                }
+                Vector2 pos = new Vector2(currentX , currentY  + i  - beachWidth  + 1);
+                infos[pos].mapType = MapType.Sand;
             }
             for (int i = 0; i < width; i++)
             {
-                for (int j = 0; j < 10; j++)
-                {
-                    for (int k = 0; k < 10; k++)
-                    {
-                        Vector2 pos = new Vector2(currentX + j +1, currentY + k + i * 10 +1);
-                        infos[pos].mapType = MapType.Water;
-                    }
-                }
+                Vector2 pos = new Vector2(currentX , currentY + i + 1);
+                infos[pos].mapType = MapType.Water;
             }
             for (int i = 0; i < beachWidth; i++)
             {
-                for (int j = 0; j < 10; j++)
-                {
-                    for (int k = 0; k < 10; k++)
-                    {
-                        Vector2 pos = new Vector2(currentX + j + 1, currentY + k + i * 10 + width * 10 + 1);
-                        infos[pos].mapType = MapType.Sand;
-                    }
-                }
+                Vector2 pos = new Vector2(currentX , currentY + i  + width + 1);
+                infos[pos].mapType = MapType.Sand;
             }
             bool dirChoice = Random.value <= 0.5f;
             //if (dirChoice)
             //{
             //    currentY += 10;
             //}
-            currentX += 10;
+            currentX++;
         }
     }
 
