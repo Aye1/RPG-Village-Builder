@@ -143,9 +143,10 @@ public class AssignSplatMap : MonoBehaviour
 
     private void AddInfluence(int id, float[] splatWeights, float variation)
     {
-        float influence = 4.0f;
+        float influence = 8.0f;
+        float randomThreshold = 0.2f;
         float random = UnityEngine.Random.value;
-        if (id != -1 && random < 0.5f)
+        if (id != -1 && random < randomThreshold)
         {
             splatWeights[id] += influence = variation;
         }
@@ -158,8 +159,6 @@ public class AssignSplatMap : MonoBehaviour
         int cellSize = CoordinatesConverter.cellSize;
         float[,] heights = new float[cellSize, cellSize];
 
-        float[,] totalHeights = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);
-
         CaseInfos infos = _mapInfosManager.GetInfosAtPos(new Vector2(x,y));
         if (infos != null)
         {
@@ -167,28 +166,20 @@ public class AssignSplatMap : MonoBehaviour
             {
                 for (int j = 0; j < cellSize; j++)
                 {
-                    int globalX = x + i;
-                    int globalY = y + j;
-                    // Normalise x/y coordinates to range 0-1 
-                    float y_01 = globalY / (float)terrainData.alphamapHeight;
-                    float x_01 = globalX / (float)terrainData.alphamapWidth;
-
-                    float newHeight = 0.01f;
+                    float newHeight = 0.005f;
 
                     if (infos.mapType == MapInfosManager.MapType.Water)
                     {
                         newHeight = 0.0f;
                     } else if (infos.mapType == MapInfosManager.MapType.Sand)
                     {
-                        newHeight = 0.005f;
+                        newHeight /= 2;
                     }
 
                     heights[j, i] = newHeight;
-                    totalHeights[y + j, x + i] = newHeight;
                 }
             }
             terrainData.SetHeights(y*cellSize, x*cellSize, heights);
-            //terrainData.SetHeights(0,0, totalHeights);
         }
     }
 
